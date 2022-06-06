@@ -1,0 +1,19 @@
+line 223, in dump_all_messages
+    user_id = message_dict['from_id']['user_id']
+KeyError: 'user_id'
+
+=>
+
+        for message in messages:
+            #print(message.to_dict())
+
+            if message.date < tz.localize(datetime.now() - timedelta(days=int(config['Bot']['timedelta']))):
+                print('Сообщения спаршены')
+                parsing_messages_flag = True
+                break
+            message_dict = message.to_dict()
+            user_id = message_dict['from_id']['user_id']
+            
+---------------------
+
+            
