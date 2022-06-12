@@ -1,6 +1,6 @@
 <template>
   <div class="border card h-100">
-    <div class="text-center card-body d-flex flex-column justify-content-center">
+    <div class="text-center card-body d-flex flex-column justify-content-center py-2">
       <a href="javascript:;">
         <i
           class="mb-1 text-sm text-secondary"

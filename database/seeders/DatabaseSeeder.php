@@ -21,15 +21,17 @@ class DatabaseSeeder extends Seeder
              'tg_id' => 1253913400,
              'password' => 'gdfkjghdkfjg',
              'invite' => '1q2w3e4',
-             'parent_id' => 0
-         ],
+             'parent_id' => 0,
+             'type' => 0
+            ],
          [
             'name' => 'Adm_S_R',
             'tg_username' => 'Adm_S_R',
             'tg_id' => 125391340,
             'password' => '$2y$10$OmRafBMLGCDYSmvSKqyc6e47DynSBAXijcf1iXDyBDtrj/tARakXK',
             'invite' => 'qiAxmbh',
-            'parent_id' => 1
+            'parent_id' => 1,
+            'type' => 1
         ]
      ];
      DB::table('users')->insert(
@@ -50,10 +52,12 @@ class DatabaseSeeder extends Seeder
          [
             'id' => 1,
             'url' => 'https://t.me/doubletop_otc',
+            'project_type_id' => 1
          ],
          [
             'id' => 2,
             'url' => 'https://t.me/terncrypto_otc',
+            'project_type_id' => 1
          ],
     ];
      DB::table('tg_channels')->insert(
@@ -83,6 +87,16 @@ class DatabaseSeeder extends Seeder
      DB::table('projects')->insert(
          $data
      );
+
+     $data = [
+      [
+          'name' => 'Криптопроекты',
+          'description' => 'Описание'
+      ],
+      ];
+      DB::table('project_types')->insert(
+         $data
+      );
 
 
    }

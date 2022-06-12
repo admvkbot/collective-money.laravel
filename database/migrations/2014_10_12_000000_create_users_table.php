@@ -25,6 +25,7 @@ return new class extends Migration
             $table->tinyInteger('activity')->default(0);
             $table->string('invite');
             $table->integer('status')->default(1);
+            $table->tinyInteger('type')->default(0); // 0 - юзер, 1 - модер, 2 - админ, 3 - суперадмин
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

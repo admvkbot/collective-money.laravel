@@ -167,6 +167,7 @@ import SocialsTable from "@/views/components/SocialsTable";
 import VsudButton from "@/components/VsudButton.vue";
 import { computed } from 'vue'
 
+
 export default {
   name: "edit-account",
   props: {

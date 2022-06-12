@@ -15,7 +15,8 @@ class TgMessage extends Model
       'channel_id',
       'date',
       'user_id',
-      'message'
+      'message',
+      'is_primary'
    ];
    protected $primaryKey = 'id'; // or null
    public $incrementing = false;

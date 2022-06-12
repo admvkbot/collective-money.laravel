@@ -4,25 +4,31 @@ namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Social;
+use App\Models\Project;
+use App\Http\Controllers\API\ApiController;
 
 class EditController extends Controller
 {
-   public function __invoke(Request $request)
+   public function __invoke($project_id, Request $request)
    {
-     $data = $request->instance();
+      if (ApiController::checkModerator()) {
+         $data = $request->instance();
 
-     $social = Social::where('id', $data['id'])
-         ->find(1);
+         $out = Project::where('id', $project_id)
+            ->update([
+               'name' => $data['name'],
+               'project_type_id' => $data['type'],
+               'website_url' => $data['url'],
+               'discord' => $data['discord'],
+               'twitter' => $data['twitter'],
+               'medium' => $data['medium'],
+               'youtube' => $data['youtube'],
+               'telegram' => $data['telegram'],
+               'description' => $data['description'],
+            ]);
 
-         $social->account_id = $data['account_id'];
-         $social->socialid = $data['socialid'];
-         $social->social_network_id = $data['social_network_id'];
-         $social->url = $data['url'];
-         $social->description = $data['description'];
-
-         $out = $social->save();
-
-    return response()->json($out);
+         return response()->json($out);
+      }
+      return response()->json([]);
    }
 }

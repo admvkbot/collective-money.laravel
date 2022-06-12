@@ -6,8 +6,10 @@
     <textarea
       :id="id"
       class="form-control"
-      rows="5"
+      :rows="rows"
+      :value="value"
       :placeholder="placeholder"
+      v-on:blur="this.$emit('textareaValue', $event.target.value)" 
     ></textarea>
   </div>
 </template>
@@ -20,10 +22,22 @@ export default {
       type: String,
       required: true,
     },
+    value: {
+      type: String,
+      required: true,
+      default: "",
+    },
     placeholder: {
       type: String,
       default: "Your text here...",
     },
+    rows: {
+       type: Number,
+       default: 5,
+    }
   },
+  emits: [
+     'textareaValue',
+  ],  
 };
 </script>

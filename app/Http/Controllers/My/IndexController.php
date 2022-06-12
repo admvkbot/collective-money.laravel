@@ -12,13 +12,18 @@ class IndexController extends Controller
     public function __invoke()
     {
        $id =  Auth::id();
-       $out = User::where('id', $id)->select(
+       $out = User::where('id', $id)
+       ->where('status', 1)
+       ->select(
          'name', 
          'email',
          'tg_username',
          'tg_id',
          'parent_id',
-         'invite'
+         'invite',
+         'type',
+         'status',
+         'activity'
        )
        ->first();
        return response()->json($out);

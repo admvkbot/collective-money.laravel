@@ -3,24 +3,35 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\ApiController;
 use Illuminate\Http\Request;
-use App\Models\Social;
+use App\Models\User;
+use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
+
 //use App\Http\Controllers\Auth;
 
 class CreateController extends Controller
 {
-    public function __invoke(Request $request)
-    {
-      //$userId = $request->user()->id;
-      $data = $request->instance();
-      //dd($data);
-      $out = Social::firstOrCreate([
-         'account_id' => $data['accountId'],
-         'socialid' => $data['socialid'],
-         'social_network_id' => $data['socialNetworkId'],
-         'url' => $data['url'],
-         'description' => $data['description'],
-     ]);
-     return response()->json($out);
-    }
+   public function __invoke(Request $request)
+   {
+
+      if (ApiController::checkModerator()) {
+
+         $data = $request->instance();
+         $out = Project::firstOrCreate([
+            'name' => $data['name'],
+            'project_type_id' => $data['type'],
+            'website_url' => $data['url'],
+            'discord' => $data['discord'],
+            'twitter' => $data['twitter'],
+            'medium' => $data['medium'],
+            'youtube' => $data['youtube'],
+            'telegram' => $data['telegram'],
+            'description' => $data['description'],
+         ]);
+         return response()->json($out);
+      }
+      return response()->json('[]');
+   }
 }
