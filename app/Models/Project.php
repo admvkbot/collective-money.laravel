@@ -12,12 +12,21 @@ class Project extends Model
 
    protected $fillable = [
      'name',
+     'project_type_id',
      'status',
      'rating',
      'num_tg_mesages',
      'num_tg_users',
      'website_name',
      'website_url',
+     'discord',
+     'twitter',
+     'medium',
+     'youtube',
+     'telegram',
+     'logo_url',
+     'price',
+     'is_locked',
      'description',
  ];
 

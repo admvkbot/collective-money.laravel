@@ -6,7 +6,7 @@
     <div class="card-body px-0 pt-0 pb-2">
       <div class="row" v-if="is_liveSearch">
         <div class="col-6">
-          <label class="form-label pl-3">Поиск реферера</label>
+          <label class="form-label pl-3">Поиск проекта</label>
           <div class="input-group pl-3">
             <input
               id="liveSearchReferers"

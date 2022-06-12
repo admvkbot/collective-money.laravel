@@ -29,7 +29,10 @@ class User extends Authenticatable
         'tg_id',
         'invite',
         'password',
-        'parent_id'
+        'parent_id',
+        'status',
+        'activity',
+        'type'
     ];
 
     /**

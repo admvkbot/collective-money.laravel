@@ -36,7 +36,7 @@
           </template>
         </sidenav-collapse>
       </li>-->
-         <li class="mt-3 nav-item">
+      <li class="mt-3 nav-item">
         <h6
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6 ms-2"
         >
@@ -78,9 +78,32 @@
           </template>
         </sidenav-collapse>
       </li>-->
+      <div v-if="isModerator">
+        <li class="mt-3 nav-item">
+          <h6
+            class="
+              text-xs
+              ps-4
+              text-uppercase
+              font-weight-bolder
+              opacity-6
+              ms-2
+            "
+          >
+            МОДЕРАЦИЯ
+          </h6>
+        </li>
+        <li class="nav-item">
+          <sidenav-collapse navText="Продукты" :to="{ name: 'Products' }">
+            <template #icon>
+              <referers-icon />
+            </template>
+          </sidenav-collapse>
+        </li>
+      </div>
     </ul>
   </div>
-<!--  <div class="pt-3 mx-3 mt-3 sidenav-footer">
+  <!--  <div class="pt-3 mx-3 mt-3 sidenav-footer">
     <sidenav-card
       :class="cardBg"
       textPrimary="Need Help?"
@@ -99,7 +122,7 @@
 </template>
 <script>
 import SidenavCollapse from "./SidenavCollapse.vue";
-import SidenavCard from "./SidenavCard.vue";
+//import SidenavCard from "./SidenavCard.vue";
 import Shop from "../components/Icon/Shop.vue";
 import Office from "../components/Icon/Office.vue";
 import CreditCard from "../components/Icon/CreditCard.vue";
@@ -110,9 +133,14 @@ import Document from "../components/Icon/Document.vue";
 import Spaceship from "../components/Icon/Spaceship.vue";
 import Settings from "../components/Icon/Settings.vue";
 import ReferersIcon from "../components/Icon/Referers.vue";
+import { inject } from "vue";
 
 export default {
   name: "SidenavList",
+  setup() {
+    let myData = inject("myData");
+    return { myData };
+  },
   props: {
     cardBg: String,
   },
@@ -125,7 +153,7 @@ export default {
   },
   components: {
     SidenavCollapse,
-    SidenavCard,
+    /*SidenavCard,*/
     Shop,
     Office,
     CreditCard,
@@ -136,11 +164,17 @@ export default {
     Spaceship,
     Settings,
     ReferersIcon,
+    /*AsyncComponent: defineAsyncComponent(() => import("@/views/Moderator.vue")),*/
   },
   methods: {
     getRoute() {
       const routeArr = this.$route.path.split("/");
       return routeArr[1];
+    },
+  },
+  computed: {
+    isModerator() {
+      return this.myData.value.type === 1 ? true : false;
     },
   },
 };

@@ -16,6 +16,7 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->integer('project_type_id')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('rating')->default(0);
             $table->integer('num_tg_mesages')->default(0);
@@ -29,7 +30,9 @@ class CreateProjectsTable extends Migration
             $table->string('telegram')->nullable();
             $table->string('logo_url')->nullable();
             $table->integer('price')->nullable();
+            $table->boolean('is_locked')->default(false);
             $table->text('description')->nullable();
+            $table->integer('project_status_id')->nullable();
             $table->timestamps();
         });
     }
