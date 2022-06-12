@@ -12,7 +12,7 @@ class ProjectController extends Controller
    public function __invoke($id)
    {
       $out = Project::where('id', $id) 
-         /*->toBase()*/
+         ->toBase()
          ->first();
       return response()->json($out);
    }
