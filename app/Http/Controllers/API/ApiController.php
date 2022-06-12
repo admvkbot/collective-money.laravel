@@ -29,7 +29,7 @@ class ApiController extends Controller
 
    public function getAccountData($account_id)
    {
-      $out = Account::where("id", $account_id)->first();
+      $out = Account::where('id', $account_id)->first();
       return response()->json($out);
    }
 
