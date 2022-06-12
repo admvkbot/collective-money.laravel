@@ -21,7 +21,7 @@
                       :active="true"
                       :value="projectIn.value.name"
                       :disabled="false"
-                      @input-value="(v) => (this.projectIn.value.name = v)"
+                      @input-value="(v) => (projectIn.value.name = v)"
                     />
                   </div>
                 </div>
