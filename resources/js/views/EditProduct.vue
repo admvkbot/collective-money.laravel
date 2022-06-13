@@ -11,6 +11,20 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-12">
+                    <form
+                      action="/file-upload"
+                      class="form-control dropzone"
+                      id="dropzone"
+                    >
+                      <div class="fallback">
+                        <input name="file" type="file" multiple />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
                     <label class="form-label">Название</label>
                     <vsud-input
                       id="project-name"
@@ -426,6 +440,8 @@ import DiscordIcon from "@/components/Icon/Discord";
 import MediumIcon from "@/components/Icon/Medium";
 import YoutubeIcon from "@/components/Icon/Youtube";
 
+import { Dropzone } from "dropzone";
+
 import confirmModal from "@/components/modal/confirmModal.js";
 import { Modal } from "bootstrap";
 import { ref } from "vue";
@@ -456,6 +472,45 @@ export default {
     this.addModal = new Modal(
       document.getElementById("addProjectBlockModalMessage")
     );
+    //window.token = localStorage.getItem("x_xsrf_token");
+    const token = this.getCookie('XSRF-TOKEN');
+    //this.eraseCookie('XSRF-TOKEN')
+    //this.setCookie("XSRF-TOKEN", this.token, 1);
+    //console.log(this.token);
+    Dropzone.autoDiscover = false;
+    var drop = document.getElementById("dropzone");
+    var myDropzone = new Dropzone(drop, {
+      url: "/api/upload-project-logo",
+      addRemoveLinks: true,
+      uploadMultiple: false,
+      maxFilesize: 2,
+      dictDefaultMessage: "Перетащите сюда файл изображения. Макс. 2 МБ.",
+      dictFileTooBig: "Файл слишком большой!",
+      dictInvalidFileType: "Поддерживатся только .jpg и .png",
+      dictCancelUpload: "Отменить загрузку",
+      dictUploadCanceled: "Загрузка отменена",
+      dictRemoveFile: "Удалить файл",
+      maxFiles: 1,
+      acceptedFiles: `.jpg,.png`,
+      withCredentials: true,
+      dictResponseError: "Ошибка загрузки изображения",
+      headers: {
+        "X-XSRF-TOKEN": decodeURIComponent(token),
+      },
+      sending() {
+        const setCookie = (name, value, days) => {
+          var expires = "";
+          if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+            expires = "; expires=" + date.toUTCString();
+          }
+          document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        };
+        setCookie("XSRF-TOKEN", token, 1);
+      },
+    });
+    //this.token = localStorage.getItem("x_xsrf_token");
   },
 
   data() {
@@ -473,6 +528,7 @@ export default {
         do: "add",
         buttons: "",
       },
+      token: null,
     };
   },
 
@@ -490,10 +546,37 @@ export default {
     return { projectId, types, projectIn, index, blocks };
   },
   methods: {
+    setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    },
+    getCookie(cname) {
+      let name = cname + "=";
+      let ca = document.cookie.split(";");
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
+    eraseCookie(name) {
+      document.cookie =
+        name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    },
     sendData() {
       axios.get("/sanctum/csrf-cookie").then((response) => {
         axios
-          .post("/api/edit-project/"+this.projectId, {
+          .post("/api/edit-project/" + this.projectId, {
             name: this.projectIn.value.name,
             type: this.projectIn.value.project_type_id,
             url: this.projectIn.value.website_url,
@@ -552,7 +635,7 @@ export default {
       this.blockData.name = null;
       this.blockData.date = null;
       this.blockData.text = null;
-      this.blockData.buttons = 'Пример';
+      this.blockData.buttons = "Пример";
       this.blockData.do = "add";
       this.showBlockModal();
     },
@@ -584,12 +667,16 @@ export default {
     },
   },
   computed: {
-     projectType(value) {
-        this.project.type = value ? value : this.projectIn.value.project_type_id
-        console.log(1)
-        console.log(this.project.type)
-        return this.project.type
-     }
+    tokenC() {
+      this.setCookie("XSRF-TOKEN", "888888", 1);
+      return this.token;
+    },
+    /*projectType(value) {
+      this.project.type = value ? value : this.projectIn.value.project_type_id;
+      console.log(1);
+      console.log(this.project.type);
+      return this.project.type;
+    },*/
   },
   watch: {
     confirmBlockDelete(newQuestion, oldQuestion) {

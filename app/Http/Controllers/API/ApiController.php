@@ -165,4 +165,12 @@ class ApiController extends Controller
          ->get();
       return response()->json($out);
    }
+
+   public function uploadProjectLogo(Request $request)
+   {      
+      dd($request->file());
+      return response()->json('OK');
+   }
+
+
 }

@@ -7,7 +7,7 @@ import "./assets/css/nucleo-svg.css";
 import SoftUIDashboard from "./soft-ui-dashboard";
 import axios from 'axios'
 
-
+require('@/assets/js/plugins/init.js')
 //import { config } from 'dotenv';
 //config();
 

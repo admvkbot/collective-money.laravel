@@ -43,4 +43,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::post('/edit-project/{project_id}', 'Project\EditController');
    Route::post('/add-project', 'Project\CreateController');
    Route::get('/get-indexes/{project_id}', [ApiController::class, 'getIndexesByProjectId']);
+   Route::post('/upload-project-logo', [ApiController::class, 'uploadProjectLogo']);
 });
