@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\ApiController;
+use App\Http\Controllers\API\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,4 +44,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::post('/edit-project/{project_id}', 'Project\EditController');
    Route::post('/add-project', 'Project\CreateController');
    Route::get('/get-indexes/{project_id}', [ApiController::class, 'getIndexesByProjectId']);
+   Route::post('/upload-project-logo/{project_id}', 'Project\UploadController');
 });

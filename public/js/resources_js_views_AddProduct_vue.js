@@ -1217,18 +1217,20 @@ function getProjectTypes() {
   var types = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); //  const getUserRepositories = async () => {
   //    repositories.value = await fetchUserRepositories(user.value)
   //  }
+  //const connectGetProjectTypes = () => axios.get("/sanctum/csrf-cookie").then((response) => {
+  //const connectGetProjectTypes = () => {
 
   var connectGetProjectTypes = function connectGetProjectTypes() {
-    return axios.get("/sanctum/csrf-cookie").then(function (response) {
-      axios.get("/api/get-types", {}).then(function (r) {
-        types.value = r.data;
-      })["catch"](function (err) {
-        console.log(err);
-        var registerError = "Ошибка получеения типов проектов";
-        alert(registerError);
-      });
+    return axios.get("/api/get-types", {}).then(function (r) {
+      types.value = r.data;
+    })["catch"](function (err) {
+      console.log(err);
+      var registerError = "Ошибка получеения типов проектов";
+      alert(registerError);
     });
-  }; //onMounted(connectGetAllAccounts)
+  }; //});
+  //};
+  //onMounted(connectGetAllAccounts)
 
 
   connectGetProjectTypes(); //watch(user, getUserRepositories)

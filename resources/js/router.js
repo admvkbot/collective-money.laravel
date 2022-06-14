@@ -2,11 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 import Dashboard from "./views/Dashboard.vue";
 import TgParser from "./views/TgParser.vue";
-import Billing from "./views/Billing.vue";
-import VirtualReality from "./views/VirtualReality.vue";
 import Profile from "./views/Profile.vue";
-import Accounts from "./views/Accounts.vue";
-import Referers from "./views/Referers.vue";
+import Accounts from "./views/accounts/Accounts.vue";
+import Referers from "./views/referers/Referers.vue";
 import EditAccount from "./views/accounts/EditAccount.vue";
 import SignIn from "./views/SignIn.vue";
 import SignUp from "./views/SignUp.vue";
@@ -26,16 +24,6 @@ const routes = [
       path: "/tgparser",
       name: "TgParser",
       component: TgParser,
-   },
-   {
-      path: "/billing",
-      name: "Billing",
-      component: Billing,
-   },
-   {
-      path: "/virtual-reality",
-      name: "Virtual Reality",
-      component: VirtualReality,
    },
    {
       path: "/profile",
@@ -61,18 +49,24 @@ const routes = [
    {
       path: "/products",
       name: "Products",
-      component: defineAsyncComponent(() => import("@/views/ModerateProducts.vue")),
+      component: defineAsyncComponent(() => import("@/views/products/ProductsModerator.vue")),
    },
    {
       path: "/products/add",
       name: "Add Product",
-      component: defineAsyncComponent(() => import("@/views/AddProduct.vue")),
+      component: defineAsyncComponent(() => import("@/views/products/AddProduct.vue")),
       props: true,
    },
    {
       path: "/products/edit/:productId",
       name: "Edit Product",
-      component: defineAsyncComponent(() => import("@/views/EditProduct.vue")),
+      component: defineAsyncComponent(() => import("@/views/products/EditProduct.vue")),
+      props: true,
+   },
+   {
+      path: "/products/edit-key/:productId",
+      name: "Edit Product Key",
+      component: defineAsyncComponent(() => import("@/views/products/EditProductKey.vue")),
       props: true,
    },
    {

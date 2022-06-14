@@ -474,10 +474,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @/components/Icon/Discord */ "./resources/js/components/Icon/Discord.vue");
 /* harmony import */ var _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @/components/Icon/Medium */ "./resources/js/components/Icon/Medium.vue");
 /* harmony import */ var _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @/components/Icon/Youtube */ "./resources/js/components/Icon/Youtube.vue");
-/* harmony import */ var _components_modal_confirmModal_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @/components/modal/confirmModal.js */ "./resources/js/components/modal/confirmModal.js");
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var dropzone__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! dropzone */ "./node_modules/dropzone/dist/dropzone.mjs");
+/* harmony import */ var _components_modal_confirmModal_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @/components/modal/confirmModal.js */ "./resources/js/components/modal/confirmModal.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+
 
 
 
@@ -515,12 +517,66 @@ __webpack_require__.r(__webpack_exports__);
     DiscordIcon: _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_13__["default"],
     MediumIcon: _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_14__["default"],
     YoutubeIcon: _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_15__["default"],
-    confirmModal: _components_modal_confirmModal_js__WEBPACK_IMPORTED_MODULE_16__["default"],
+    confirmModal: _components_modal_confirmModal_js__WEBPACK_IMPORTED_MODULE_17__["default"],
     PlaceHolderHorisontalCard: _Cards_PlaceHolderHorisontalCard_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
     AddProjectBlockModal: _components_modal_AddProjectBlockModal_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
   },
   mounted: function mounted() {
-    this.addModal = new bootstrap__WEBPACK_IMPORTED_MODULE_17__.Modal(document.getElementById("addProjectBlockModalMessage"));
+    var _this = this;
+
+    this.addModal = new bootstrap__WEBPACK_IMPORTED_MODULE_18__.Modal(document.getElementById("addProjectBlockModalMessage")); //window.token = localStorage.getItem("x_xsrf_token");
+
+    this.pathLogo = this.projectIn.value.logo_url;
+    var token = this.getCookie("XSRF-TOKEN");
+    /*if (typeof Dropzone !== "undefined") {
+      Dropzone.forElement("dropzone").removeAllFiles(true);
+    }*/
+
+    dropzone__WEBPACK_IMPORTED_MODULE_16__.Dropzone.autoDiscover = false;
+
+    try {
+      dropzone__WEBPACK_IMPORTED_MODULE_16__.Dropzone.forElement("dropzone").removeAllFiles(true);
+    } catch (_unused) {}
+
+    var drop = document.getElementById("dropzone");
+    var myDropzone = new dropzone__WEBPACK_IMPORTED_MODULE_16__.Dropzone(drop, {
+      url: "/api/upload-project-logo/" + this.projectId,
+      addRemoveLinks: true,
+      uploadMultiple: false,
+      maxFilesize: 2,
+      dictDefaultMessage: "Перетащите сюда файл изображения. Макс. 2 МБ.",
+      dictFileTooBig: "Файл слишком большой!",
+      dictInvalidFileType: "Поддерживатся только .jpg и .png",
+      dictCancelUpload: "Отменить загрузку",
+      dictUploadCanceled: "Загрузка отменена",
+      dictRemoveFile: "Удалить файл",
+      maxFiles: 1,
+      acceptedFiles: ".jpg,.png",
+      resizeHeight: 128,
+      withCredentials: true,
+      dictResponseError: "Ошибка загрузки изображения",
+      headers: {
+        "X-XSRF-TOKEN": decodeURIComponent(token)
+      },
+      sending: function sending() {
+        var setCookie = function setCookie(name, value, days) {
+          var expires = "";
+
+          if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+            expires = "; expires=" + date.toUTCString();
+          }
+
+          document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        };
+
+        setCookie("XSRF-TOKEN", token, 1);
+      },
+      success: function success(file, response) {
+        _this.projectIn.value.logo_url = response;
+      }
+    }); //this.token = localStorage.getItem("x_xsrf_token");
   },
   data: function data() {
     return {
@@ -536,19 +592,20 @@ __webpack_require__.r(__webpack_exports__);
         text: "",
         "do": "add",
         buttons: ""
-      }
+      },
+      token: null
     };
   },
   setup: function setup() {
-    var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_19__.useRoute)();
+    var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_20__.useRoute)();
     var projectId = route.params.productId;
-    var types = (0,vue__WEBPACK_IMPORTED_MODULE_18__.ref)([]);
+    var types = (0,vue__WEBPACK_IMPORTED_MODULE_19__.ref)([]);
     types.value = (0,_assets_js_getProjectTypes_js__WEBPACK_IMPORTED_MODULE_5__["default"])();
-    var projectIn = (0,vue__WEBPACK_IMPORTED_MODULE_18__.ref)([]);
+    var projectIn = (0,vue__WEBPACK_IMPORTED_MODULE_19__.ref)([]);
     projectIn.value = (0,_assets_js_getProjectData_js__WEBPACK_IMPORTED_MODULE_6__["default"])(projectId);
-    var index = (0,vue__WEBPACK_IMPORTED_MODULE_18__.ref)([]);
+    var index = (0,vue__WEBPACK_IMPORTED_MODULE_19__.ref)([]);
     index.value = (0,_assets_js_getIndexes_js__WEBPACK_IMPORTED_MODULE_7__["default"])(projectId);
-    var blocks = (0,vue__WEBPACK_IMPORTED_MODULE_18__.ref)([]);
+    var blocks = (0,vue__WEBPACK_IMPORTED_MODULE_19__.ref)([]);
     blocks.value = (0,_assets_js_getProjectBlocks_js__WEBPACK_IMPORTED_MODULE_8__["default"])(projectId);
     return {
       projectId: projectId,
@@ -559,41 +616,72 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    setCookie: function setCookie(name, value, days) {
+      var expires = "";
+
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = "; expires=" + date.toUTCString();
+      }
+
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    },
+    getCookie: function getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(";");
+
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+
+      return "";
+    },
+    eraseCookie: function eraseCookie(name) {
+      document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    },
     sendData: function sendData() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/sanctum/csrf-cookie").then(function (response) {
-        axios.post("/api/edit-project/" + _this.projectId, {
-          name: _this.projectIn.value.name,
-          type: _this.projectIn.value.project_type_id,
-          url: _this.projectIn.value.website_url,
-          twitter: _this.projectIn.value.twitter,
-          discord: _this.projectIn.value.discord,
-          youtube: _this.projectIn.value.youtube,
-          telegram: _this.projectIn.value.telegram,
-          medium: _this.projectIn.value.medium,
-          description: _this.projectIn.value.description
+        axios.post("/api/edit-project/" + _this2.projectId, {
+          name: _this2.projectIn.value.name,
+          type: _this2.projectIn.value.project_type_id,
+          url: _this2.projectIn.value.website_url,
+          twitter: _this2.projectIn.value.twitter,
+          discord: _this2.projectIn.value.discord,
+          youtube: _this2.projectIn.value.youtube,
+          telegram: _this2.projectIn.value.telegram,
+          medium: _this2.projectIn.value.medium,
+          description: _this2.projectIn.value.description
         }).then(function (r) {
-          _this.$router.push({
+          _this2.$router.push({
             name: "Products"
           }); //this.$router.go()
           //this.$emit("socialsReload");
 
         })["catch"](function (err) {
           console.log(err.response);
-          _this.registerError = "Ошибка сохранения проекта";
-          alert(_this.registerError);
+          _this2.registerError = "Ошибка сохранения проекта";
+          alert(_this2.registerError);
         });
       });
     },
     showBlockModal: function showBlockModal() {
-      var _this2 = this;
+      var _this3 = this;
 
-      console.log(this.openModalStatus);
       this.openModalStatus = true;
       this.addModal.show();
       setTimeout(function () {
-        _this2.openModalStatus = false;
+        _this3.openModalStatus = false;
       }, 500);
     },
     projectReload: function projectReload() {
@@ -616,7 +704,7 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(day, ".").concat(month, ".").concat(year);
     },
     confirm: function confirm(id, title, text) {
-      this.confirmBlockDelete = (0,_components_modal_confirmModal_js__WEBPACK_IMPORTED_MODULE_16__["default"])(id, title, text);
+      this.confirmBlockDelete = (0,_components_modal_confirmModal_js__WEBPACK_IMPORTED_MODULE_17__["default"])(id, title, text);
     },
     showAddBlockModal: function showAddBlockModal(id, type, name, date, text, buttons) {
       this.blockData.id = null;
@@ -624,7 +712,7 @@ __webpack_require__.r(__webpack_exports__);
       this.blockData.name = null;
       this.blockData.date = null;
       this.blockData.text = null;
-      this.blockData.buttons = 'Пример';
+      this.blockData.buttons = "Пример";
       this.blockData["do"] = "add";
       this.showBlockModal();
     },
@@ -639,28 +727,33 @@ __webpack_require__.r(__webpack_exports__);
       this.showBlockModal();
     },
     deleteBlock: function deleteBlock(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/sanctum/csrf-cookie").then(function (response) {
         axios.get("/api/delete-block/" + id).then(function (r) {
           //this.$router.push({ name: "Products" });
           //this.$router.go()
-          _this3.projectReload();
+          _this4.projectReload();
         })["catch"](function (err) {
           console.log(err.response);
-          _this3.registerError = "Ошибка сохранения удаления блока timeline";
-          alert(_this3.registerError);
+          _this4.registerError = "Ошибка сохранения удаления блока timeline";
+          alert(_this4.registerError);
         });
       });
     }
   },
   computed: {
-    projectType: function projectType(value) {
+    tokenC: function tokenC() {
+      this.setCookie("XSRF-TOKEN", "888888", 1);
+      return this.token;
+    }
+    /*projectType(value) {
       this.project.type = value ? value : this.projectIn.value.project_type_id;
       console.log(1);
       console.log(this.project.type);
       return this.project.type;
-    }
+    },*/
+
   },
   watch: {
     confirmBlockDelete: function confirmBlockDelete(newQuestion, oldQuestion) {
@@ -1184,10 +1277,36 @@ var _hoisted_9 = {
   "class": "row"
 };
 var _hoisted_10 = {
+  "class": "col-3"
+};
+var _hoisted_11 = ["src"];
+
+var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "col-9"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+    action: "/file-upload",
+    "class": "form-control dropzone",
+    id: "dropzone"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "fallback"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    name: "file",
+    type: "file",
+    multiple: ""
+  })])])], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_13 = {
+  "class": "row"
+};
+var _hoisted_14 = {
   "class": "col-12"
 };
 
-var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "form-label"
   }, "Название", -1
@@ -1195,32 +1314,32 @@ var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_12 = {
-  "class": "row"
-};
-var _hoisted_13 = {
-  "class": "col-12"
-};
-
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ключевые фразы");
-
-var _hoisted_15 = {
-  "class": "row"
-};
 var _hoisted_16 = {
+  "class": "row"
+};
+var _hoisted_17 = {
   "class": "col-12"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Комментарий к проекту");
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ключевые фразы");
 
-var _hoisted_18 = {
+var _hoisted_19 = {
   "class": "row"
 };
-var _hoisted_19 = {
+var _hoisted_20 = {
+  "class": "col-12"
+};
+
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Комментарий к проекту");
+
+var _hoisted_22 = {
+  "class": "row"
+};
+var _hoisted_23 = {
   "class": "col-12 pb-3"
 };
 
-var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_24 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "form-label"
   }, "Тип проекта", -1
@@ -1228,33 +1347,21 @@ var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_21 = ["value"];
-var _hoisted_22 = {
+var _hoisted_25 = ["value"];
+var _hoisted_26 = {
   "class": "row"
 };
-var _hoisted_23 = {
+var _hoisted_27 = {
   "class": "col-12"
 };
 
-var _hoisted_24 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_28 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "form-label"
   }, "Официальный вебсайт", -1
   /* HOISTED */
   );
 });
-
-var _hoisted_25 = {
-  "class": "row"
-};
-var _hoisted_26 = {
-  "class": "col-12"
-};
-var _hoisted_27 = {
-  "class": "form-label d-flex"
-};
-
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Twitter");
 
 var _hoisted_29 = {
   "class": "row"
@@ -1266,7 +1373,7 @@ var _hoisted_31 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Discord");
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Twitter");
 
 var _hoisted_33 = {
   "class": "row"
@@ -1278,7 +1385,7 @@ var _hoisted_35 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("YouTube");
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Discord");
 
 var _hoisted_37 = {
   "class": "row"
@@ -1290,7 +1397,7 @@ var _hoisted_39 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telegram");
+var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("YouTube");
 
 var _hoisted_41 = {
   "class": "row"
@@ -1302,33 +1409,45 @@ var _hoisted_43 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Medium");
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telegram");
 
 var _hoisted_45 = {
-  "class": "row mt-auto position-sticky top-100 pb-2"
+  "class": "row"
 };
 var _hoisted_46 = {
+  "class": "col-12"
+};
+var _hoisted_47 = {
+  "class": "form-label d-flex"
+};
+
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Medium");
+
+var _hoisted_49 = {
+  "class": "row mt-auto position-sticky top-100 pb-2"
+};
+var _hoisted_50 = {
   "class": "col-12 d-flex"
 };
 
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Назад ");
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Назад ");
 
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Сохранить ");
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Сохранить ");
 
-var _hoisted_49 = {
+var _hoisted_53 = {
   "class": "col-lg-6 mt-4 mt-lg-0"
 };
-var _hoisted_50 = {
+var _hoisted_54 = {
   "class": "card bg-gradient-dark"
 };
-var _hoisted_51 = {
+var _hoisted_55 = {
   "class": "card-header bg-transparent pb-0"
 };
-var _hoisted_52 = {
+var _hoisted_56 = {
   "class": "mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4"
 };
 
-var _hoisted_53 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_57 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
     "class": "text-white"
   }, " Настройка стадий развития проекта ", -1
@@ -1336,31 +1455,31 @@ var _hoisted_53 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_54 = {
+var _hoisted_58 = {
   "class": "card-body p-3"
 };
-var _hoisted_55 = {
+var _hoisted_59 = {
   "class": "timeline timeline-one-side",
   "data-timeline-axis-style": "dashed"
 };
-var _hoisted_56 = {
+var _hoisted_60 = {
   key: 0
 };
-var _hoisted_57 = {
+var _hoisted_61 = {
   "class": "timeline-step bg-dark"
 };
-var _hoisted_58 = {
+var _hoisted_62 = {
   "class": "timeline-content"
 };
-var _hoisted_59 = {
+var _hoisted_63 = {
   "class": "text-white text-sm font-weight-bold mb-0"
 };
-var _hoisted_60 = {
+var _hoisted_64 = {
   "class": "float-right"
 };
-var _hoisted_61 = ["id"];
+var _hoisted_65 = ["id"];
 
-var _hoisted_62 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_66 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fa fa-ellipsis-v text-xs",
     "aria-hidden": "true"
@@ -1369,21 +1488,21 @@ var _hoisted_62 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_63 = [_hoisted_62];
-var _hoisted_64 = ["aria-labelledby"];
-var _hoisted_65 = ["onClick"];
-var _hoisted_66 = ["onClick"];
-var _hoisted_67 = {
+var _hoisted_67 = [_hoisted_66];
+var _hoisted_68 = ["aria-labelledby"];
+var _hoisted_69 = ["onClick"];
+var _hoisted_70 = ["onClick"];
+var _hoisted_71 = {
   "class": "text-white text-xs mt-1 mb-0"
 };
-var _hoisted_68 = {
+var _hoisted_72 = {
   "class": "text-secondary text-sm mt-3 mb-2"
 };
-var _hoisted_69 = {
+var _hoisted_73 = {
   "class": "timeline-block mb-3"
 };
 
-var _hoisted_70 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_74 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "timeline-step bg-dark"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -1393,11 +1512,11 @@ var _hoisted_70 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_71 = {
+var _hoisted_75 = {
   "class": "timeline-content"
 };
 
-var _hoisted_72 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_76 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
     "class": "text-white text-sm font-weight-bold mb-0"
   }, " Стадии проекта не описаны ", -1
@@ -1405,7 +1524,7 @@ var _hoisted_72 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_73 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_77 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
     "class": "text-secondary font-weight-bold text-xs mt-1 mb-0"
   }, null, -1
@@ -1413,7 +1532,7 @@ var _hoisted_73 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_74 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_78 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
     "class": "text-secondary text-sm mt-3 mb-2"
   }, " Отсутствует описание стадий развития проекта. ", -1
@@ -1421,10 +1540,10 @@ var _hoisted_74 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_75 = {
+var _hoisted_79 = {
   "class": "row"
 };
-var _hoisted_76 = {
+var _hoisted_80 = {
   "class": "col-md-4"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -1448,7 +1567,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_add_project_block_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-project-block-modal");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    src: $setup.projectIn.value.logo_url,
+    "class": "m-2"
+  }, null, 8
+  /* PROPS */
+  , _hoisted_11)]), _hoisted_12]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-name",
     type: "text",
     placeholder: "Crypto Whitelist Pro",
@@ -1462,23 +1586,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
     id: "project-keys",
     value: $setup.index.value,
     onTextareaValue: _cache[1] || (_cache[1] = function (v) {
       return $setup.index.value = v;
     }),
-    placeholder: "key1\nkey2"
+    placeholder: "key1\r\nkey2"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_14];
+      return [_hoisted_18];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
     id: "project-description",
     placeholder: "Любой текст",
     value: $setup.projectIn.value.description,
@@ -1488,14 +1612,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     rows: "7"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_17];
+      return [_hoisted_21];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
     name: "choices-type-button",
     id: "choices-type",
@@ -1509,12 +1633,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: item.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 9
     /* TEXT, PROPS */
-    , _hoisted_21);
+    , _hoisted_25);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.projectIn.value.project_type_id]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.projectIn.value.project_type_id]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-site-url",
     type: "text",
     placeholder: "https://project.website/",
@@ -1528,9 +1652,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_twitter_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_twitter_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_28]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_32]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-twitter",
     type: "text",
     placeholder: "https://twitter.com/xxxx",
@@ -1544,9 +1668,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_discord_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_discord_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_32]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_36]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-discord",
     type: "text",
     placeholder: "https://discord.com/user/xxxx",
@@ -1560,9 +1684,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_youtube_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_youtube_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_36]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_40]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-youtube",
     type: "text",
     placeholder: "https://youtube.com/channel/xxxx",
@@ -1576,9 +1700,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_telegram_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_telegram_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_40]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_44]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-telegram",
     type: "text",
     placeholder: "https://t.me/xxxx",
@@ -1592,9 +1716,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_medium_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_medium_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_44]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_48]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-medium",
     type: "text",
     placeholder: "https://medium.com/@xxxx",
@@ -1608,7 +1732,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_button, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_button, {
     "class": "my-4 mb-2 mr-2",
     variant: "outline",
     color: "active",
@@ -1618,7 +1742,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_47];
+      return [_hoisted_51];
     }),
     _: 1
     /* STABLE */
@@ -1631,14 +1755,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($options.sendData, ["prevent"])
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_48];
+      return [_hoisted_52];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "javascript:;",
     onClick: _cache[11] || (_cache[11] = function () {
       return $options.showAddBlockModal && $options.showAddBlockModal.apply($options, arguments);
@@ -1648,24 +1772,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       text: 'Добавить блок описания',
       variant: 'h6'
     }
-  })])]), _hoisted_53]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [$setup.blocks.value.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_56, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.blocks.value, function (block) {
+  })])]), _hoisted_57]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [$setup.blocks.value.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_60, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.blocks.value, function (block) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": "timeline-block mb-3",
       key: block.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.getBlockIcon(block.stage) + ' text-' + $options.getBlockColor(block.stage))
     }, null, 2
     /* CLASS */
-    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.name), 1
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-link text-secondary",
       "data-bs-toggle": "dropdown",
       "aria-expanded": "true",
       id: 'project-dropdown' + block.id
-    }, _hoisted_63, 8
+    }, _hoisted_67, 8
     /* PROPS */
-    , _hoisted_61), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+    , _hoisted_65), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
       "class": "dropdown-menu px-2 py-3 ms-sm-n4 ms-n5",
       "aria-labelledby": 'timeline-block-dropdown' + block.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
@@ -1676,7 +1800,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, "Изменить", 8
     /* PROPS */
-    , _hoisted_65)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_69)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       "class": "dropdown-item border-radius-md",
       href: "javascript:;",
       onClick: function onClick($event) {
@@ -1684,11 +1808,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, "Удалить", 8
     /* PROPS */
-    , _hoisted_66)])], 8
+    , _hoisted_70)])], 8
     /* PROPS */
-    , _hoisted_64)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPrintDate(block.date)), 1
+    , _hoisted_68)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPrintDate(block.date)), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.description), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_72, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.description), 1
     /* TEXT */
     ), block.button1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
       key: 0,
@@ -1720,14 +1844,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 1
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" far fa-baby-carriage "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_69, [_hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_71, [_hoisted_72, _hoisted_73, _hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" far fa-baby-carriage "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_73, [_hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_75, [_hoisted_76, _hoisted_77, _hoisted_78, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "badge badge-sm bg-gradient-secondary",
     onClick: _cache[12] || (_cache[12] = function () {
       return $options.showAddBlockModal && $options.showAddBlockModal.apply($options, arguments);
     })
   }, " Настроить timeline проекта ")])])], 2112
   /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
-  ))])])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_75, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_76, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_add_project_block_modal, {
+  ))])])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_79, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_add_project_block_modal, {
     "project-id": $setup.projectId,
     blockId: $data.blockData.id,
     blockType: $data.blockData.type,
@@ -2081,22 +2205,22 @@ function getIndexesByProjectId(project_id) {
   var indexes = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); //  const getUserRepositories = async () => {
   //    repositories.value = await fetchUserRepositories(user.value)
   //  }
+  //const connectGetIndexes = (project_id) => axios.get("/sanctum/csrf-cookie").then((response) => {
 
   var connectGetIndexes = function connectGetIndexes(project_id) {
-    return axios.get("/sanctum/csrf-cookie").then(function (response) {
-      axios.get("/api/get-indexes/" + project_id, {}).then(function (r) {
-        var str = '';
-        r.data.forEach(function (element) {
-          str += "".concat(element.field, "\n");
-        });
-        indexes.value = str;
-      })["catch"](function (err) {
-        console.log(err);
-        var registerError = "Ошибка получеения индексов";
-        alert(registerError);
+    return axios.get("/api/get-indexes/" + project_id, {}).then(function (r) {
+      var str = '';
+      r.data.forEach(function (element) {
+        str += "".concat(element.field, "\n");
       });
+      indexes.value = str;
+    })["catch"](function (err) {
+      console.log(err);
+      var registerError = "Ошибка получеения индексов";
+      alert(registerError);
     });
-  };
+  }; //});
+
 
   connectGetIndexes(project_id);
   return indexes;
@@ -2123,18 +2247,18 @@ function getProjectBlocks(projectId) {
   //    repositories.value = await fetchUserRepositories(user.value)
   //  }
   //console.log(1);
+  //const connectGetProjectBlocks = () => axios.get("/sanctum/csrf-cookie").then((response) => {
 
   var connectGetProjectBlocks = function connectGetProjectBlocks() {
-    return axios.get("/sanctum/csrf-cookie").then(function (response) {
-      axios.get("/api/get-blocks/".concat(projectId), {}).then(function (r) {
-        blocks.value = r.data;
-      })["catch"](function (err) {
-        console.log(err);
-        var registerError = "Ошибка получеения блоков timeline";
-        alert(registerError);
-      });
+    return axios.get("/api/get-blocks/".concat(projectId), {}).then(function (r) {
+      blocks.value = r.data;
+    })["catch"](function (err) {
+      console.log(err);
+      var registerError = "Ошибка получеения блоков timeline";
+      alert(registerError);
     });
-  }; //onMounted(connectGetAllAccounts)
+  }; //});
+  //onMounted(connectGetAllAccounts)
 
 
   connectGetProjectBlocks(); //watch(user, getUserRepositories)
@@ -2163,18 +2287,18 @@ function getProjectData(projectId) {
   //    repositories.value = await fetchUserRepositories(user.value)
   //  }
   //console.log(1);
+  //const connectGetProject = () => axios.get("/sanctum/csrf-cookie").then((response) => {
 
   var connectGetProject = function connectGetProject() {
-    return axios.get("/sanctum/csrf-cookie").then(function (response) {
-      axios.get("/api/get-project/".concat(projectId), {}).then(function (r) {
-        project.value = r.data;
-      })["catch"](function (err) {
-        console.log(err);
-        var registerError = "Ошибка получеения данных проекта";
-        alert(registerError);
-      });
+    return axios.get("/api/get-project/".concat(projectId), {}).then(function (r) {
+      project.value = r.data;
+    })["catch"](function (err) {
+      console.log(err);
+      var registerError = "Ошибка получеения данных проекта";
+      alert(registerError);
     });
-  }; //onMounted(connectGetAllAccounts)
+  }; //});
+  //onMounted(connectGetAllAccounts)
 
 
   connectGetProject(); //watch(user, getUserRepositories)
@@ -2202,18 +2326,20 @@ function getProjectTypes() {
   var types = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); //  const getUserRepositories = async () => {
   //    repositories.value = await fetchUserRepositories(user.value)
   //  }
+  //const connectGetProjectTypes = () => axios.get("/sanctum/csrf-cookie").then((response) => {
+  //const connectGetProjectTypes = () => {
 
   var connectGetProjectTypes = function connectGetProjectTypes() {
-    return axios.get("/sanctum/csrf-cookie").then(function (response) {
-      axios.get("/api/get-types", {}).then(function (r) {
-        types.value = r.data;
-      })["catch"](function (err) {
-        console.log(err);
-        var registerError = "Ошибка получеения типов проектов";
-        alert(registerError);
-      });
+    return axios.get("/api/get-types", {}).then(function (r) {
+      types.value = r.data;
+    })["catch"](function (err) {
+      console.log(err);
+      var registerError = "Ошибка получеения типов проектов";
+      alert(registerError);
     });
-  }; //onMounted(connectGetAllAccounts)
+  }; //});
+  //};
+  //onMounted(connectGetAllAccounts)
 
 
   connectGetProjectTypes(); //watch(user, getUserRepositories)
@@ -9944,7 +10070,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-b3b26694],\n.dropend .dropdown-menu[data-v-b3b26694] {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n", "",{"version":3,"sources":["webpack://./EditProduct.vue"],"names":[],"mappings":";AA2lBA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\n  <div class=\"container-fluid my-3 py-3\">\n    <div class=\"row\">\n      <div class=\"col-lg-12 mb-lg-0 mb-4\">\n        <div class=\"card\">\n          <div class=\"card-header\">\n            <h5>Настройки парсинга проекта</h5>\n          </div>\n          <div class=\"card-body pt-0\">\n            <div class=\"row\">\n              <div class=\"col-6\">\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <label class=\"form-label\">Название</label>\n                    <vsud-input\n                      id=\"project-name\"\n                      type=\"text\"\n                      placeholder=\"Crypto Whitelist Pro\"\n                      aria-label=\"Name\"\n                      :isRequired=\"true\"\n                      :active=\"true\"\n                      :value=\"projectIn.value.name\"\n                      :disabled=\"false\"\n                      @input-value=\"(v) => (projectIn.value.name = v)\"\n                    />\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <vsud-textarea\n                      id=\"project-keys\"\n                      :value=\"index.value\"\n                      @textarea-value=\"(v) => (index.value = v)\"\n                      placeholder=\"key1\nkey2\"\n                      >Ключевые фразы</vsud-textarea\n                    >\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <vsud-textarea\n                      id=\"project-description\"\n                      placeholder=\"Любой текст\"\n                      :value=\"projectIn.value.description\"\n                      @textarea-value=\"(v) => (projectIn.value.description = v)\"\n                      rows=\"7\"\n                      >Комментарий к проекту</vsud-textarea\n                    >\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12 pb-3\">\n                    <label class=\"form-label\">Тип проекта</label>\n                    <select\n                      class=\"form-control\"\n                      name=\"choices-type-button\"\n                      id=\"choices-type\"\n                      placeholder=\"Выберите тип проекта\"\n                      v-model=\"projectIn.value.project_type_id\"\n                    >\n                      <option\n                        v-for=\"item in types.value\"\n                        :value=\"item.id\"\n                        :key=\"item.id\"\n                      >\n                        {{ item.name }}\n                      </option>\n                    </select>\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <label class=\"form-label\">Официальный вебсайт</label>\n                    <vsud-input\n                      id=\"project-site-url\"\n                      type=\"text\"\n                      placeholder=\"https://project.website/\"\n                      aria-label=\"project-site-url\"\n                      :isRequired=\"false\"\n                      :active=\"true\"\n                      :value=\"projectIn.value.website_url\"\n                      @input-value=\"(v) => (projectIn.value.website_url = v)\"\n                      :disabled=\"false\"\n                    />\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <label class=\"form-label d-flex\"\n                      ><twitter-icon class=\"mt-1 mr-1\" />Twitter</label\n                    >\n                    <vsud-input\n                      id=\"project-twitter\"\n                      type=\"text\"\n                      placeholder=\"https://twitter.com/xxxx\"\n                      aria-label=\"project-twitter\"\n                      :isRequired=\"false\"\n                      :active=\"true\"\n                      :value=\"projectIn.value.twitter\"\n                      @input-value=\"(v) => (projectIn.value.twitter = v)\"\n                      :disabled=\"false\"\n                    />\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <label class=\"form-label d-flex\"\n                      ><discord-icon class=\"mt-1 mr-1\" />Discord</label\n                    >\n                    <vsud-input\n                      id=\"project-discord\"\n                      type=\"text\"\n                      placeholder=\"https://discord.com/user/xxxx\"\n                      aria-label=\"project-discord\"\n                      :isRequired=\"false\"\n                      :active=\"true\"\n                      :value=\"projectIn.value.discord\"\n                      @input-value=\"(v) => (projectIn.value.discord = v)\"\n                      :disabled=\"false\"\n                    />\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <label class=\"form-label d-flex\"\n                      ><youtube-icon class=\"mt-1 mr-1\" />YouTube</label\n                    >\n                    <vsud-input\n                      id=\"project-youtube\"\n                      type=\"text\"\n                      placeholder=\"https://youtube.com/channel/xxxx\"\n                      aria-label=\"project-youtube\"\n                      :isRequired=\"false\"\n                      :active=\"true\"\n                      :value=\"projectIn.value.youtube\"\n                      @input-value=\"(v) => (projectIn.value.youtube = v)\"\n                      :disabled=\"false\"\n                    />\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <label class=\"form-label d-flex\"\n                      ><telegram-icon class=\"mt-1 mr-1\" />Telegram</label\n                    >\n                    <vsud-input\n                      id=\"project-telegram\"\n                      type=\"text\"\n                      placeholder=\"https://t.me/xxxx\"\n                      aria-label=\"project-telegram\"\n                      :isRequired=\"false\"\n                      :active=\"true\"\n                      :value=\"projectIn.value.telegram\"\n                      @input-value=\"(v) => (projectIn.value.telegram = v)\"\n                      :disabled=\"false\"\n                    />\n                  </div>\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-12\">\n                    <label class=\"form-label d-flex\"\n                      ><medium-icon class=\"mt-1 mr-1\" />Medium</label\n                    >\n                    <vsud-input\n                      id=\"project-medium\"\n                      type=\"text\"\n                      placeholder=\"https://medium.com/@xxxx\"\n                      aria-label=\"project-medium\"\n                      :isRequired=\"false\"\n                      :active=\"true\"\n                      :value=\"projectIn.value.medium\"\n                      @input-value=\"(v) => (projectIn.value.medium = v)\"\n                      :disabled=\"false\"\n                    />\n                  </div>\n                </div>\n\n                <div class=\"row mt-auto position-sticky top-100 pb-2\">\n                  <div class=\"col-12 d-flex\">\n                    <vsud-button\n                      class=\"my-4 mb-2 mr-2\"\n                      variant=\"outline\"\n                      color=\"active\"\n                      full-width\n                      @click=\"$router.go(-1)\"\n                      >Назад\n                    </vsud-button>\n                    <vsud-button\n                      class=\"my-4 mb-2 ml-2\"\n                      variant=\"gradient\"\n                      color=\"success\"\n                      full-width\n                      @click.prevent=\"sendData\"\n                      >Сохранить\n                    </vsud-button>\n                  </div>\n                </div>\n              </div>\n              <!-- -->\n              <div class=\"col-lg-6 mt-4 mt-lg-0\">\n                <div class=\"card bg-gradient-dark\">\n                  <div class=\"card-header bg-transparent pb-0\">\n                    <div class=\"mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4\">\n                      <a href=\"javascript:;\" @click=\"showAddBlockModal\">\n                        <place-holder-horisontal-card\n                          :title=\"{\n                            text: 'Добавить блок описания',\n                            variant: 'h6',\n                          }\"\n                        />\n                      </a>\n                    </div>\n\n                    <h6 class=\"text-white\">\n                      Настройка стадий развития проекта\n                    </h6>\n                  </div>\n                  <div class=\"card-body p-3\">\n                    <div\n                      class=\"timeline timeline-one-side\"\n                      data-timeline-axis-style=\"dashed\"\n                    >\n                      <div v-if=\"blocks.value.length\">\n                        <div\n                          class=\"timeline-block mb-3\"\n                          v-for=\"block in blocks.value\"\n                          :key=\"block.id\"\n                        >\n                          <span class=\"timeline-step bg-dark\">\n                            <i\n                              :class=\"\n                                getBlockIcon(block.stage) +\n                                ' text-' +\n                                getBlockColor(block.stage)\n                              \"\n                            ></i>\n                          </span>\n                          <div class=\"timeline-content\">\n                            <h6\n                              class=\"text-white text-sm font-weight-bold mb-0\"\n                            >\n                              {{ block.name }}\n                            </h6>\n                            <div class=\"float-right\">\n                              <button\n                                class=\"btn btn-link text-secondary\"\n                                data-bs-toggle=\"dropdown\"\n                                aria-expanded=\"true\"\n                                :id=\"'project-dropdown' + block.id\"\n                              >\n                                <i\n                                  class=\"fa fa-ellipsis-v text-xs\"\n                                  aria-hidden=\"true\"\n                                ></i>\n                              </button>\n                              <ul\n                                class=\"dropdown-menu px-2 py-3 ms-sm-n4 ms-n5\"\n                                :aria-labelledby=\"\n                                  'timeline-block-dropdown' + block.id\n                                \"\n                              >\n                                <li>\n                                  <a\n                                    class=\"dropdown-item border-radius-md\"\n                                    href=\"javascript:;\"\n                                    @click=\"\n                                      showEditBlockModal(\n                                        block.id,\n                                        block.stage,\n                                        block.name,\n                                        block.date,\n                                        block.description,\n                                        block.buttons\n                                      )\n                                    \"\n                                    >Изменить</a\n                                  >\n                                </li>\n                                <li>\n                                  <a\n                                    class=\"dropdown-item border-radius-md\"\n                                    href=\"javascript:;\"\n                                    @click=\"\n                                      confirm(\n                                        block.id,\n                                        'Удалить блок timeline?',\n                                        'Удаление этапа развития проекта'\n                                      )\n                                    \"\n                                    >Удалить</a\n                                  >\n                                </li>\n                              </ul>\n                            </div>\n\n                            <p class=\"text-white text-xs mt-1 mb-0\">\n                              {{ getPrintDate(block.date) }}\n                            </p>\n                            <p class=\"text-secondary text-sm mt-3 mb-2\">\n                              {{ block.description }}\n                            </p>\n                            <span\n                              class=\"badge badge-sm\"\n                              :class=\"\n                                'bg-gradient-' +\n                                blockTypes[block.stage - 1].color\n                              \"\n                              v-if=\"block.button1\"\n                              >{{ block.button1 }}</span\n                            >\n                            <span\n                              class=\"badge badge-sm ml-1\"\n                              :class=\"\n                                'bg-gradient-' +\n                                blockTypes[block.stage - 1].color\n                              \"\n                              v-if=\"block.button2\"\n                              >{{ block.button2 }}</span\n                            >\n                            <span\n                              class=\"badge badge-sm ml-1\"\n                              :class=\"\n                                'bg-gradient-' +\n                                blockTypes[block.stage - 1].color\n                              \"\n                              v-if=\"block.button3\"\n                              >{{ block.button3 }}</span\n                            >\n                            <span\n                              class=\"badge badge-sm ml-1\"\n                              :class=\"\n                                'bg-gradient-' +\n                                blockTypes[block.stage - 1].color\n                              \"\n                              v-if=\"block.button4\"\n                              >{{ block.button4 }}</span\n                            >\n                            <span\n                              class=\"badge badge-sm ml-1\"\n                              :class=\"\n                                'bg-gradient-' +\n                                blockTypes[block.stage - 1].color\n                              \"\n                              v-if=\"block.button5\"\n                              >{{ block.button5 }}</span\n                            >\n                          </div>\n                        </div>\n                      </div>\n                      <!-- far fa-baby-carriage -->\n                      <div v-else class=\"timeline-block mb-3\">\n                        <span class=\"timeline-step bg-dark\">\n                          <i class=\"fas fa-question text-secondary\"></i>\n                        </span>\n                        <div class=\"timeline-content\">\n                          <h6 class=\"text-white text-sm font-weight-bold mb-0\">\n                            Стадии проекта не описаны\n                          </h6>\n                          <p\n                            class=\"\n                              text-secondary\n                              font-weight-bold\n                              text-xs\n                              mt-1\n                              mb-0\n                            \"\n                          ></p>\n                          <p class=\"text-secondary text-sm mt-3 mb-2\">\n                            Отсутствует описание стадий развития проекта.\n                          </p>\n                          <button\n                            class=\"badge badge-sm bg-gradient-secondary\"\n                            @click=\"showAddBlockModal\"\n                          >\n                            Настроить timeline проекта\n                          </button>\n                        </div>\n                      </div>\n                    </div>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n  <!-- Modal -->\n  <div class=\"row\">\n    <div class=\"col-md-4\">\n      <add-project-block-modal\n        :project-id=\"projectId\"\n        :blockId=\"blockData.id\"\n        :blockType=\"blockData.type\"\n        :blockName=\"blockData.name\"\n        :blockDate=\"blockData.date\"\n        :blockText=\"blockData.text\"\n        :blockButtons=\"blockData.buttons\"\n        :action=\"blockData.do\"\n        :add-modal=\"addModal\"\n        :openModal=\"openModalStatus\"\n        @project-reload=\"projectReload\"\n      />\n    </div>\n  </div>\n</template>\n\n<script>\nimport ModerateProjectsTable from \"./components/ModerateProjectsTable\";\nimport VsudInput from \"@/components/VsudInput.vue\";\nimport VsudTextarea from \"@/components/VsudTextarea.vue\";\nimport VsudButton from \"@/components/VsudButton.vue\";\nimport VsudTimelineBlock from \"@/components/VsudTimelineBlock.vue\";\nimport getProjectTypes from \"@/assets/js/getProjectTypes.js\";\nimport getProjectData from \"@/assets/js/getProjectData.js\";\nimport getIndexesByProjectId from \"@/assets/js/getIndexes.js\";\nimport getProjectBlocks from \"@/assets/js/getProjectBlocks.js\";\nimport PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\nimport AddProjectBlockModal from \"@/components/modal/AddProjectBlockModal.vue\";\n\nimport TwitterIcon from \"@/components/Icon/Twitter\";\nimport TelegramIcon from \"@/components/Icon/Telegram\";\nimport DiscordIcon from \"@/components/Icon/Discord\";\nimport MediumIcon from \"@/components/Icon/Medium\";\nimport YoutubeIcon from \"@/components/Icon/Youtube\";\n\nimport confirmModal from \"@/components/modal/confirmModal.js\";\nimport { Modal } from \"bootstrap\";\nimport { ref } from \"vue\";\nimport { useRoute } from \"vue-router\";\n\nexport default {\n  name: \"edit-product\",\n  components: {\n    ModerateProjectsTable,\n    VsudInput,\n    VsudButton,\n    VsudTextarea,\n    VsudTimelineBlock,\n    getProjectTypes,\n    getProjectData,\n    getIndexesByProjectId,\n    getProjectBlocks,\n    TwitterIcon,\n    TelegramIcon,\n    DiscordIcon,\n    MediumIcon,\n    YoutubeIcon,\n    confirmModal,\n    PlaceHolderHorisontalCard,\n    AddProjectBlockModal,\n  },\n  mounted() {\n    this.addModal = new Modal(\n      document.getElementById(\"addProjectBlockModalMessage\")\n    );\n  },\n\n  data() {\n    return {\n      openModalStatus: false,\n      addModal: null,\n      blockTypes: globalBlockTypes,\n      confirmBlockDelete: false,\n      blockData: {\n        id: null,\n        type: null,\n        name: \"\",\n        date: \"\",\n        text: \"\",\n        do: \"add\",\n        buttons: \"\",\n      },\n    };\n  },\n\n  setup() {\n    const route = useRoute();\n    const projectId = route.params.productId;\n    const types = ref([]);\n    types.value = getProjectTypes();\n    const projectIn = ref([]);\n    projectIn.value = getProjectData(projectId);\n    const index = ref([]);\n    index.value = getIndexesByProjectId(projectId);\n    const blocks = ref([]);\n    blocks.value = getProjectBlocks(projectId);\n    return { projectId, types, projectIn, index, blocks };\n  },\n  methods: {\n    sendData() {\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\n        axios\n          .post(\"/api/edit-project/\"+this.projectId, {\n            name: this.projectIn.value.name,\n            type: this.projectIn.value.project_type_id,\n            url: this.projectIn.value.website_url,\n            twitter: this.projectIn.value.twitter,\n            discord: this.projectIn.value.discord,\n            youtube: this.projectIn.value.youtube,\n            telegram: this.projectIn.value.telegram,\n            medium: this.projectIn.value.medium,\n            description: this.projectIn.value.description,\n          })\n          .then((r) => {\n            this.$router.push({ name: \"Products\" });\n            //this.$router.go()\n            //this.$emit(\"socialsReload\");\n          })\n          .catch((err) => {\n            console.log(err.response);\n            this.registerError = \"Ошибка сохранения проекта\";\n            alert(this.registerError);\n          });\n      });\n    },\n    showBlockModal() {\n      console.log(this.openModalStatus);\n      this.openModalStatus = true;\n      this.addModal.show();\n      setTimeout(() => {\n        this.openModalStatus = false;\n      }, 500);\n    },\n    projectReload() {\n      this.blocks.value = getProjectBlocks(this.projectId);\n    },\n    getBlockIcon(id) {\n      return this.blockTypes[id - 1].icon;\n    },\n    getBlockColor(id) {\n      return this.blockTypes[id - 1].color;\n    },\n    setFullDateElement(dig) {\n      return dig < 10 ? `0${dig}` : dig;\n    },\n    getPrintDate(date) {\n      let tmpDate = new Date(date);\n      let day = this.setFullDateElement(tmpDate.getDate());\n      let month = this.setFullDateElement(tmpDate.getMonth() + 1);\n      let year = tmpDate.getFullYear();\n      return `${day}.${month}.${year}`;\n    },\n    confirm(id, title, text) {\n      this.confirmBlockDelete = confirmModal(id, title, text);\n    },\n    showAddBlockModal(id, type, name, date, text, buttons) {\n      this.blockData.id = null;\n      this.blockData.type = null;\n      this.blockData.name = null;\n      this.blockData.date = null;\n      this.blockData.text = null;\n      this.blockData.buttons = 'Пример';\n      this.blockData.do = \"add\";\n      this.showBlockModal();\n    },\n    showEditBlockModal(id, type, name, date, text, buttons) {\n      this.blockData.id = id;\n      this.blockData.type = type;\n      this.blockData.name = name;\n      this.blockData.date = date;\n      this.blockData.text = text;\n      this.blockData.buttons = buttons;\n      this.blockData.do = \"edit\";\n      this.showBlockModal();\n    },\n    deleteBlock(id) {\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\n        axios\n          .get(\"/api/delete-block/\" + id)\n          .then((r) => {\n            //this.$router.push({ name: \"Products\" });\n            //this.$router.go()\n            this.projectReload();\n          })\n          .catch((err) => {\n            console.log(err.response);\n            this.registerError = \"Ошибка сохранения удаления блока timeline\";\n            alert(this.registerError);\n          });\n      });\n    },\n  },\n  computed: {\n     projectType(value) {\n        this.project.type = value ? value : this.projectIn.value.project_type_id\n        console.log(1)\n        console.log(this.project.type)\n        return this.project.type\n     }\n  },\n  watch: {\n    confirmBlockDelete(newQuestion, oldQuestion) {\n      if (newQuestion) {\n        this.deleteBlock(newQuestion);\n      }\n    },\n  },\n};\n</script>\n<style scoped>\n.dropdown-menu,\n.dropend .dropdown-menu {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n</style>"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-b3b26694],\r\n.dropend .dropdown-menu[data-v-b3b26694] {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\n}\r\n", "",{"version":3,"sources":["webpack://./resources/js/views/EditProduct.vue"],"names":[],"mappings":";AA6rBA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\r\n  <div class=\"container-fluid my-3 py-3\">\r\n    <div class=\"row\">\r\n      <div class=\"col-lg-12 mb-lg-0 mb-4\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <h5>Настройки парсинга проекта</h5>\r\n          </div>\r\n          <div class=\"card-body pt-0\">\r\n            <div class=\"row\">\r\n              <div class=\"col-6\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-3\">\r\n                    <img :src=\"projectIn.value.logo_url\" class=\"m-2\" />\r\n                  </div>\r\n                  <div class=\"col-9\">\r\n                    <form\r\n                      action=\"/file-upload\"\r\n                      class=\"form-control dropzone\"\r\n                      id=\"dropzone\"\r\n                    >\r\n                      <div class=\"fallback\">\r\n                        <input name=\"file\" type=\"file\" multiple />\r\n                      </div>\r\n                    </form>\r\n                  </div>\r\n                </div>\r\n\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label\">Название</label>\r\n                    <vsud-input\r\n                      id=\"project-name\"\r\n                      type=\"text\"\r\n                      placeholder=\"Crypto Whitelist Pro\"\r\n                      aria-label=\"Name\"\r\n                      :isRequired=\"true\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.name\"\r\n                      :disabled=\"false\"\r\n                      @input-value=\"(v) => (projectIn.value.name = v)\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"project-keys\"\r\n                      :value=\"index.value\"\r\n                      @textarea-value=\"(v) => (index.value = v)\"\r\n                      placeholder=\"key1\r\nkey2\"\r\n                      >Ключевые фразы</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"project-description\"\r\n                      placeholder=\"Любой текст\"\r\n                      :value=\"projectIn.value.description\"\r\n                      @textarea-value=\"(v) => (projectIn.value.description = v)\"\r\n                      rows=\"7\"\r\n                      >Комментарий к проекту</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12 pb-3\">\r\n                    <label class=\"form-label\">Тип проекта</label>\r\n                    <select\r\n                      class=\"form-control\"\r\n                      name=\"choices-type-button\"\r\n                      id=\"choices-type\"\r\n                      placeholder=\"Выберите тип проекта\"\r\n                      v-model=\"projectIn.value.project_type_id\"\r\n                    >\r\n                      <option\r\n                        v-for=\"item in types.value\"\r\n                        :value=\"item.id\"\r\n                        :key=\"item.id\"\r\n                      >\r\n                        {{ item.name }}\r\n                      </option>\r\n                    </select>\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label\">Официальный вебсайт</label>\r\n                    <vsud-input\r\n                      id=\"project-site-url\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://project.website/\"\r\n                      aria-label=\"project-site-url\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.website_url\"\r\n                      @input-value=\"(v) => (projectIn.value.website_url = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><twitter-icon class=\"mt-1 mr-1\" />Twitter</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-twitter\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://twitter.com/xxxx\"\r\n                      aria-label=\"project-twitter\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.twitter\"\r\n                      @input-value=\"(v) => (projectIn.value.twitter = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><discord-icon class=\"mt-1 mr-1\" />Discord</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-discord\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://discord.com/user/xxxx\"\r\n                      aria-label=\"project-discord\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.discord\"\r\n                      @input-value=\"(v) => (projectIn.value.discord = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><youtube-icon class=\"mt-1 mr-1\" />YouTube</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-youtube\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://youtube.com/channel/xxxx\"\r\n                      aria-label=\"project-youtube\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.youtube\"\r\n                      @input-value=\"(v) => (projectIn.value.youtube = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><telegram-icon class=\"mt-1 mr-1\" />Telegram</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-telegram\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://t.me/xxxx\"\r\n                      aria-label=\"project-telegram\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.telegram\"\r\n                      @input-value=\"(v) => (projectIn.value.telegram = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><medium-icon class=\"mt-1 mr-1\" />Medium</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-medium\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://medium.com/@xxxx\"\r\n                      aria-label=\"project-medium\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.medium\"\r\n                      @input-value=\"(v) => (projectIn.value.medium = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n\r\n                <div class=\"row mt-auto position-sticky top-100 pb-2\">\r\n                  <div class=\"col-12 d-flex\">\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 mr-2\"\r\n                      variant=\"outline\"\r\n                      color=\"active\"\r\n                      full-width\r\n                      @click=\"$router.go(-1)\"\r\n                      >Назад\r\n                    </vsud-button>\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 ml-2\"\r\n                      variant=\"gradient\"\r\n                      color=\"success\"\r\n                      full-width\r\n                      @click.prevent=\"sendData\"\r\n                      >Сохранить\r\n                    </vsud-button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <!-- -->\r\n              <div class=\"col-lg-6 mt-4 mt-lg-0\">\r\n                <div class=\"card bg-gradient-dark\">\r\n                  <div class=\"card-header bg-transparent pb-0\">\r\n                    <div class=\"mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4\">\r\n                      <a href=\"javascript:;\" @click=\"showAddBlockModal\">\r\n                        <place-holder-horisontal-card\r\n                          :title=\"{\r\n                            text: 'Добавить блок описания',\r\n                            variant: 'h6',\r\n                          }\"\r\n                        />\r\n                      </a>\r\n                    </div>\r\n\r\n                    <h6 class=\"text-white\">\r\n                      Настройка стадий развития проекта\r\n                    </h6>\r\n                  </div>\r\n                  <div class=\"card-body p-3\">\r\n                    <div\r\n                      class=\"timeline timeline-one-side\"\r\n                      data-timeline-axis-style=\"dashed\"\r\n                    >\r\n                      <div v-if=\"blocks.value.length\">\r\n                        <div\r\n                          class=\"timeline-block mb-3\"\r\n                          v-for=\"block in blocks.value\"\r\n                          :key=\"block.id\"\r\n                        >\r\n                          <span class=\"timeline-step bg-dark\">\r\n                            <i\r\n                              :class=\"\r\n                                getBlockIcon(block.stage) +\r\n                                ' text-' +\r\n                                getBlockColor(block.stage)\r\n                              \"\r\n                            ></i>\r\n                          </span>\r\n                          <div class=\"timeline-content\">\r\n                            <h6\r\n                              class=\"text-white text-sm font-weight-bold mb-0\"\r\n                            >\r\n                              {{ block.name }}\r\n                            </h6>\r\n                            <div class=\"float-right\">\r\n                              <button\r\n                                class=\"btn btn-link text-secondary\"\r\n                                data-bs-toggle=\"dropdown\"\r\n                                aria-expanded=\"true\"\r\n                                :id=\"'project-dropdown' + block.id\"\r\n                              >\r\n                                <i\r\n                                  class=\"fa fa-ellipsis-v text-xs\"\r\n                                  aria-hidden=\"true\"\r\n                                ></i>\r\n                              </button>\r\n                              <ul\r\n                                class=\"dropdown-menu px-2 py-3 ms-sm-n4 ms-n5\"\r\n                                :aria-labelledby=\"\r\n                                  'timeline-block-dropdown' + block.id\r\n                                \"\r\n                              >\r\n                                <li>\r\n                                  <a\r\n                                    class=\"dropdown-item border-radius-md\"\r\n                                    href=\"javascript:;\"\r\n                                    @click=\"\r\n                                      showEditBlockModal(\r\n                                        block.id,\r\n                                        block.stage,\r\n                                        block.name,\r\n                                        block.date,\r\n                                        block.description,\r\n                                        block.buttons\r\n                                      )\r\n                                    \"\r\n                                    >Изменить</a\r\n                                  >\r\n                                </li>\r\n                                <li>\r\n                                  <a\r\n                                    class=\"dropdown-item border-radius-md\"\r\n                                    href=\"javascript:;\"\r\n                                    @click=\"\r\n                                      confirm(\r\n                                        block.id,\r\n                                        'Удалить блок timeline?',\r\n                                        'Удаление этапа развития проекта'\r\n                                      )\r\n                                    \"\r\n                                    >Удалить</a\r\n                                  >\r\n                                </li>\r\n                              </ul>\r\n                            </div>\r\n\r\n                            <p class=\"text-white text-xs mt-1 mb-0\">\r\n                              {{ getPrintDate(block.date) }}\r\n                            </p>\r\n                            <p class=\"text-secondary text-sm mt-3 mb-2\">\r\n                              {{ block.description }}\r\n                            </p>\r\n                            <span\r\n                              class=\"badge badge-sm\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button1\"\r\n                              >{{ block.button1 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button2\"\r\n                              >{{ block.button2 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button3\"\r\n                              >{{ block.button3 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button4\"\r\n                              >{{ block.button4 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button5\"\r\n                              >{{ block.button5 }}</span\r\n                            >\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                      <!-- far fa-baby-carriage -->\r\n                      <div v-else class=\"timeline-block mb-3\">\r\n                        <span class=\"timeline-step bg-dark\">\r\n                          <i class=\"fas fa-question text-secondary\"></i>\r\n                        </span>\r\n                        <div class=\"timeline-content\">\r\n                          <h6 class=\"text-white text-sm font-weight-bold mb-0\">\r\n                            Стадии проекта не описаны\r\n                          </h6>\r\n                          <p\r\n                            class=\"\r\n                              text-secondary\r\n                              font-weight-bold\r\n                              text-xs\r\n                              mt-1\r\n                              mb-0\r\n                            \"\r\n                          ></p>\r\n                          <p class=\"text-secondary text-sm mt-3 mb-2\">\r\n                            Отсутствует описание стадий развития проекта.\r\n                          </p>\r\n                          <button\r\n                            class=\"badge badge-sm bg-gradient-secondary\"\r\n                            @click=\"showAddBlockModal\"\r\n                          >\r\n                            Настроить timeline проекта\r\n                          </button>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <!-- Modal -->\r\n  <div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n      <add-project-block-modal\r\n        :project-id=\"projectId\"\r\n        :blockId=\"blockData.id\"\r\n        :blockType=\"blockData.type\"\r\n        :blockName=\"blockData.name\"\r\n        :blockDate=\"blockData.date\"\r\n        :blockText=\"blockData.text\"\r\n        :blockButtons=\"blockData.buttons\"\r\n        :action=\"blockData.do\"\r\n        :add-modal=\"addModal\"\r\n        :openModal=\"openModalStatus\"\r\n        @project-reload=\"projectReload\"\r\n      />\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport ModerateProjectsTable from \"./components/ModerateProjectsTable\";\r\nimport VsudInput from \"@/components/VsudInput.vue\";\r\nimport VsudTextarea from \"@/components/VsudTextarea.vue\";\r\nimport VsudButton from \"@/components/VsudButton.vue\";\r\nimport VsudTimelineBlock from \"@/components/VsudTimelineBlock.vue\";\r\nimport getProjectTypes from \"@/assets/js/getProjectTypes.js\";\r\nimport getProjectData from \"@/assets/js/getProjectData.js\";\r\nimport getIndexesByProjectId from \"@/assets/js/getIndexes.js\";\r\nimport getProjectBlocks from \"@/assets/js/getProjectBlocks.js\";\r\nimport PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\r\nimport AddProjectBlockModal from \"@/components/modal/AddProjectBlockModal.vue\";\r\n\r\nimport TwitterIcon from \"@/components/Icon/Twitter\";\r\nimport TelegramIcon from \"@/components/Icon/Telegram\";\r\nimport DiscordIcon from \"@/components/Icon/Discord\";\r\nimport MediumIcon from \"@/components/Icon/Medium\";\r\nimport YoutubeIcon from \"@/components/Icon/Youtube\";\r\n\r\nimport { Dropzone } from \"dropzone\";\r\n\r\nimport confirmModal from \"@/components/modal/confirmModal.js\";\r\nimport { Modal } from \"bootstrap\";\r\nimport { ref } from \"vue\";\r\nimport { useRoute } from \"vue-router\";\r\n\r\nexport default {\r\n  name: \"edit-product\",\r\n  components: {\r\n    ModerateProjectsTable,\r\n    VsudInput,\r\n    VsudButton,\r\n    VsudTextarea,\r\n    VsudTimelineBlock,\r\n    getProjectTypes,\r\n    getProjectData,\r\n    getIndexesByProjectId,\r\n    getProjectBlocks,\r\n    TwitterIcon,\r\n    TelegramIcon,\r\n    DiscordIcon,\r\n    MediumIcon,\r\n    YoutubeIcon,\r\n    confirmModal,\r\n    PlaceHolderHorisontalCard,\r\n    AddProjectBlockModal,\r\n  },\r\n  mounted() {\r\n    this.addModal = new Modal(\r\n      document.getElementById(\"addProjectBlockModalMessage\")\r\n    );\r\n    //window.token = localStorage.getItem(\"x_xsrf_token\");\r\n    this.pathLogo = this.projectIn.value.logo_url;\r\n    const token = this.getCookie(\"XSRF-TOKEN\");\r\n    /*if (typeof Dropzone !== \"undefined\") {\r\n      Dropzone.forElement(\"dropzone\").removeAllFiles(true);\r\n    }*/\r\n    Dropzone.autoDiscover = false;\r\n    try {\r\n      Dropzone.forElement(\"dropzone\").removeAllFiles(true);\r\n    } catch {}\r\n\r\n    let drop = document.getElementById(\"dropzone\");\r\n    let myDropzone = new Dropzone(drop, {\r\n      url: \"/api/upload-project-logo/\" + this.projectId,\r\n      addRemoveLinks: true,\r\n      uploadMultiple: false,\r\n      maxFilesize: 2,\r\n      dictDefaultMessage: \"Перетащите сюда файл изображения. Макс. 2 МБ.\",\r\n      dictFileTooBig: \"Файл слишком большой!\",\r\n      dictInvalidFileType: \"Поддерживатся только .jpg и .png\",\r\n      dictCancelUpload: \"Отменить загрузку\",\r\n      dictUploadCanceled: \"Загрузка отменена\",\r\n      dictRemoveFile: \"Удалить файл\",\r\n      maxFiles: 1,\r\n      acceptedFiles: `.jpg,.png`,\r\n      resizeHeight: 128,\r\n      withCredentials: true,\r\n      dictResponseError: \"Ошибка загрузки изображения\",\r\n      headers: {\r\n        \"X-XSRF-TOKEN\": decodeURIComponent(token),\r\n      },\r\n      sending() {\r\n        const setCookie = (name, value, days) => {\r\n          var expires = \"\";\r\n          if (days) {\r\n            var date = new Date();\r\n            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);\r\n            expires = \"; expires=\" + date.toUTCString();\r\n          }\r\n          document.cookie = name + \"=\" + (value || \"\") + expires + \"; path=/\";\r\n        };\r\n        setCookie(\"XSRF-TOKEN\", token, 1);\r\n      },\r\n      success: (file, response) => {\r\n         this.projectIn.value.logo_url = response;\r\n      }  \r\n    });\r\n    //this.token = localStorage.getItem(\"x_xsrf_token\");\r\n  },\r\n\r\n  data() {\r\n    return {\r\n      openModalStatus: false,\r\n      addModal: null,\r\n      blockTypes: globalBlockTypes,\r\n      confirmBlockDelete: false,\r\n      blockData: {\r\n        id: null,\r\n        type: null,\r\n        name: \"\",\r\n        date: \"\",\r\n        text: \"\",\r\n        do: \"add\",\r\n        buttons: \"\",\r\n      },\r\n      token: null,\r\n    };\r\n  },\r\n\r\n  setup() {\r\n    const route = useRoute();\r\n    const projectId = route.params.productId;\r\n    const types = ref([]);\r\n    types.value = getProjectTypes();\r\n    const projectIn = ref([]);\r\n    projectIn.value = getProjectData(projectId);\r\n    const index = ref([]);\r\n    index.value = getIndexesByProjectId(projectId);\r\n    const blocks = ref([]);\r\n    blocks.value = getProjectBlocks(projectId);\r\n    return { projectId, types, projectIn, index, blocks };\r\n  },\r\n  methods: {\r\n    setCookie(name, value, days) {\r\n      var expires = \"\";\r\n      if (days) {\r\n        var date = new Date();\r\n        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);\r\n        expires = \"; expires=\" + date.toUTCString();\r\n      }\r\n      document.cookie = name + \"=\" + (value || \"\") + expires + \"; path=/\";\r\n    },\r\n    getCookie(cname) {\r\n      let name = cname + \"=\";\r\n      let ca = document.cookie.split(\";\");\r\n      for (let i = 0; i < ca.length; i++) {\r\n        let c = ca[i];\r\n        while (c.charAt(0) == \" \") {\r\n          c = c.substring(1);\r\n        }\r\n        if (c.indexOf(name) == 0) {\r\n          return c.substring(name.length, c.length);\r\n        }\r\n      }\r\n      return \"\";\r\n    },\r\n    eraseCookie(name) {\r\n      document.cookie =\r\n        name + \"=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;\";\r\n    },\r\n    sendData() {\r\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\r\n        axios\r\n          .post(\"/api/edit-project/\" + this.projectId, {\r\n            name: this.projectIn.value.name,\r\n            type: this.projectIn.value.project_type_id,\r\n            url: this.projectIn.value.website_url,\r\n            twitter: this.projectIn.value.twitter,\r\n            discord: this.projectIn.value.discord,\r\n            youtube: this.projectIn.value.youtube,\r\n            telegram: this.projectIn.value.telegram,\r\n            medium: this.projectIn.value.medium,\r\n            description: this.projectIn.value.description,\r\n          })\r\n          .then((r) => {\r\n            this.$router.push({ name: \"Products\" });\r\n            //this.$router.go()\r\n            //this.$emit(\"socialsReload\");\r\n          })\r\n          .catch((err) => {\r\n            console.log(err.response);\r\n            this.registerError = \"Ошибка сохранения проекта\";\r\n            alert(this.registerError);\r\n          });\r\n      });\r\n    },\r\n    showBlockModal() {\r\n      this.openModalStatus = true;\r\n      this.addModal.show();\r\n      setTimeout(() => {\r\n        this.openModalStatus = false;\r\n      }, 500);\r\n    },\r\n    projectReload() {\r\n      this.blocks.value = getProjectBlocks(this.projectId);\r\n    },\r\n    getBlockIcon(id) {\r\n      return this.blockTypes[id - 1].icon;\r\n    },\r\n    getBlockColor(id) {\r\n      return this.blockTypes[id - 1].color;\r\n    },\r\n    setFullDateElement(dig) {\r\n      return dig < 10 ? `0${dig}` : dig;\r\n    },\r\n    getPrintDate(date) {\r\n      let tmpDate = new Date(date);\r\n      let day = this.setFullDateElement(tmpDate.getDate());\r\n      let month = this.setFullDateElement(tmpDate.getMonth() + 1);\r\n      let year = tmpDate.getFullYear();\r\n      return `${day}.${month}.${year}`;\r\n    },\r\n    confirm(id, title, text) {\r\n      this.confirmBlockDelete = confirmModal(id, title, text);\r\n    },\r\n    showAddBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = null;\r\n      this.blockData.type = null;\r\n      this.blockData.name = null;\r\n      this.blockData.date = null;\r\n      this.blockData.text = null;\r\n      this.blockData.buttons = \"Пример\";\r\n      this.blockData.do = \"add\";\r\n      this.showBlockModal();\r\n    },\r\n    showEditBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = id;\r\n      this.blockData.type = type;\r\n      this.blockData.name = name;\r\n      this.blockData.date = date;\r\n      this.blockData.text = text;\r\n      this.blockData.buttons = buttons;\r\n      this.blockData.do = \"edit\";\r\n      this.showBlockModal();\r\n    },\r\n    deleteBlock(id) {\r\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\r\n        axios\r\n          .get(\"/api/delete-block/\" + id)\r\n          .then((r) => {\r\n            //this.$router.push({ name: \"Products\" });\r\n            //this.$router.go()\r\n            this.projectReload();\r\n          })\r\n          .catch((err) => {\r\n            console.log(err.response);\r\n            this.registerError = \"Ошибка сохранения удаления блока timeline\";\r\n            alert(this.registerError);\r\n          });\r\n      });\r\n    },\r\n  },\r\n  computed: {\r\n    tokenC() {\r\n      this.setCookie(\"XSRF-TOKEN\", \"888888\", 1);\r\n      return this.token;\r\n    },\r\n    /*projectType(value) {\r\n      this.project.type = value ? value : this.projectIn.value.project_type_id;\r\n      console.log(1);\r\n      console.log(this.project.type);\r\n      return this.project.type;\r\n    },*/\r\n  },\r\n  watch: {\r\n    confirmBlockDelete(newQuestion, oldQuestion) {\r\n      if (newQuestion) {\r\n        this.deleteBlock(newQuestion);\r\n      }\r\n    },\r\n  },\r\n};\r\n</script>\r\n<style scoped>\r\n.dropdown-menu,\r\n.dropend .dropdown-menu {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\r\n}\r\n</style>"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9974,6 +10100,95 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-a9d8c052],\n.dropend .dropdown-menu[data-v-a9d8c052] {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/components/ModerateProjectsTable.vue"],"names":[],"mappings":";AAkTA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\n  <div class=\"mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4\">\n    <router-link :to=\"{ name: 'Add Product' }\">\n      <place-holder-horisontal-card\n        :title=\"{ text: 'Добавить проект', variant: 'h6' }\"\n      />\n    </router-link>\n  </div>\n\n  <div class=\"card mb-4\">\n    <div class=\"card-header pb-0\">\n      <h6>Криптопроекты</h6>\n    </div>\n    <div class=\"card-body px-0 pt-0 pb-2\">\n      <div class=\"row\" v-if=\"is_liveSearch\">\n        <div class=\"col-6\">\n          <label class=\"form-label pl-3\">Поиск проекта</label>\n          <div class=\"input-group pl-3\">\n            <input\n              id=\"liveSearchReferers\"\n              name=\"liveSearchReferers\"\n              class=\"form-control\"\n              type=\"text\"\n              placeholder=\"начните что-то писать...\"\n              v-model=\"searchTerm\"\n            />\n          </div>\n        </div>\n      </div>\n\n      <div class=\"table-responsive p-0\">\n        <table class=\"table align-items-center justify-content-center mb-0\">\n          <thead>\n            <tr>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                \"\n              >\n                Проект\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Рейтинг\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Пользовательский интерес\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Соцсети\n              </th>\n              <th></th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for=\"item in table.list\" :key=\"item\">\n              <td>\n                <div class=\"d-flex px-2\">\n                  <div>\n                    <img\n                      :src=\"item.logo_url\"\n                      class=\"avatar avatar-sm rounded-circle me-2\"\n                      alt=\"spotify\"\n                      v-if=\"item.logo_url\"\n                    />\n                  </div>\n                  <div class=\"my-auto d-flex\">\n                    <h6 class=\"mb-0 text-sm\">\n                      {{ item.name }}\n                      <a\n                        :href=\"item.website_url\"\n                        traget=\"_blank\"\n                        :title=\"item.website_name\"\n                        ><i class=\"fas fa-link ml-2\" v-if=\"item.website_url\"></i\n                      ></a>\n                    </h6>\n                  </div>\n                </div>\n              </td>\n              <td class=\"align-middle text-center\">\n                <div class=\"d-flex align-items-center justify-content-center\">\n                  <span class=\"me-2 text-xs font-weight-bold\"\n                    >{{ item.rating }}%</span\n                  >\n                  <div>\n                    <vsud-progress-plus\n                      variant=\"gradient\"\n                      :percentage=\"item.rating\"\n                    />\n                  </div>\n                </div>\n              </td>\n              <td class=\"align-middle text-center\">\n                <p class=\"text-sm font-weight-bold mb-0\">\n                  {{ item.num_tg_users }}\n                </p>\n              </td>\n              <td class=\"align-middle text-center\">\n                <div class=\"inline-flex\">\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.twitter\"\n                    v-if=\"item.twitter\"\n                  >\n                    <twitter-icon size=\"18px\"></twitter-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.discord\"\n                    v-if=\"item.discord\"\n                  >\n                    <discord-icon size=\"18px\" class=\"ml-2\"></discord-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.youtube\"\n                    v-if=\"item.youtube\"\n                  >\n                    <youtube-icon size=\"18px\" class=\"ml-2\"></youtube-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.telegram\"\n                    v-if=\"item.telegram\"\n                  >\n                    <telegram-icon size=\"18px\" class=\"ml-2\"></telegram-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.medium\"\n                    v-if=\"item.medium\"\n                  >\n                    <medium-icon size=\"18px\" class=\"ml-2\"></medium-icon>\n                  </a>\n                </div>\n              </td>\n              <td class=\"align-middle\">\n                <button\n                  class=\"btn btn-link text-secondary mb-0\"\n                  v-if=\"is_liveSearch\"\n                  data-bs-toggle=\"dropdown\"\n                  aria-expanded=\"true\"\n                  :id=\"'project-dropdown' + item.id\"\n                >\n                  <i class=\"fa fa-ellipsis-v text-xs\" aria-hidden=\"true\"></i>\n                </button>\n                <ul\n                  class=\"dropdown-menu px-2 py-3 ms-sm-n4 ms-n5\"\n                  :aria-labelledby=\"'project-dropdown' + item.id\"\n                  style=\"\"\n                >\n                  <li>\n                    <router-link\n                      class=\"dropdown-item border-radius-md\"\n                      :to=\"{\n                        name: 'Edit Product',\n                        params: { productId: item.id },\n                      }\"\n                      >Настроить</router-link\n                    >\n                  </li>\n                  <li>\n                    <a\n                      class=\"dropdown-item border-radius-md\"\n                      href=\"javascript:;\"\n                      >Изменить ключи</a\n                    >\n                  </li>\n                  <li>\n                    <a\n                      class=\"dropdown-item border-radius-md\"\n                      href=\"javascript:;\"\n                      >Удалить</a\n                    >\n                  </li>\n                </ul>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</template>\n\n<script>\nimport VsudProgressPlus from \"../../components/VsudProgressPlus\";\nimport TwitterIcon from \"@/components/Icon/Twitter\";\nimport TelegramIcon from \"@/components/Icon/Telegram\";\nimport DiscordIcon from \"@/components/Icon/Discord\";\nimport MediumIcon from \"@/components/Icon/Medium\";\nimport YoutubeIcon from \"@/components/Icon/Youtube\";\nimport PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\n\nimport { reactive, ref, computed, watch } from \"vue\";\nimport { FontAwesomeIcon } from \"@fortawesome/vue-fontawesome\";\n\nexport default {\n  name: \"moderate-projects-table\",\n  components: {\n    VsudProgressPlus,\n    TwitterIcon,\n    TelegramIcon,\n    DiscordIcon,\n    MediumIcon,\n    YoutubeIcon,\n    FontAwesomeIcon,\n    PlaceHolderHorisontalCard,\n  },\n  props: {\n    is_liveSearch: {\n      type: Boolean,\n      default: true,\n    },\n    top: {\n      type: Number,\n      default: 0,\n    },\n  },\n  setup(props) {\n    const searchTerm = ref(\"\"); // Search text\n    // Fake data\n\n    const data = reactive({\n      rows: [],\n    });\n    /**\n     * Get server data request\n     */\n    const myRequest = (keyword) => {\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\n        axios\n          .post(\"/api/get-projects/\" + props.top, {\n            filter: keyword,\n          })\n          .then((r) => {\n            console.log(r.data);\n            data.rows = r.data;\n            //this.$emit(\"accountsReload\");\n          })\n          .catch((err) => {\n            console.log(\"Fetch error\", err.response);\n            const registerError =\n              \"Неизвестная ошибка при полученнии списка проектов\";\n            alert(registerError);\n          });\n      });\n    };\n\n    const table = reactive({\n      list: computed(() => {\n        return data.rows;\n      }),\n      totalRecordCount: computed(() => {\n        return data.rows.length;\n      }),\n    });\n    if (props.is_liveSearch) {\n      watch(\n        () => searchTerm.value,\n        (val) => {\n          myRequest(val);\n        }\n      );\n    }\n    // Get data on first rendering\n    myRequest(\"\");\n    console.log(table);\n    return {\n      searchTerm,\n      table,\n    };\n  },\n};\n</script>\n<style scoped>\n.dropdown-menu,\n.dropend .dropdown-menu {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n</style>\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/just-extend/index.esm.js":
+/*!***********************************************!*\
+  !*** ./node_modules/just-extend/index.esm.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ objectExtend)
+/* harmony export */ });
+var objectExtend = extend;
+
+/*
+  var obj = {a: 3, b: 5};
+  extend(obj, {a: 4, c: 8}); // {a: 4, b: 5, c: 8}
+  obj; // {a: 4, b: 5, c: 8}
+
+  var obj = {a: 3, b: 5};
+  extend({}, obj, {a: 4, c: 8}); // {a: 4, b: 5, c: 8}
+  obj; // {a: 3, b: 5}
+
+  var arr = [1, 2, 3];
+  var obj = {a: 3, b: 5};
+  extend(obj, {c: arr}); // {a: 3, b: 5, c: [1, 2, 3]}
+  arr.push(4);
+  obj; // {a: 3, b: 5, c: [1, 2, 3, 4]}
+
+  var arr = [1, 2, 3];
+  var obj = {a: 3, b: 5};
+  extend(true, obj, {c: arr}); // {a: 3, b: 5, c: [1, 2, 3]}
+  arr.push(4);
+  obj; // {a: 3, b: 5, c: [1, 2, 3]}
+
+  extend({a: 4, b: 5}); // {a: 4, b: 5}
+  extend({a: 4, b: 5}, 3); {a: 4, b: 5}
+  extend({a: 4, b: 5}, true); {a: 4, b: 5}
+  extend('hello', {a: 4, b: 5}); // throws
+  extend(3, {a: 4, b: 5}); // throws
+*/
+
+function extend(/* [deep], obj1, obj2, [objn] */) {
+  var args = [].slice.call(arguments);
+  var deep = false;
+  if (typeof args[0] == 'boolean') {
+    deep = args.shift();
+  }
+  var result = args[0];
+  if (isUnextendable(result)) {
+    throw new Error('extendee must be an object');
+  }
+  var extenders = args.slice(1);
+  var len = extenders.length;
+  for (var i = 0; i < len; i++) {
+    var extender = extenders[i];
+    for (var key in extender) {
+      if (Object.prototype.hasOwnProperty.call(extender, key)) {
+        var value = extender[key];
+        if (deep && isCloneable(value)) {
+          var base = Array.isArray(value) ? [] : {};
+          result[key] = extend(
+            true,
+            Object.prototype.hasOwnProperty.call(result, key) && !isUnextendable(result[key])
+              ? result[key]
+              : base,
+            value
+          );
+        } else {
+          result[key] = value;
+        }
+      }
+    }
+  }
+  return result;
+}
+
+function isCloneable(obj) {
+  return Array.isArray(obj) || {}.toString.call(obj) == '[object Object]';
+}
+
+function isUnextendable(val) {
+  return !val || (typeof val != 'object' && typeof val != 'function');
+}
+
+
 
 
 /***/ }),
@@ -14392,6 +14607,2134 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_10_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_10_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ModerateProjectsTable_vue_vue_type_style_index_0_id_a9d8c052_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-10.use[1]!../../../../node_modules/vue-loader/dist/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-10.use[2]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ModerateProjectsTable.vue?vue&type=style&index=0&id=a9d8c052&scoped=true&lang=css */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-10.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-10.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/components/ModerateProjectsTable.vue?vue&type=style&index=0&id=a9d8c052&scoped=true&lang=css");
+
+
+/***/ }),
+
+/***/ "./node_modules/dropzone/dist/dropzone.mjs":
+/*!*************************************************!*\
+  !*** ./node_modules/dropzone/dist/dropzone.mjs ***!
+  \*************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ $3ed269f2f0fb224b$export$2e2bcd8739ae039),
+/* harmony export */   "Dropzone": () => (/* binding */ $3ed269f2f0fb224b$export$2e2bcd8739ae039)
+/* harmony export */ });
+/* harmony import */ var just_extend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! just-extend */ "./node_modules/just-extend/index.esm.js");
+
+
+function $parcel$interopDefault(a) {
+  return a && a.__esModule ? a.default : a;
+}
+
+class $4040acfd8584338d$export$2e2bcd8739ae039 {
+    // Add an event listener for given event
+    on(event, fn) {
+        this._callbacks = this._callbacks || {
+        };
+        // Create namespace for this event
+        if (!this._callbacks[event]) this._callbacks[event] = [];
+        this._callbacks[event].push(fn);
+        return this;
+    }
+    emit(event, ...args) {
+        this._callbacks = this._callbacks || {
+        };
+        let callbacks = this._callbacks[event];
+        if (callbacks) for (let callback of callbacks)callback.apply(this, args);
+        // trigger a corresponding DOM event
+        if (this.element) this.element.dispatchEvent(this.makeEvent("dropzone:" + event, {
+            args: args
+        }));
+        return this;
+    }
+    makeEvent(eventName, detail) {
+        let params = {
+            bubbles: true,
+            cancelable: true,
+            detail: detail
+        };
+        if (typeof window.CustomEvent === "function") return new CustomEvent(eventName, params);
+        else {
+            // IE 11 support
+            // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+            var evt = document.createEvent("CustomEvent");
+            evt.initCustomEvent(eventName, params.bubbles, params.cancelable, params.detail);
+            return evt;
+        }
+    }
+    // Remove event listener for given event. If fn is not provided, all event
+    // listeners for that event will be removed. If neither is provided, all
+    // event listeners will be removed.
+    off(event, fn) {
+        if (!this._callbacks || arguments.length === 0) {
+            this._callbacks = {
+            };
+            return this;
+        }
+        // specific event
+        let callbacks = this._callbacks[event];
+        if (!callbacks) return this;
+        // remove all handlers
+        if (arguments.length === 1) {
+            delete this._callbacks[event];
+            return this;
+        }
+        // remove specific handler
+        for(let i = 0; i < callbacks.length; i++){
+            let callback = callbacks[i];
+            if (callback === fn) {
+                callbacks.splice(i, 1);
+                break;
+            }
+        }
+        return this;
+    }
+}
+
+
+
+var $fd6031f88dce2e32$exports = {};
+$fd6031f88dce2e32$exports = "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail=\"\"></div>\n  <div class=\"dz-details\">\n    <div class=\"dz-size\"><span data-dz-size=\"\"></span></div>\n    <div class=\"dz-filename\"><span data-dz-name=\"\"></span></div>\n  </div>\n  <div class=\"dz-progress\">\n    <span class=\"dz-upload\" data-dz-uploadprogress=\"\"></span>\n  </div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage=\"\"></span></div>\n  <div class=\"dz-success-mark\">\n    <svg width=\"54\" height=\"54\" viewBox=\"0 0 54 54\" fill=\"white\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M10.2071 29.7929L14.2929 25.7071C14.6834 25.3166 15.3166 25.3166 15.7071 25.7071L21.2929 31.2929C21.6834 31.6834 22.3166 31.6834 22.7071 31.2929L38.2929 15.7071C38.6834 15.3166 39.3166 15.3166 39.7071 15.7071L43.7929 19.7929C44.1834 20.1834 44.1834 20.8166 43.7929 21.2071L22.7071 42.2929C22.3166 42.6834 21.6834 42.6834 21.2929 42.2929L10.2071 31.2071C9.81658 30.8166 9.81658 30.1834 10.2071 29.7929Z\"></path>\n    </svg>\n  </div>\n  <div class=\"dz-error-mark\">\n    <svg width=\"54\" height=\"54\" viewBox=\"0 0 54 54\" fill=\"white\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M26.2929 20.2929L19.2071 13.2071C18.8166 12.8166 18.1834 12.8166 17.7929 13.2071L13.2071 17.7929C12.8166 18.1834 12.8166 18.8166 13.2071 19.2071L20.2929 26.2929C20.6834 26.6834 20.6834 27.3166 20.2929 27.7071L13.2071 34.7929C12.8166 35.1834 12.8166 35.8166 13.2071 36.2071L17.7929 40.7929C18.1834 41.1834 18.8166 41.1834 19.2071 40.7929L26.2929 33.7071C26.6834 33.3166 27.3166 33.3166 27.7071 33.7071L34.7929 40.7929C35.1834 41.1834 35.8166 41.1834 36.2071 40.7929L40.7929 36.2071C41.1834 35.8166 41.1834 35.1834 40.7929 34.7929L33.7071 27.7071C33.3166 27.3166 33.3166 26.6834 33.7071 26.2929L40.7929 19.2071C41.1834 18.8166 41.1834 18.1834 40.7929 17.7929L36.2071 13.2071C35.8166 12.8166 35.1834 12.8166 34.7929 13.2071L27.7071 20.2929C27.3166 20.6834 26.6834 20.6834 26.2929 20.2929Z\"></path>\n    </svg>\n  </div>\n</div>\n";
+
+
+let $4ca367182776f80b$var$defaultOptions = {
+    /**
+   * Has to be specified on elements other than form (or when the form doesn't
+   * have an `action` attribute).
+   *
+   * You can also provide a function that will be called with `files` and
+   * `dataBlocks`  and must return the url as string.
+   */ url: null,
+    /**
+   * Can be changed to `"put"` if necessary. You can also provide a function
+   * that will be called with `files` and must return the method (since `v3.12.0`).
+   */ method: "post",
+    /**
+   * Will be set on the XHRequest.
+   */ withCredentials: false,
+    /**
+   * The timeout for the XHR requests in milliseconds (since `v4.4.0`).
+   * If set to null or 0, no timeout is going to be set.
+   */ timeout: null,
+    /**
+   * How many file uploads to process in parallel (See the
+   * Enqueuing file uploads documentation section for more info)
+   */ parallelUploads: 2,
+    /**
+   * Whether to send multiple files in one request. If
+   * this it set to true, then the fallback file input element will
+   * have the `multiple` attribute as well. This option will
+   * also trigger additional events (like `processingmultiple`). See the events
+   * documentation section for more information.
+   */ uploadMultiple: false,
+    /**
+   * Whether you want files to be uploaded in chunks to your server. This can't be
+   * used in combination with `uploadMultiple`.
+   *
+   * See [chunksUploaded](#config-chunksUploaded) for the callback to finalise an upload.
+   */ chunking: false,
+    /**
+   * If `chunking` is enabled, this defines whether **every** file should be chunked,
+   * even if the file size is below chunkSize. This means, that the additional chunk
+   * form data will be submitted and the `chunksUploaded` callback will be invoked.
+   */ forceChunking: false,
+    /**
+   * If `chunking` is `true`, then this defines the chunk size in bytes.
+   */ chunkSize: 2097152,
+    /**
+   * If `true`, the individual chunks of a file are being uploaded simultaneously.
+   */ parallelChunkUploads: false,
+    /**
+   * Whether a chunk should be retried if it fails.
+   */ retryChunks: false,
+    /**
+   * If `retryChunks` is true, how many times should it be retried.
+   */ retryChunksLimit: 3,
+    /**
+   * The maximum filesize (in MiB) that is allowed to be uploaded.
+   */ maxFilesize: 256,
+    /**
+   * The name of the file param that gets transferred.
+   * **NOTE**: If you have the option  `uploadMultiple` set to `true`, then
+   * Dropzone will append `[]` to the name.
+   */ paramName: "file",
+    /**
+   * Whether thumbnails for images should be generated
+   */ createImageThumbnails: true,
+    /**
+   * In MB. When the filename exceeds this limit, the thumbnail will not be generated.
+   */ maxThumbnailFilesize: 10,
+    /**
+   * If `null`, the ratio of the image will be used to calculate it.
+   */ thumbnailWidth: 120,
+    /**
+   * The same as `thumbnailWidth`. If both are null, images will not be resized.
+   */ thumbnailHeight: 120,
+    /**
+   * How the images should be scaled down in case both, `thumbnailWidth` and `thumbnailHeight` are provided.
+   * Can be either `contain` or `crop`.
+   */ thumbnailMethod: "crop",
+    /**
+   * If set, images will be resized to these dimensions before being **uploaded**.
+   * If only one, `resizeWidth` **or** `resizeHeight` is provided, the original aspect
+   * ratio of the file will be preserved.
+   *
+   * The `options.transformFile` function uses these options, so if the `transformFile` function
+   * is overridden, these options don't do anything.
+   */ resizeWidth: null,
+    /**
+   * See `resizeWidth`.
+   */ resizeHeight: null,
+    /**
+   * The mime type of the resized image (before it gets uploaded to the server).
+   * If `null` the original mime type will be used. To force jpeg, for example, use `image/jpeg`.
+   * See `resizeWidth` for more information.
+   */ resizeMimeType: null,
+    /**
+   * The quality of the resized images. See `resizeWidth`.
+   */ resizeQuality: 0.8,
+    /**
+   * How the images should be scaled down in case both, `resizeWidth` and `resizeHeight` are provided.
+   * Can be either `contain` or `crop`.
+   */ resizeMethod: "contain",
+    /**
+   * The base that is used to calculate the **displayed** filesize. You can
+   * change this to 1024 if you would rather display kibibytes, mebibytes,
+   * etc... 1024 is technically incorrect, because `1024 bytes` are `1 kibibyte`
+   * not `1 kilobyte`. You can change this to `1024` if you don't care about
+   * validity.
+   */ filesizeBase: 1000,
+    /**
+   * If not `null` defines how many files this Dropzone handles. If it exceeds,
+   * the event `maxfilesexceeded` will be called. The dropzone element gets the
+   * class `dz-max-files-reached` accordingly so you can provide visual
+   * feedback.
+   */ maxFiles: null,
+    /**
+   * An optional object to send additional headers to the server. Eg:
+   * `{ "My-Awesome-Header": "header value" }`
+   */ headers: null,
+    /**
+   * Should the default headers be set or not?
+   * Accept: application/json <- for requesting json response
+   * Cache-Control: no-cache <- Request shouldnt be cached
+   * X-Requested-With: XMLHttpRequest <- We sent the request via XMLHttpRequest
+   */ defaultHeaders: true,
+    /**
+   * If `true`, the dropzone element itself will be clickable, if `false`
+   * nothing will be clickable.
+   *
+   * You can also pass an HTML element, a CSS selector (for multiple elements)
+   * or an array of those. In that case, all of those elements will trigger an
+   * upload when clicked.
+   */ clickable: true,
+    /**
+   * Whether hidden files in directories should be ignored.
+   */ ignoreHiddenFiles: true,
+    /**
+   * The default implementation of `accept` checks the file's mime type or
+   * extension against this list. This is a comma separated list of mime
+   * types or file extensions.
+   *
+   * Eg.: `image/*,application/pdf,.psd`
+   *
+   * If the Dropzone is `clickable` this option will also be used as
+   * [`accept`](https://developer.mozilla.org/en-US/docs/HTML/Element/input#attr-accept)
+   * parameter on the hidden file input as well.
+   */ acceptedFiles: null,
+    /**
+   * **Deprecated!**
+   * Use acceptedFiles instead.
+   */ acceptedMimeTypes: null,
+    /**
+   * If false, files will be added to the queue but the queue will not be
+   * processed automatically.
+   * This can be useful if you need some additional user input before sending
+   * files (or if you want want all files sent at once).
+   * If you're ready to send the file simply call `myDropzone.processQueue()`.
+   *
+   * See the [enqueuing file uploads](#enqueuing-file-uploads) documentation
+   * section for more information.
+   */ autoProcessQueue: true,
+    /**
+   * If false, files added to the dropzone will not be queued by default.
+   * You'll have to call `enqueueFile(file)` manually.
+   */ autoQueue: true,
+    /**
+   * If `true`, this will add a link to every file preview to remove or cancel (if
+   * already uploading) the file. The `dictCancelUpload`, `dictCancelUploadConfirmation`
+   * and `dictRemoveFile` options are used for the wording.
+   */ addRemoveLinks: false,
+    /**
+   * Defines where to display the file previews – if `null` the
+   * Dropzone element itself is used. Can be a plain `HTMLElement` or a CSS
+   * selector. The element should have the `dropzone-previews` class so
+   * the previews are displayed properly.
+   */ previewsContainer: null,
+    /**
+   * Set this to `true` if you don't want previews to be shown.
+   */ disablePreviews: false,
+    /**
+   * This is the element the hidden input field (which is used when clicking on the
+   * dropzone to trigger file selection) will be appended to. This might
+   * be important in case you use frameworks to switch the content of your page.
+   *
+   * Can be a selector string, or an element directly.
+   */ hiddenInputContainer: "body",
+    /**
+   * If null, no capture type will be specified
+   * If camera, mobile devices will skip the file selection and choose camera
+   * If microphone, mobile devices will skip the file selection and choose the microphone
+   * If camcorder, mobile devices will skip the file selection and choose the camera in video mode
+   * On apple devices multiple must be set to false.  AcceptedFiles may need to
+   * be set to an appropriate mime type (e.g. "image/*", "audio/*", or "video/*").
+   */ capture: null,
+    /**
+   * **Deprecated**. Use `renameFile` instead.
+   */ renameFilename: null,
+    /**
+   * A function that is invoked before the file is uploaded to the server and renames the file.
+   * This function gets the `File` as argument and can use the `file.name`. The actual name of the
+   * file that gets used during the upload can be accessed through `file.upload.filename`.
+   */ renameFile: null,
+    /**
+   * If `true` the fallback will be forced. This is very useful to test your server
+   * implementations first and make sure that everything works as
+   * expected without dropzone if you experience problems, and to test
+   * how your fallbacks will look.
+   */ forceFallback: false,
+    /**
+   * The text used before any files are dropped.
+   */ dictDefaultMessage: "Drop files here to upload",
+    /**
+   * The text that replaces the default message text it the browser is not supported.
+   */ dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
+    /**
+   * The text that will be added before the fallback form.
+   * If you provide a  fallback element yourself, or if this option is `null` this will
+   * be ignored.
+   */ dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
+    /**
+   * If the filesize is too big.
+   * `{{filesize}}` and `{{maxFilesize}}` will be replaced with the respective configuration values.
+   */ dictFileTooBig: "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
+    /**
+   * If the file doesn't match the file type.
+   */ dictInvalidFileType: "You can't upload files of this type.",
+    /**
+   * If the server response was invalid.
+   * `{{statusCode}}` will be replaced with the servers status code.
+   */ dictResponseError: "Server responded with {{statusCode}} code.",
+    /**
+   * If `addRemoveLinks` is true, the text to be used for the cancel upload link.
+   */ dictCancelUpload: "Cancel upload",
+    /**
+   * The text that is displayed if an upload was manually canceled
+   */ dictUploadCanceled: "Upload canceled.",
+    /**
+   * If `addRemoveLinks` is true, the text to be used for confirmation when cancelling upload.
+   */ dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+    /**
+   * If `addRemoveLinks` is true, the text to be used to remove a file.
+   */ dictRemoveFile: "Remove file",
+    /**
+   * If this is not null, then the user will be prompted before removing a file.
+   */ dictRemoveFileConfirmation: null,
+    /**
+   * Displayed if `maxFiles` is st and exceeded.
+   * The string `{{maxFiles}}` will be replaced by the configuration value.
+   */ dictMaxFilesExceeded: "You can not upload any more files.",
+    /**
+   * Allows you to translate the different units. Starting with `tb` for terabytes and going down to
+   * `b` for bytes.
+   */ dictFileSizeUnits: {
+        tb: "TB",
+        gb: "GB",
+        mb: "MB",
+        kb: "KB",
+        b: "b"
+    },
+    /**
+   * Called when dropzone initialized
+   * You can add event listeners here
+   */ init () {
+    },
+    /**
+   * Can be an **object** of additional parameters to transfer to the server, **or** a `Function`
+   * that gets invoked with the `files`, `xhr` and, if it's a chunked upload, `chunk` arguments. In case
+   * of a function, this needs to return a map.
+   *
+   * The default implementation does nothing for normal uploads, but adds relevant information for
+   * chunked uploads.
+   *
+   * This is the same as adding hidden input fields in the form element.
+   */ params (files, xhr, chunk) {
+        if (chunk) return {
+            dzuuid: chunk.file.upload.uuid,
+            dzchunkindex: chunk.index,
+            dztotalfilesize: chunk.file.size,
+            dzchunksize: this.options.chunkSize,
+            dztotalchunkcount: chunk.file.upload.totalChunkCount,
+            dzchunkbyteoffset: chunk.index * this.options.chunkSize
+        };
+    },
+    /**
+   * A function that gets a [file](https://developer.mozilla.org/en-US/docs/DOM/File)
+   * and a `done` function as parameters.
+   *
+   * If the done function is invoked without arguments, the file is "accepted" and will
+   * be processed. If you pass an error message, the file is rejected, and the error
+   * message will be displayed.
+   * This function will not be called if the file is too big or doesn't match the mime types.
+   */ accept (file, done) {
+        return done();
+    },
+    /**
+   * The callback that will be invoked when all chunks have been uploaded for a file.
+   * It gets the file for which the chunks have been uploaded as the first parameter,
+   * and the `done` function as second. `done()` needs to be invoked when everything
+   * needed to finish the upload process is done.
+   */ chunksUploaded: function(file, done) {
+        done();
+    },
+    /**
+   * Sends the file as binary blob in body instead of form data.
+   * If this is set, the `params` option will be ignored.
+   * It's an error to set this to `true` along with `uploadMultiple` since
+   * multiple files cannot be in a single binary body.
+   */ binaryBody: false,
+    /**
+   * Gets called when the browser is not supported.
+   * The default implementation shows the fallback input field and adds
+   * a text.
+   */ fallback () {
+        // This code should pass in IE7... :(
+        let messageElement;
+        this.element.className = `${this.element.className} dz-browser-not-supported`;
+        for (let child of this.element.getElementsByTagName("div"))if (/(^| )dz-message($| )/.test(child.className)) {
+            messageElement = child;
+            child.className = "dz-message"; // Removes the 'dz-default' class
+            break;
+        }
+        if (!messageElement) {
+            messageElement = $3ed269f2f0fb224b$export$2e2bcd8739ae039.createElement('<div class="dz-message"><span></span></div>');
+            this.element.appendChild(messageElement);
+        }
+        let span = messageElement.getElementsByTagName("span")[0];
+        if (span) {
+            if (span.textContent != null) span.textContent = this.options.dictFallbackMessage;
+            else if (span.innerText != null) span.innerText = this.options.dictFallbackMessage;
+        }
+        return this.element.appendChild(this.getFallbackForm());
+    },
+    /**
+   * Gets called to calculate the thumbnail dimensions.
+   *
+   * It gets `file`, `width` and `height` (both may be `null`) as parameters and must return an object containing:
+   *
+   *  - `srcWidth` & `srcHeight` (required)
+   *  - `trgWidth` & `trgHeight` (required)
+   *  - `srcX` & `srcY` (optional, default `0`)
+   *  - `trgX` & `trgY` (optional, default `0`)
+   *
+   * Those values are going to be used by `ctx.drawImage()`.
+   */ resize (file, width, height, resizeMethod) {
+        let info = {
+            srcX: 0,
+            srcY: 0,
+            srcWidth: file.width,
+            srcHeight: file.height
+        };
+        let srcRatio = file.width / file.height;
+        // Automatically calculate dimensions if not specified
+        if (width == null && height == null) {
+            width = info.srcWidth;
+            height = info.srcHeight;
+        } else if (width == null) width = height * srcRatio;
+        else if (height == null) height = width / srcRatio;
+        // Make sure images aren't upscaled
+        width = Math.min(width, info.srcWidth);
+        height = Math.min(height, info.srcHeight);
+        let trgRatio = width / height;
+        if (info.srcWidth > width || info.srcHeight > height) {
+            // Image is bigger and needs rescaling
+            if (resizeMethod === "crop") {
+                if (srcRatio > trgRatio) {
+                    info.srcHeight = file.height;
+                    info.srcWidth = info.srcHeight * trgRatio;
+                } else {
+                    info.srcWidth = file.width;
+                    info.srcHeight = info.srcWidth / trgRatio;
+                }
+            } else if (resizeMethod === "contain") {
+                // Method 'contain'
+                if (srcRatio > trgRatio) height = width / srcRatio;
+                else width = height * srcRatio;
+            } else throw new Error(`Unknown resizeMethod '${resizeMethod}'`);
+        }
+        info.srcX = (file.width - info.srcWidth) / 2;
+        info.srcY = (file.height - info.srcHeight) / 2;
+        info.trgWidth = width;
+        info.trgHeight = height;
+        return info;
+    },
+    /**
+   * Can be used to transform the file (for example, resize an image if necessary).
+   *
+   * The default implementation uses `resizeWidth` and `resizeHeight` (if provided) and resizes
+   * images according to those dimensions.
+   *
+   * Gets the `file` as the first parameter, and a `done()` function as the second, that needs
+   * to be invoked with the file when the transformation is done.
+   */ transformFile (file, done) {
+        if ((this.options.resizeWidth || this.options.resizeHeight) && file.type.match(/image.*/)) return this.resizeImage(file, this.options.resizeWidth, this.options.resizeHeight, this.options.resizeMethod, done);
+        else return done(file);
+    },
+    /**
+   * A string that contains the template used for each dropped
+   * file. Change it to fulfill your needs but make sure to properly
+   * provide all elements.
+   *
+   * If you want to use an actual HTML element instead of providing a String
+   * as a config option, you could create a div with the id `tpl`,
+   * put the template inside it and provide the element like this:
+   *
+   *     document
+   *       .querySelector('#tpl')
+   *       .innerHTML
+   *
+   */ previewTemplate: (/*@__PURE__*/$parcel$interopDefault($fd6031f88dce2e32$exports)),
+    /*
+   Those functions register themselves to the events on init and handle all
+   the user interface specific stuff. Overwriting them won't break the upload
+   but can break the way it's displayed.
+   You can overwrite them if you don't like the default behavior. If you just
+   want to add an additional event handler, register it on the dropzone object
+   and don't overwrite those options.
+   */ // Those are self explanatory and simply concern the DragnDrop.
+    drop (e) {
+        return this.element.classList.remove("dz-drag-hover");
+    },
+    dragstart (e) {
+    },
+    dragend (e) {
+        return this.element.classList.remove("dz-drag-hover");
+    },
+    dragenter (e) {
+        return this.element.classList.add("dz-drag-hover");
+    },
+    dragover (e) {
+        return this.element.classList.add("dz-drag-hover");
+    },
+    dragleave (e) {
+        return this.element.classList.remove("dz-drag-hover");
+    },
+    paste (e) {
+    },
+    // Called whenever there are no files left in the dropzone anymore, and the
+    // dropzone should be displayed as if in the initial state.
+    reset () {
+        return this.element.classList.remove("dz-started");
+    },
+    // Called when a file is added to the queue
+    // Receives `file`
+    addedfile (file) {
+        if (this.element === this.previewsContainer) this.element.classList.add("dz-started");
+        if (this.previewsContainer && !this.options.disablePreviews) {
+            file.previewElement = $3ed269f2f0fb224b$export$2e2bcd8739ae039.createElement(this.options.previewTemplate.trim());
+            file.previewTemplate = file.previewElement; // Backwards compatibility
+            this.previewsContainer.appendChild(file.previewElement);
+            for (var node of file.previewElement.querySelectorAll("[data-dz-name]"))node.textContent = file.name;
+            for (node of file.previewElement.querySelectorAll("[data-dz-size]"))node.innerHTML = this.filesize(file.size);
+            if (this.options.addRemoveLinks) {
+                file._removeLink = $3ed269f2f0fb224b$export$2e2bcd8739ae039.createElement(`<a class="dz-remove" href="javascript:undefined;" data-dz-remove>${this.options.dictRemoveFile}</a>`);
+                file.previewElement.appendChild(file._removeLink);
+            }
+            let removeFileEvent = (e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                if (file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING) return $3ed269f2f0fb224b$export$2e2bcd8739ae039.confirm(this.options.dictCancelUploadConfirmation, ()=>this.removeFile(file)
+                );
+                else {
+                    if (this.options.dictRemoveFileConfirmation) return $3ed269f2f0fb224b$export$2e2bcd8739ae039.confirm(this.options.dictRemoveFileConfirmation, ()=>this.removeFile(file)
+                    );
+                    else return this.removeFile(file);
+                }
+            };
+            for (let removeLink of file.previewElement.querySelectorAll("[data-dz-remove]"))removeLink.addEventListener("click", removeFileEvent);
+        }
+    },
+    // Called whenever a file is removed.
+    removedfile (file) {
+        if (file.previewElement != null && file.previewElement.parentNode != null) file.previewElement.parentNode.removeChild(file.previewElement);
+        return this._updateMaxFilesReachedClass();
+    },
+    // Called when a thumbnail has been generated
+    // Receives `file` and `dataUrl`
+    thumbnail (file, dataUrl) {
+        if (file.previewElement) {
+            file.previewElement.classList.remove("dz-file-preview");
+            for (let thumbnailElement of file.previewElement.querySelectorAll("[data-dz-thumbnail]")){
+                thumbnailElement.alt = file.name;
+                thumbnailElement.src = dataUrl;
+            }
+            return setTimeout(()=>file.previewElement.classList.add("dz-image-preview")
+            , 1);
+        }
+    },
+    // Called whenever an error occurs
+    // Receives `file` and `message`
+    error (file, message) {
+        if (file.previewElement) {
+            file.previewElement.classList.add("dz-error");
+            if (typeof message !== "string" && message.error) message = message.error;
+            for (let node of file.previewElement.querySelectorAll("[data-dz-errormessage]"))node.textContent = message;
+        }
+    },
+    errormultiple () {
+    },
+    // Called when a file gets processed. Since there is a cue, not all added
+    // files are processed immediately.
+    // Receives `file`
+    processing (file) {
+        if (file.previewElement) {
+            file.previewElement.classList.add("dz-processing");
+            if (file._removeLink) return file._removeLink.innerHTML = this.options.dictCancelUpload;
+        }
+    },
+    processingmultiple () {
+    },
+    // Called whenever the upload progress gets updated.
+    // Receives `file`, `progress` (percentage 0-100) and `bytesSent`.
+    // To get the total number of bytes of the file, use `file.size`
+    uploadprogress (file, progress, bytesSent) {
+        if (file.previewElement) for (let node of file.previewElement.querySelectorAll("[data-dz-uploadprogress]"))node.nodeName === "PROGRESS" ? node.value = progress : node.style.width = `${progress}%`;
+    },
+    // Called whenever the total upload progress gets updated.
+    // Called with totalUploadProgress (0-100), totalBytes and totalBytesSent
+    totaluploadprogress () {
+    },
+    // Called just before the file is sent. Gets the `xhr` object as second
+    // parameter, so you can modify it (for example to add a CSRF token) and a
+    // `formData` object to add additional information.
+    sending () {
+    },
+    sendingmultiple () {
+    },
+    // When the complete upload is finished and successful
+    // Receives `file`
+    success (file) {
+        if (file.previewElement) return file.previewElement.classList.add("dz-success");
+    },
+    successmultiple () {
+    },
+    // When the upload is canceled.
+    canceled (file) {
+        return this.emit("error", file, this.options.dictUploadCanceled);
+    },
+    canceledmultiple () {
+    },
+    // When the upload is finished, either with success or an error.
+    // Receives `file`
+    complete (file) {
+        if (file._removeLink) file._removeLink.innerHTML = this.options.dictRemoveFile;
+        if (file.previewElement) return file.previewElement.classList.add("dz-complete");
+    },
+    completemultiple () {
+    },
+    maxfilesexceeded () {
+    },
+    maxfilesreached () {
+    },
+    queuecomplete () {
+    },
+    addedfiles () {
+    }
+};
+var $4ca367182776f80b$export$2e2bcd8739ae039 = $4ca367182776f80b$var$defaultOptions;
+
+
+class $3ed269f2f0fb224b$export$2e2bcd8739ae039 extends $4040acfd8584338d$export$2e2bcd8739ae039 {
+    static initClass() {
+        // Exposing the emitter class, mainly for tests
+        this.prototype.Emitter = $4040acfd8584338d$export$2e2bcd8739ae039;
+        /*
+     This is a list of all available events you can register on a dropzone object.
+
+     You can register an event handler like this:
+
+     dropzone.on("dragEnter", function() { });
+
+     */ this.prototype.events = [
+            "drop",
+            "dragstart",
+            "dragend",
+            "dragenter",
+            "dragover",
+            "dragleave",
+            "addedfile",
+            "addedfiles",
+            "removedfile",
+            "thumbnail",
+            "error",
+            "errormultiple",
+            "processing",
+            "processingmultiple",
+            "uploadprogress",
+            "totaluploadprogress",
+            "sending",
+            "sendingmultiple",
+            "success",
+            "successmultiple",
+            "canceled",
+            "canceledmultiple",
+            "complete",
+            "completemultiple",
+            "reset",
+            "maxfilesexceeded",
+            "maxfilesreached",
+            "queuecomplete", 
+        ];
+        this.prototype._thumbnailQueue = [];
+        this.prototype._processingThumbnail = false;
+    }
+    // Returns all files that have been accepted
+    getAcceptedFiles() {
+        return this.files.filter((file)=>file.accepted
+        ).map((file)=>file
+        );
+    }
+    // Returns all files that have been rejected
+    // Not sure when that's going to be useful, but added for completeness.
+    getRejectedFiles() {
+        return this.files.filter((file)=>!file.accepted
+        ).map((file)=>file
+        );
+    }
+    getFilesWithStatus(status) {
+        return this.files.filter((file)=>file.status === status
+        ).map((file)=>file
+        );
+    }
+    // Returns all files that are in the queue
+    getQueuedFiles() {
+        return this.getFilesWithStatus($3ed269f2f0fb224b$export$2e2bcd8739ae039.QUEUED);
+    }
+    getUploadingFiles() {
+        return this.getFilesWithStatus($3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING);
+    }
+    getAddedFiles() {
+        return this.getFilesWithStatus($3ed269f2f0fb224b$export$2e2bcd8739ae039.ADDED);
+    }
+    // Files that are either queued or uploading
+    getActiveFiles() {
+        return this.files.filter((file)=>file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING || file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.QUEUED
+        ).map((file)=>file
+        );
+    }
+    // The function that gets called when Dropzone is initialized. You
+    // can (and should) setup event listeners inside this function.
+    init() {
+        // In case it isn't set already
+        if (this.element.tagName === "form") this.element.setAttribute("enctype", "multipart/form-data");
+        if (this.element.classList.contains("dropzone") && !this.element.querySelector(".dz-message")) this.element.appendChild($3ed269f2f0fb224b$export$2e2bcd8739ae039.createElement(`<div class="dz-default dz-message"><button class="dz-button" type="button">${this.options.dictDefaultMessage}</button></div>`));
+        if (this.clickableElements.length) {
+            let setupHiddenFileInput = ()=>{
+                if (this.hiddenFileInput) this.hiddenFileInput.parentNode.removeChild(this.hiddenFileInput);
+                this.hiddenFileInput = document.createElement("input");
+                this.hiddenFileInput.setAttribute("type", "file");
+                if (this.options.maxFiles === null || this.options.maxFiles > 1) this.hiddenFileInput.setAttribute("multiple", "multiple");
+                this.hiddenFileInput.className = "dz-hidden-input";
+                if (this.options.acceptedFiles !== null) this.hiddenFileInput.setAttribute("accept", this.options.acceptedFiles);
+                if (this.options.capture !== null) this.hiddenFileInput.setAttribute("capture", this.options.capture);
+                // Making sure that no one can "tab" into this field.
+                this.hiddenFileInput.setAttribute("tabindex", "-1");
+                // Not setting `display="none"` because some browsers don't accept clicks
+                // on elements that aren't displayed.
+                this.hiddenFileInput.style.visibility = "hidden";
+                this.hiddenFileInput.style.position = "absolute";
+                this.hiddenFileInput.style.top = "0";
+                this.hiddenFileInput.style.left = "0";
+                this.hiddenFileInput.style.height = "0";
+                this.hiddenFileInput.style.width = "0";
+                $3ed269f2f0fb224b$export$2e2bcd8739ae039.getElement(this.options.hiddenInputContainer, "hiddenInputContainer").appendChild(this.hiddenFileInput);
+                this.hiddenFileInput.addEventListener("change", ()=>{
+                    let { files: files  } = this.hiddenFileInput;
+                    if (files.length) for (let file of files)this.addFile(file);
+                    this.emit("addedfiles", files);
+                    setupHiddenFileInput();
+                });
+            };
+            setupHiddenFileInput();
+        }
+        this.URL = window.URL !== null ? window.URL : window.webkitURL;
+        // Setup all event listeners on the Dropzone object itself.
+        // They're not in @setupEventListeners() because they shouldn't be removed
+        // again when the dropzone gets disabled.
+        for (let eventName of this.events)this.on(eventName, this.options[eventName]);
+        this.on("uploadprogress", ()=>this.updateTotalUploadProgress()
+        );
+        this.on("removedfile", ()=>this.updateTotalUploadProgress()
+        );
+        this.on("canceled", (file)=>this.emit("complete", file)
+        );
+        // Emit a `queuecomplete` event if all files finished uploading.
+        this.on("complete", (file)=>{
+            if (this.getAddedFiles().length === 0 && this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) // This needs to be deferred so that `queuecomplete` really triggers after `complete`
+            return setTimeout(()=>this.emit("queuecomplete")
+            , 0);
+        });
+        const containsFiles = function(e) {
+            if (e.dataTransfer.types) // Because e.dataTransfer.types is an Object in
+            // IE, we need to iterate like this instead of
+            // using e.dataTransfer.types.some()
+            for(var i = 0; i < e.dataTransfer.types.length; i++){
+                if (e.dataTransfer.types[i] === "Files") return true;
+            }
+            return false;
+        };
+        let noPropagation = function(e) {
+            // If there are no files, we don't want to stop
+            // propagation so we don't interfere with other
+            // drag and drop behaviour.
+            if (!containsFiles(e)) return;
+            e.stopPropagation();
+            if (e.preventDefault) return e.preventDefault();
+            else return e.returnValue = false;
+        };
+        // Create the listeners
+        this.listeners = [
+            {
+                element: this.element,
+                events: {
+                    dragstart: (e)=>{
+                        return this.emit("dragstart", e);
+                    },
+                    dragenter: (e)=>{
+                        noPropagation(e);
+                        return this.emit("dragenter", e);
+                    },
+                    dragover: (e)=>{
+                        // Makes it possible to drag files from chrome's download bar
+                        // http://stackoverflow.com/questions/19526430/drag-and-drop-file-uploads-from-chrome-downloads-bar
+                        // Try is required to prevent bug in Internet Explorer 11 (SCRIPT65535 exception)
+                        let efct;
+                        try {
+                            efct = e.dataTransfer.effectAllowed;
+                        } catch (error) {
+                        }
+                        e.dataTransfer.dropEffect = "move" === efct || "linkMove" === efct ? "move" : "copy";
+                        noPropagation(e);
+                        return this.emit("dragover", e);
+                    },
+                    dragleave: (e)=>{
+                        return this.emit("dragleave", e);
+                    },
+                    drop: (e)=>{
+                        noPropagation(e);
+                        return this.drop(e);
+                    },
+                    dragend: (e)=>{
+                        return this.emit("dragend", e);
+                    }
+                }
+            }, 
+        ];
+        this.clickableElements.forEach((clickableElement)=>{
+            return this.listeners.push({
+                element: clickableElement,
+                events: {
+                    click: (evt)=>{
+                        // Only the actual dropzone or the message element should trigger file selection
+                        if (clickableElement !== this.element || evt.target === this.element || $3ed269f2f0fb224b$export$2e2bcd8739ae039.elementInside(evt.target, this.element.querySelector(".dz-message"))) this.hiddenFileInput.click(); // Forward the click
+                        return true;
+                    }
+                }
+            });
+        });
+        this.enable();
+        return this.options.init.call(this);
+    }
+    // Not fully tested yet
+    destroy() {
+        this.disable();
+        this.removeAllFiles(true);
+        if (this.hiddenFileInput != null ? this.hiddenFileInput.parentNode : undefined) {
+            this.hiddenFileInput.parentNode.removeChild(this.hiddenFileInput);
+            this.hiddenFileInput = null;
+        }
+        delete this.element.dropzone;
+        return $3ed269f2f0fb224b$export$2e2bcd8739ae039.instances.splice($3ed269f2f0fb224b$export$2e2bcd8739ae039.instances.indexOf(this), 1);
+    }
+    updateTotalUploadProgress() {
+        let totalUploadProgress;
+        let totalBytesSent = 0;
+        let totalBytes = 0;
+        let activeFiles = this.getActiveFiles();
+        if (activeFiles.length) {
+            for (let file of this.getActiveFiles()){
+                totalBytesSent += file.upload.bytesSent;
+                totalBytes += file.upload.total;
+            }
+            totalUploadProgress = 100 * totalBytesSent / totalBytes;
+        } else totalUploadProgress = 100;
+        return this.emit("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent);
+    }
+    // @options.paramName can be a function taking one parameter rather than a string.
+    // A parameter name for a file is obtained simply by calling this with an index number.
+    _getParamName(n) {
+        if (typeof this.options.paramName === "function") return this.options.paramName(n);
+        else return `${this.options.paramName}${this.options.uploadMultiple ? `[${n}]` : ""}`;
+    }
+    // If @options.renameFile is a function,
+    // the function will be used to rename the file.name before appending it to the formData
+    _renameFile(file) {
+        if (typeof this.options.renameFile !== "function") return file.name;
+        return this.options.renameFile(file);
+    }
+    // Returns a form that can be used as fallback if the browser does not support DragnDrop
+    //
+    // If the dropzone is already a form, only the input field and button are returned. Otherwise a complete form element is provided.
+    // This code has to pass in IE7 :(
+    getFallbackForm() {
+        let existingFallback, form;
+        if (existingFallback = this.getExistingFallback()) return existingFallback;
+        let fieldsString = '<div class="dz-fallback">';
+        if (this.options.dictFallbackText) fieldsString += `<p>${this.options.dictFallbackText}</p>`;
+        fieldsString += `<input type="file" name="${this._getParamName(0)}" ${this.options.uploadMultiple ? 'multiple="multiple"' : undefined} /><input type="submit" value="Upload!"></div>`;
+        let fields = $3ed269f2f0fb224b$export$2e2bcd8739ae039.createElement(fieldsString);
+        if (this.element.tagName !== "FORM") {
+            form = $3ed269f2f0fb224b$export$2e2bcd8739ae039.createElement(`<form action="${this.options.url}" enctype="multipart/form-data" method="${this.options.method}"></form>`);
+            form.appendChild(fields);
+        } else {
+            // Make sure that the enctype and method attributes are set properly
+            this.element.setAttribute("enctype", "multipart/form-data");
+            this.element.setAttribute("method", this.options.method);
+        }
+        return form != null ? form : fields;
+    }
+    // Returns the fallback elements if they exist already
+    //
+    // This code has to pass in IE7 :(
+    getExistingFallback() {
+        let getFallback = function(elements) {
+            for (let el of elements){
+                if (/(^| )fallback($| )/.test(el.className)) return el;
+            }
+        };
+        for (let tagName of [
+            "div",
+            "form"
+        ]){
+            var fallback;
+            if (fallback = getFallback(this.element.getElementsByTagName(tagName))) return fallback;
+        }
+    }
+    // Activates all listeners stored in @listeners
+    setupEventListeners() {
+        return this.listeners.map((elementListeners)=>(()=>{
+                let result = [];
+                for(let event in elementListeners.events){
+                    let listener = elementListeners.events[event];
+                    result.push(elementListeners.element.addEventListener(event, listener, false));
+                }
+                return result;
+            })()
+        );
+    }
+    // Deactivates all listeners stored in @listeners
+    removeEventListeners() {
+        return this.listeners.map((elementListeners)=>(()=>{
+                let result = [];
+                for(let event in elementListeners.events){
+                    let listener = elementListeners.events[event];
+                    result.push(elementListeners.element.removeEventListener(event, listener, false));
+                }
+                return result;
+            })()
+        );
+    }
+    // Removes all event listeners and cancels all files in the queue or being processed.
+    disable() {
+        this.clickableElements.forEach((element)=>element.classList.remove("dz-clickable")
+        );
+        this.removeEventListeners();
+        this.disabled = true;
+        return this.files.map((file)=>this.cancelUpload(file)
+        );
+    }
+    enable() {
+        delete this.disabled;
+        this.clickableElements.forEach((element)=>element.classList.add("dz-clickable")
+        );
+        return this.setupEventListeners();
+    }
+    // Returns a nicely formatted filesize
+    filesize(size) {
+        let selectedSize = 0;
+        let selectedUnit = "b";
+        if (size > 0) {
+            let units = [
+                "tb",
+                "gb",
+                "mb",
+                "kb",
+                "b"
+            ];
+            for(let i = 0; i < units.length; i++){
+                let unit = units[i];
+                let cutoff = Math.pow(this.options.filesizeBase, 4 - i) / 10;
+                if (size >= cutoff) {
+                    selectedSize = size / Math.pow(this.options.filesizeBase, 4 - i);
+                    selectedUnit = unit;
+                    break;
+                }
+            }
+            selectedSize = Math.round(10 * selectedSize) / 10; // Cutting of digits
+        }
+        return `<strong>${selectedSize}</strong> ${this.options.dictFileSizeUnits[selectedUnit]}`;
+    }
+    // Adds or removes the `dz-max-files-reached` class from the form.
+    _updateMaxFilesReachedClass() {
+        if (this.options.maxFiles != null && this.getAcceptedFiles().length >= this.options.maxFiles) {
+            if (this.getAcceptedFiles().length === this.options.maxFiles) this.emit("maxfilesreached", this.files);
+            return this.element.classList.add("dz-max-files-reached");
+        } else return this.element.classList.remove("dz-max-files-reached");
+    }
+    drop(e) {
+        if (!e.dataTransfer) return;
+        this.emit("drop", e);
+        // Convert the FileList to an Array
+        // This is necessary for IE11
+        let files = [];
+        for(let i = 0; i < e.dataTransfer.files.length; i++)files[i] = e.dataTransfer.files[i];
+        // Even if it's a folder, files.length will contain the folders.
+        if (files.length) {
+            let { items: items  } = e.dataTransfer;
+            if (items && items.length && items[0].webkitGetAsEntry != null) // The browser supports dropping of folders, so handle items instead of files
+            this._addFilesFromItems(items);
+            else this.handleFiles(files);
+        }
+        this.emit("addedfiles", files);
+    }
+    paste(e) {
+        if ($3ed269f2f0fb224b$var$__guard__(e != null ? e.clipboardData : undefined, (x)=>x.items
+        ) == null) return;
+        this.emit("paste", e);
+        let { items: items  } = e.clipboardData;
+        if (items.length) return this._addFilesFromItems(items);
+    }
+    handleFiles(files) {
+        for (let file of files)this.addFile(file);
+    }
+    // When a folder is dropped (or files are pasted), items must be handled
+    // instead of files.
+    _addFilesFromItems(items) {
+        return (()=>{
+            let result = [];
+            for (let item of items){
+                var entry;
+                if (item.webkitGetAsEntry != null && (entry = item.webkitGetAsEntry())) {
+                    if (entry.isFile) result.push(this.addFile(item.getAsFile()));
+                    else if (entry.isDirectory) // Append all files from that directory to files
+                    result.push(this._addFilesFromDirectory(entry, entry.name));
+                    else result.push(undefined);
+                } else if (item.getAsFile != null) {
+                    if (item.kind == null || item.kind === "file") result.push(this.addFile(item.getAsFile()));
+                    else result.push(undefined);
+                } else result.push(undefined);
+            }
+            return result;
+        })();
+    }
+    // Goes through the directory, and adds each file it finds recursively
+    _addFilesFromDirectory(directory, path) {
+        let dirReader = directory.createReader();
+        let errorHandler = (error)=>$3ed269f2f0fb224b$var$__guardMethod__(console, "log", (o)=>o.log(error)
+            )
+        ;
+        var readEntries = ()=>{
+            return dirReader.readEntries((entries)=>{
+                if (entries.length > 0) {
+                    for (let entry of entries){
+                        if (entry.isFile) entry.file((file)=>{
+                            if (this.options.ignoreHiddenFiles && file.name.substring(0, 1) === ".") return;
+                            file.fullPath = `${path}/${file.name}`;
+                            return this.addFile(file);
+                        });
+                        else if (entry.isDirectory) this._addFilesFromDirectory(entry, `${path}/${entry.name}`);
+                    }
+                    // Recursively call readEntries() again, since browser only handle
+                    // the first 100 entries.
+                    // See: https://developer.mozilla.org/en-US/docs/Web/API/DirectoryReader#readEntries
+                    readEntries();
+                }
+                return null;
+            }, errorHandler);
+        };
+        return readEntries();
+    }
+    // If `done()` is called without argument the file is accepted
+    // If you call it with an error message, the file is rejected
+    // (This allows for asynchronous validation)
+    //
+    // This function checks the filesize, and if the file.type passes the
+    // `acceptedFiles` check.
+    accept(file, done) {
+        if (this.options.maxFilesize && file.size > this.options.maxFilesize * 1048576) done(this.options.dictFileTooBig.replace("{{filesize}}", Math.round(file.size / 1024 / 10.24) / 100).replace("{{maxFilesize}}", this.options.maxFilesize));
+        else if (!$3ed269f2f0fb224b$export$2e2bcd8739ae039.isValidFile(file, this.options.acceptedFiles)) done(this.options.dictInvalidFileType);
+        else if (this.options.maxFiles != null && this.getAcceptedFiles().length >= this.options.maxFiles) {
+            done(this.options.dictMaxFilesExceeded.replace("{{maxFiles}}", this.options.maxFiles));
+            this.emit("maxfilesexceeded", file);
+        } else this.options.accept.call(this, file, done);
+    }
+    addFile(file) {
+        file.upload = {
+            uuid: $3ed269f2f0fb224b$export$2e2bcd8739ae039.uuidv4(),
+            progress: 0,
+            // Setting the total upload size to file.size for the beginning
+            // It's actual different than the size to be transmitted.
+            total: file.size,
+            bytesSent: 0,
+            filename: this._renameFile(file)
+        };
+        this.files.push(file);
+        file.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.ADDED;
+        this.emit("addedfile", file);
+        this._enqueueThumbnail(file);
+        this.accept(file, (error)=>{
+            if (error) {
+                file.accepted = false;
+                this._errorProcessing([
+                    file
+                ], error); // Will set the file.status
+            } else {
+                file.accepted = true;
+                if (this.options.autoQueue) this.enqueueFile(file);
+                 // Will set .accepted = true
+            }
+            this._updateMaxFilesReachedClass();
+        });
+    }
+    // Wrapper for enqueueFile
+    enqueueFiles(files) {
+        for (let file of files)this.enqueueFile(file);
+        return null;
+    }
+    enqueueFile(file) {
+        if (file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.ADDED && file.accepted === true) {
+            file.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.QUEUED;
+            if (this.options.autoProcessQueue) return setTimeout(()=>this.processQueue()
+            , 0); // Deferring the call
+        } else throw new Error("This file can't be queued because it has already been processed or was rejected.");
+    }
+    _enqueueThumbnail(file) {
+        if (this.options.createImageThumbnails && file.type.match(/image.*/) && file.size <= this.options.maxThumbnailFilesize * 1048576) {
+            this._thumbnailQueue.push(file);
+            return setTimeout(()=>this._processThumbnailQueue()
+            , 0); // Deferring the call
+        }
+    }
+    _processThumbnailQueue() {
+        if (this._processingThumbnail || this._thumbnailQueue.length === 0) return;
+        this._processingThumbnail = true;
+        let file = this._thumbnailQueue.shift();
+        return this.createThumbnail(file, this.options.thumbnailWidth, this.options.thumbnailHeight, this.options.thumbnailMethod, true, (dataUrl)=>{
+            this.emit("thumbnail", file, dataUrl);
+            this._processingThumbnail = false;
+            return this._processThumbnailQueue();
+        });
+    }
+    // Can be called by the user to remove a file
+    removeFile(file) {
+        if (file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING) this.cancelUpload(file);
+        this.files = $3ed269f2f0fb224b$var$without(this.files, file);
+        this.emit("removedfile", file);
+        if (this.files.length === 0) return this.emit("reset");
+    }
+    // Removes all files that aren't currently processed from the list
+    removeAllFiles(cancelIfNecessary) {
+        // Create a copy of files since removeFile() changes the @files array.
+        if (cancelIfNecessary == null) cancelIfNecessary = false;
+        for (let file of this.files.slice())if (file.status !== $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING || cancelIfNecessary) this.removeFile(file);
+        return null;
+    }
+    // Resizes an image before it gets sent to the server. This function is the default behavior of
+    // `options.transformFile` if `resizeWidth` or `resizeHeight` are set. The callback is invoked with
+    // the resized blob.
+    resizeImage(file, width, height, resizeMethod, callback) {
+        return this.createThumbnail(file, width, height, resizeMethod, true, (dataUrl, canvas)=>{
+            if (canvas == null) // The image has not been resized
+            return callback(file);
+            else {
+                let { resizeMimeType: resizeMimeType  } = this.options;
+                if (resizeMimeType == null) resizeMimeType = file.type;
+                let resizedDataURL = canvas.toDataURL(resizeMimeType, this.options.resizeQuality);
+                if (resizeMimeType === "image/jpeg" || resizeMimeType === "image/jpg") // Now add the original EXIF information
+                resizedDataURL = $3ed269f2f0fb224b$var$ExifRestore.restore(file.dataURL, resizedDataURL);
+                return callback($3ed269f2f0fb224b$export$2e2bcd8739ae039.dataURItoBlob(resizedDataURL));
+            }
+        });
+    }
+    createThumbnail(file, width, height, resizeMethod, fixOrientation, callback) {
+        let fileReader = new FileReader();
+        fileReader.onload = ()=>{
+            file.dataURL = fileReader.result;
+            // Don't bother creating a thumbnail for SVG images since they're vector
+            if (file.type === "image/svg+xml") {
+                if (callback != null) callback(fileReader.result);
+                return;
+            }
+            this.createThumbnailFromUrl(file, width, height, resizeMethod, fixOrientation, callback);
+        };
+        fileReader.readAsDataURL(file);
+    }
+    // `mockFile` needs to have these attributes:
+    //
+    //     { name: 'name', size: 12345, imageUrl: '' }
+    //
+    // `callback` will be invoked when the image has been downloaded and displayed.
+    // `crossOrigin` will be added to the `img` tag when accessing the file.
+    displayExistingFile(mockFile, imageUrl, callback, crossOrigin, resizeThumbnail = true) {
+        this.emit("addedfile", mockFile);
+        this.emit("complete", mockFile);
+        if (!resizeThumbnail) {
+            this.emit("thumbnail", mockFile, imageUrl);
+            if (callback) callback();
+        } else {
+            let onDone = (thumbnail)=>{
+                this.emit("thumbnail", mockFile, thumbnail);
+                if (callback) callback();
+            };
+            mockFile.dataURL = imageUrl;
+            this.createThumbnailFromUrl(mockFile, this.options.thumbnailWidth, this.options.thumbnailHeight, this.options.thumbnailMethod, this.options.fixOrientation, onDone, crossOrigin);
+        }
+    }
+    createThumbnailFromUrl(file, width, height, resizeMethod, fixOrientation, callback, crossOrigin) {
+        // Not using `new Image` here because of a bug in latest Chrome versions.
+        // See https://github.com/enyo/dropzone/pull/226
+        let img = document.createElement("img");
+        if (crossOrigin) img.crossOrigin = crossOrigin;
+        // fixOrientation is not needed anymore with browsers handling imageOrientation
+        fixOrientation = getComputedStyle(document.body)["imageOrientation"] == "from-image" ? false : fixOrientation;
+        img.onload = ()=>{
+            let loadExif = (callback)=>callback(1)
+            ;
+            if (typeof EXIF !== "undefined" && EXIF !== null && fixOrientation) loadExif = (callback)=>EXIF.getData(img, function() {
+                    return callback(EXIF.getTag(this, "Orientation"));
+                })
+            ;
+            return loadExif((orientation)=>{
+                file.width = img.width;
+                file.height = img.height;
+                let resizeInfo = this.options.resize.call(this, file, width, height, resizeMethod);
+                let canvas = document.createElement("canvas");
+                let ctx = canvas.getContext("2d");
+                canvas.width = resizeInfo.trgWidth;
+                canvas.height = resizeInfo.trgHeight;
+                if (orientation > 4) {
+                    canvas.width = resizeInfo.trgHeight;
+                    canvas.height = resizeInfo.trgWidth;
+                }
+                switch(orientation){
+                    case 2:
+                        // horizontal flip
+                        ctx.translate(canvas.width, 0);
+                        ctx.scale(-1, 1);
+                        break;
+                    case 3:
+                        // 180° rotate left
+                        ctx.translate(canvas.width, canvas.height);
+                        ctx.rotate(Math.PI);
+                        break;
+                    case 4:
+                        // vertical flip
+                        ctx.translate(0, canvas.height);
+                        ctx.scale(1, -1);
+                        break;
+                    case 5:
+                        // vertical flip + 90 rotate right
+                        ctx.rotate(0.5 * Math.PI);
+                        ctx.scale(1, -1);
+                        break;
+                    case 6:
+                        // 90° rotate right
+                        ctx.rotate(0.5 * Math.PI);
+                        ctx.translate(0, -canvas.width);
+                        break;
+                    case 7:
+                        // horizontal flip + 90 rotate right
+                        ctx.rotate(0.5 * Math.PI);
+                        ctx.translate(canvas.height, -canvas.width);
+                        ctx.scale(-1, 1);
+                        break;
+                    case 8:
+                        // 90° rotate left
+                        ctx.rotate(-0.5 * Math.PI);
+                        ctx.translate(-canvas.height, 0);
+                        break;
+                }
+                // This is a bugfix for iOS' scaling bug.
+                $3ed269f2f0fb224b$var$drawImageIOSFix(ctx, img, resizeInfo.srcX != null ? resizeInfo.srcX : 0, resizeInfo.srcY != null ? resizeInfo.srcY : 0, resizeInfo.srcWidth, resizeInfo.srcHeight, resizeInfo.trgX != null ? resizeInfo.trgX : 0, resizeInfo.trgY != null ? resizeInfo.trgY : 0, resizeInfo.trgWidth, resizeInfo.trgHeight);
+                let thumbnail = canvas.toDataURL("image/png");
+                if (callback != null) return callback(thumbnail, canvas);
+            });
+        };
+        if (callback != null) img.onerror = callback;
+        return img.src = file.dataURL;
+    }
+    // Goes through the queue and processes files if there aren't too many already.
+    processQueue() {
+        let { parallelUploads: parallelUploads  } = this.options;
+        let processingLength = this.getUploadingFiles().length;
+        let i = processingLength;
+        // There are already at least as many files uploading than should be
+        if (processingLength >= parallelUploads) return;
+        let queuedFiles = this.getQueuedFiles();
+        if (!(queuedFiles.length > 0)) return;
+        if (this.options.uploadMultiple) // The files should be uploaded in one request
+        return this.processFiles(queuedFiles.slice(0, parallelUploads - processingLength));
+        else while(i < parallelUploads){
+            if (!queuedFiles.length) return;
+             // Nothing left to process
+            this.processFile(queuedFiles.shift());
+            i++;
+        }
+    }
+    // Wrapper for `processFiles`
+    processFile(file) {
+        return this.processFiles([
+            file
+        ]);
+    }
+    // Loads the file, then calls finishedLoading()
+    processFiles(files) {
+        for (let file of files){
+            file.processing = true; // Backwards compatibility
+            file.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING;
+            this.emit("processing", file);
+        }
+        if (this.options.uploadMultiple) this.emit("processingmultiple", files);
+        return this.uploadFiles(files);
+    }
+    _getFilesWithXhr(xhr) {
+        let files;
+        return files = this.files.filter((file)=>file.xhr === xhr
+        ).map((file)=>file
+        );
+    }
+    // Cancels the file upload and sets the status to CANCELED
+    // **if** the file is actually being uploaded.
+    // If it's still in the queue, the file is being removed from it and the status
+    // set to CANCELED.
+    cancelUpload(file) {
+        if (file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING) {
+            let groupedFiles = this._getFilesWithXhr(file.xhr);
+            for (let groupedFile of groupedFiles)groupedFile.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.CANCELED;
+            if (typeof file.xhr !== "undefined") file.xhr.abort();
+            for (let groupedFile1 of groupedFiles)this.emit("canceled", groupedFile1);
+            if (this.options.uploadMultiple) this.emit("canceledmultiple", groupedFiles);
+        } else if (file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.ADDED || file.status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.QUEUED) {
+            file.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.CANCELED;
+            this.emit("canceled", file);
+            if (this.options.uploadMultiple) this.emit("canceledmultiple", [
+                file
+            ]);
+        }
+        if (this.options.autoProcessQueue) return this.processQueue();
+    }
+    resolveOption(option, ...args) {
+        if (typeof option === "function") return option.apply(this, args);
+        return option;
+    }
+    uploadFile(file) {
+        return this.uploadFiles([
+            file
+        ]);
+    }
+    uploadFiles(files) {
+        this._transformFiles(files, (transformedFiles)=>{
+            if (this.options.chunking) {
+                // Chunking is not allowed to be used with `uploadMultiple` so we know
+                // that there is only __one__file.
+                let transformedFile = transformedFiles[0];
+                files[0].upload.chunked = this.options.chunking && (this.options.forceChunking || transformedFile.size > this.options.chunkSize);
+                files[0].upload.totalChunkCount = Math.ceil(transformedFile.size / this.options.chunkSize);
+            }
+            if (files[0].upload.chunked) {
+                // This file should be sent in chunks!
+                // If the chunking option is set, we **know** that there can only be **one** file, since
+                // uploadMultiple is not allowed with this option.
+                let file = files[0];
+                let transformedFile = transformedFiles[0];
+                let startedChunkCount = 0;
+                file.upload.chunks = [];
+                let handleNextChunk = ()=>{
+                    let chunkIndex = 0;
+                    // Find the next item in file.upload.chunks that is not defined yet.
+                    while(file.upload.chunks[chunkIndex] !== undefined)chunkIndex++;
+                    // This means, that all chunks have already been started.
+                    if (chunkIndex >= file.upload.totalChunkCount) return;
+                    startedChunkCount++;
+                    let start = chunkIndex * this.options.chunkSize;
+                    let end = Math.min(start + this.options.chunkSize, transformedFile.size);
+                    let dataBlock = {
+                        name: this._getParamName(0),
+                        data: transformedFile.webkitSlice ? transformedFile.webkitSlice(start, end) : transformedFile.slice(start, end),
+                        filename: file.upload.filename,
+                        chunkIndex: chunkIndex
+                    };
+                    file.upload.chunks[chunkIndex] = {
+                        file: file,
+                        index: chunkIndex,
+                        dataBlock: dataBlock,
+                        status: $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING,
+                        progress: 0,
+                        retries: 0
+                    };
+                    this._uploadData(files, [
+                        dataBlock
+                    ]);
+                };
+                file.upload.finishedChunkUpload = (chunk, response)=>{
+                    let allFinished = true;
+                    chunk.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.SUCCESS;
+                    // Clear the data from the chunk
+                    chunk.dataBlock = null;
+                    chunk.response = chunk.xhr.responseText;
+                    chunk.responseHeaders = chunk.xhr.getAllResponseHeaders();
+                    // Leaving this reference to xhr will cause memory leaks.
+                    chunk.xhr = null;
+                    for(let i = 0; i < file.upload.totalChunkCount; i++){
+                        if (file.upload.chunks[i] === undefined) return handleNextChunk();
+                        if (file.upload.chunks[i].status !== $3ed269f2f0fb224b$export$2e2bcd8739ae039.SUCCESS) allFinished = false;
+                    }
+                    if (allFinished) this.options.chunksUploaded(file, ()=>{
+                        this._finished(files, response, null);
+                    });
+                };
+                if (this.options.parallelChunkUploads) for(let i = 0; i < file.upload.totalChunkCount; i++)handleNextChunk();
+                else handleNextChunk();
+            } else {
+                let dataBlocks = [];
+                for(let i = 0; i < files.length; i++)dataBlocks[i] = {
+                    name: this._getParamName(i),
+                    data: transformedFiles[i],
+                    filename: files[i].upload.filename
+                };
+                this._uploadData(files, dataBlocks);
+            }
+        });
+    }
+    /// Returns the right chunk for given file and xhr
+    _getChunk(file, xhr) {
+        for(let i = 0; i < file.upload.totalChunkCount; i++){
+            if (file.upload.chunks[i] !== undefined && file.upload.chunks[i].xhr === xhr) return file.upload.chunks[i];
+        }
+    }
+    // This function actually uploads the file(s) to the server.
+    //
+    //  If dataBlocks contains the actual data to upload (meaning, that this could
+    // either be transformed files, or individual chunks for chunked upload) then
+    // they will be used for the actual data to upload.
+    _uploadData(files, dataBlocks) {
+        let xhr = new XMLHttpRequest();
+        // Put the xhr object in the file objects to be able to reference it later.
+        for (let file of files)file.xhr = xhr;
+        if (files[0].upload.chunked) // Put the xhr object in the right chunk object, so it can be associated
+        // later, and found with _getChunk.
+        files[0].upload.chunks[dataBlocks[0].chunkIndex].xhr = xhr;
+        let method = this.resolveOption(this.options.method, files, dataBlocks);
+        let url = this.resolveOption(this.options.url, files, dataBlocks);
+        xhr.open(method, url, true);
+        // Setting the timeout after open because of IE11 issue: https://gitlab.com/meno/dropzone/issues/8
+        let timeout = this.resolveOption(this.options.timeout, files);
+        if (timeout) xhr.timeout = this.resolveOption(this.options.timeout, files);
+        // Has to be after `.open()`. See https://github.com/enyo/dropzone/issues/179
+        xhr.withCredentials = !!this.options.withCredentials;
+        xhr.onload = (e)=>{
+            this._finishedUploading(files, xhr, e);
+        };
+        xhr.ontimeout = ()=>{
+            this._handleUploadError(files, xhr, `Request timedout after ${this.options.timeout / 1000} seconds`);
+        };
+        xhr.onerror = ()=>{
+            this._handleUploadError(files, xhr);
+        };
+        // Some browsers do not have the .upload property
+        let progressObj = xhr.upload != null ? xhr.upload : xhr;
+        progressObj.onprogress = (e)=>this._updateFilesUploadProgress(files, xhr, e)
+        ;
+        let headers = this.options.defaultHeaders ? {
+            Accept: "application/json",
+            "Cache-Control": "no-cache",
+            "X-Requested-With": "XMLHttpRequest"
+        } : {
+        };
+        if (this.options.binaryBody) headers["Content-Type"] = files[0].type;
+        if (this.options.headers) (0,just_extend__WEBPACK_IMPORTED_MODULE_0__["default"])(headers, this.options.headers);
+        for(let headerName in headers){
+            let headerValue = headers[headerName];
+            if (headerValue) xhr.setRequestHeader(headerName, headerValue);
+        }
+        if (this.options.binaryBody) {
+            // Since the file is going to be sent as binary body, it doesn't make
+            // any sense to generate `FormData` for it.
+            for (let file of files)this.emit("sending", file, xhr);
+            if (this.options.uploadMultiple) this.emit("sendingmultiple", files, xhr);
+            this.submitRequest(xhr, null, files);
+        } else {
+            let formData = new FormData();
+            // Adding all @options parameters
+            if (this.options.params) {
+                let additionalParams = this.options.params;
+                if (typeof additionalParams === "function") additionalParams = additionalParams.call(this, files, xhr, files[0].upload.chunked ? this._getChunk(files[0], xhr) : null);
+                for(let key in additionalParams){
+                    let value = additionalParams[key];
+                    if (Array.isArray(value)) // The additional parameter contains an array,
+                    // so lets iterate over it to attach each value
+                    // individually.
+                    for(let i = 0; i < value.length; i++)formData.append(key, value[i]);
+                    else formData.append(key, value);
+                }
+            }
+            // Let the user add additional data if necessary
+            for (let file of files)this.emit("sending", file, xhr, formData);
+            if (this.options.uploadMultiple) this.emit("sendingmultiple", files, xhr, formData);
+            this._addFormElementData(formData);
+            // Finally add the files
+            // Has to be last because some servers (eg: S3) expect the file to be the last parameter
+            for(let i = 0; i < dataBlocks.length; i++){
+                let dataBlock = dataBlocks[i];
+                formData.append(dataBlock.name, dataBlock.data, dataBlock.filename);
+            }
+            this.submitRequest(xhr, formData, files);
+        }
+    }
+    // Transforms all files with this.options.transformFile and invokes done with the transformed files when done.
+    _transformFiles(files, done) {
+        let transformedFiles = [];
+        // Clumsy way of handling asynchronous calls, until I get to add a proper Future library.
+        let doneCounter = 0;
+        for(let i = 0; i < files.length; i++)this.options.transformFile.call(this, files[i], (transformedFile)=>{
+            transformedFiles[i] = transformedFile;
+            if (++doneCounter === files.length) done(transformedFiles);
+        });
+    }
+    // Takes care of adding other input elements of the form to the AJAX request
+    _addFormElementData(formData) {
+        // Take care of other input elements
+        if (this.element.tagName === "FORM") for (let input of this.element.querySelectorAll("input, textarea, select, button")){
+            let inputName = input.getAttribute("name");
+            let inputType = input.getAttribute("type");
+            if (inputType) inputType = inputType.toLowerCase();
+            // If the input doesn't have a name, we can't use it.
+            if (typeof inputName === "undefined" || inputName === null) continue;
+            if (input.tagName === "SELECT" && input.hasAttribute("multiple")) {
+                // Possibly multiple values
+                for (let option of input.options)if (option.selected) formData.append(inputName, option.value);
+            } else if (!inputType || inputType !== "checkbox" && inputType !== "radio" || input.checked) formData.append(inputName, input.value);
+        }
+    }
+    // Invoked when there is new progress information about given files.
+    // If e is not provided, it is assumed that the upload is finished.
+    _updateFilesUploadProgress(files, xhr, e) {
+        if (!files[0].upload.chunked) // Handle file uploads without chunking
+        for (let file of files){
+            if (file.upload.total && file.upload.bytesSent && file.upload.bytesSent == file.upload.total) continue;
+            if (e) {
+                file.upload.progress = 100 * e.loaded / e.total;
+                file.upload.total = e.total;
+                file.upload.bytesSent = e.loaded;
+            } else {
+                // No event, so we're at 100%
+                file.upload.progress = 100;
+                file.upload.bytesSent = file.upload.total;
+            }
+            this.emit("uploadprogress", file, file.upload.progress, file.upload.bytesSent);
+        }
+        else {
+            // Handle chunked file uploads
+            // Chunked upload is not compatible with uploading multiple files in one
+            // request, so we know there's only one file.
+            let file = files[0];
+            // Since this is a chunked upload, we need to update the appropriate chunk
+            // progress.
+            let chunk = this._getChunk(file, xhr);
+            if (e) {
+                chunk.progress = 100 * e.loaded / e.total;
+                chunk.total = e.total;
+                chunk.bytesSent = e.loaded;
+            } else {
+                // No event, so we're at 100%
+                chunk.progress = 100;
+                chunk.bytesSent = chunk.total;
+            }
+            // Now tally the *file* upload progress from its individual chunks
+            file.upload.progress = 0;
+            file.upload.total = 0;
+            file.upload.bytesSent = 0;
+            for(let i = 0; i < file.upload.totalChunkCount; i++)if (file.upload.chunks[i] && typeof file.upload.chunks[i].progress !== "undefined") {
+                file.upload.progress += file.upload.chunks[i].progress;
+                file.upload.total += file.upload.chunks[i].total;
+                file.upload.bytesSent += file.upload.chunks[i].bytesSent;
+            }
+            // Since the process is a percentage, we need to divide by the amount of
+            // chunks we've used.
+            file.upload.progress = file.upload.progress / file.upload.totalChunkCount;
+            this.emit("uploadprogress", file, file.upload.progress, file.upload.bytesSent);
+        }
+    }
+    _finishedUploading(files, xhr, e) {
+        let response;
+        if (files[0].status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.CANCELED) return;
+        if (xhr.readyState !== 4) return;
+        if (xhr.responseType !== "arraybuffer" && xhr.responseType !== "blob") {
+            response = xhr.responseText;
+            if (xhr.getResponseHeader("content-type") && ~xhr.getResponseHeader("content-type").indexOf("application/json")) try {
+                response = JSON.parse(response);
+            } catch (error) {
+                e = error;
+                response = "Invalid JSON response from server.";
+            }
+        }
+        this._updateFilesUploadProgress(files, xhr);
+        if (!(200 <= xhr.status && xhr.status < 300)) this._handleUploadError(files, xhr, response);
+        else if (files[0].upload.chunked) files[0].upload.finishedChunkUpload(this._getChunk(files[0], xhr), response);
+        else this._finished(files, response, e);
+    }
+    _handleUploadError(files, xhr, response) {
+        if (files[0].status === $3ed269f2f0fb224b$export$2e2bcd8739ae039.CANCELED) return;
+        if (files[0].upload.chunked && this.options.retryChunks) {
+            let chunk = this._getChunk(files[0], xhr);
+            if ((chunk.retries++) < this.options.retryChunksLimit) {
+                this._uploadData(files, [
+                    chunk.dataBlock
+                ]);
+                return;
+            } else console.warn("Retried this chunk too often. Giving up.");
+        }
+        this._errorProcessing(files, response || this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr);
+    }
+    submitRequest(xhr, formData, files) {
+        if (xhr.readyState != 1) {
+            console.warn("Cannot send this request because the XMLHttpRequest.readyState is not OPENED.");
+            return;
+        }
+        if (this.options.binaryBody) {
+            if (files[0].upload.chunked) {
+                const chunk = this._getChunk(files[0], xhr);
+                xhr.send(chunk.dataBlock.data);
+            } else xhr.send(files[0]);
+        } else xhr.send(formData);
+    }
+    // Called internally when processing is finished.
+    // Individual callbacks have to be called in the appropriate sections.
+    _finished(files, responseText, e) {
+        for (let file of files){
+            file.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.SUCCESS;
+            this.emit("success", file, responseText, e);
+            this.emit("complete", file);
+        }
+        if (this.options.uploadMultiple) {
+            this.emit("successmultiple", files, responseText, e);
+            this.emit("completemultiple", files);
+        }
+        if (this.options.autoProcessQueue) return this.processQueue();
+    }
+    // Called internally when processing is finished.
+    // Individual callbacks have to be called in the appropriate sections.
+    _errorProcessing(files, message, xhr) {
+        for (let file of files){
+            file.status = $3ed269f2f0fb224b$export$2e2bcd8739ae039.ERROR;
+            this.emit("error", file, message, xhr);
+            this.emit("complete", file);
+        }
+        if (this.options.uploadMultiple) {
+            this.emit("errormultiple", files, message, xhr);
+            this.emit("completemultiple", files);
+        }
+        if (this.options.autoProcessQueue) return this.processQueue();
+    }
+    static uuidv4() {
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+            let r = Math.random() * 16 | 0, v = c === "x" ? r : r & 3 | 8;
+            return v.toString(16);
+        });
+    }
+    constructor(el, options){
+        super();
+        let fallback, left;
+        this.element = el;
+        this.clickableElements = [];
+        this.listeners = [];
+        this.files = []; // All files
+        if (typeof this.element === "string") this.element = document.querySelector(this.element);
+        // Not checking if instance of HTMLElement or Element since IE9 is extremely weird.
+        if (!this.element || this.element.nodeType == null) throw new Error("Invalid dropzone element.");
+        if (this.element.dropzone) throw new Error("Dropzone already attached.");
+        // Now add this dropzone to the instances.
+        $3ed269f2f0fb224b$export$2e2bcd8739ae039.instances.push(this);
+        // Put the dropzone inside the element itself.
+        this.element.dropzone = this;
+        let elementOptions = (left = $3ed269f2f0fb224b$export$2e2bcd8739ae039.optionsForElement(this.element)) != null ? left : {
+        };
+        this.options = (0,just_extend__WEBPACK_IMPORTED_MODULE_0__["default"])(true, {
+        }, $4ca367182776f80b$export$2e2bcd8739ae039, elementOptions, options != null ? options : {
+        });
+        this.options.previewTemplate = this.options.previewTemplate.replace(/\n*/g, "");
+        // If the browser failed, just call the fallback and leave
+        if (this.options.forceFallback || !$3ed269f2f0fb224b$export$2e2bcd8739ae039.isBrowserSupported()) return this.options.fallback.call(this);
+        // @options.url = @element.getAttribute "action" unless @options.url?
+        if (this.options.url == null) this.options.url = this.element.getAttribute("action");
+        if (!this.options.url) throw new Error("No URL provided.");
+        if (this.options.acceptedFiles && this.options.acceptedMimeTypes) throw new Error("You can't provide both 'acceptedFiles' and 'acceptedMimeTypes'. 'acceptedMimeTypes' is deprecated.");
+        if (this.options.uploadMultiple && this.options.chunking) throw new Error("You cannot set both: uploadMultiple and chunking.");
+        if (this.options.binaryBody && this.options.uploadMultiple) throw new Error("You cannot set both: binaryBody and uploadMultiple.");
+        // Backwards compatibility
+        if (this.options.acceptedMimeTypes) {
+            this.options.acceptedFiles = this.options.acceptedMimeTypes;
+            delete this.options.acceptedMimeTypes;
+        }
+        // Backwards compatibility
+        if (this.options.renameFilename != null) this.options.renameFile = (file)=>this.options.renameFilename.call(this, file.name, file)
+        ;
+        if (typeof this.options.method === "string") this.options.method = this.options.method.toUpperCase();
+        if ((fallback = this.getExistingFallback()) && fallback.parentNode) // Remove the fallback
+        fallback.parentNode.removeChild(fallback);
+        // Display previews in the previewsContainer element or the Dropzone element unless explicitly set to false
+        if (this.options.previewsContainer !== false) {
+            if (this.options.previewsContainer) this.previewsContainer = $3ed269f2f0fb224b$export$2e2bcd8739ae039.getElement(this.options.previewsContainer, "previewsContainer");
+            else this.previewsContainer = this.element;
+        }
+        if (this.options.clickable) {
+            if (this.options.clickable === true) this.clickableElements = [
+                this.element
+            ];
+            else this.clickableElements = $3ed269f2f0fb224b$export$2e2bcd8739ae039.getElements(this.options.clickable, "clickable");
+        }
+        this.init();
+    }
+}
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.initClass();
+// This is a map of options for your different dropzones. Add configurations
+// to this object for your different dropzone elemens.
+//
+// Example:
+//
+//     Dropzone.options.myDropzoneElementId = { maxFilesize: 1 };
+//
+// And in html:
+//
+//     <form action="/upload" id="my-dropzone-element-id" class="dropzone"></form>
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.options = {
+};
+// Returns the options for an element or undefined if none available.
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.optionsForElement = function(element) {
+    // Get the `Dropzone.options.elementId` for this element if it exists
+    if (element.getAttribute("id")) return $3ed269f2f0fb224b$export$2e2bcd8739ae039.options[$3ed269f2f0fb224b$var$camelize(element.getAttribute("id"))];
+    else return undefined;
+};
+// Holds a list of all dropzone instances
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.instances = [];
+// Returns the dropzone for given element if any
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.forElement = function(element) {
+    if (typeof element === "string") element = document.querySelector(element);
+    if ((element != null ? element.dropzone : undefined) == null) throw new Error("No Dropzone found for given element. This is probably because you're trying to access it before Dropzone had the time to initialize. Use the `init` option to setup any additional observers on your Dropzone.");
+    return element.dropzone;
+};
+// Looks for all .dropzone elements and creates a dropzone for them
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.discover = function() {
+    let dropzones;
+    if (document.querySelectorAll) dropzones = document.querySelectorAll(".dropzone");
+    else {
+        dropzones = [];
+        // IE :(
+        let checkElements = (elements)=>(()=>{
+                let result = [];
+                for (let el of elements)if (/(^| )dropzone($| )/.test(el.className)) result.push(dropzones.push(el));
+                else result.push(undefined);
+                return result;
+            })()
+        ;
+        checkElements(document.getElementsByTagName("div"));
+        checkElements(document.getElementsByTagName("form"));
+    }
+    return (()=>{
+        let result = [];
+        for (let dropzone of dropzones)// Create a dropzone unless auto discover has been disabled for specific element
+        if ($3ed269f2f0fb224b$export$2e2bcd8739ae039.optionsForElement(dropzone) !== false) result.push(new $3ed269f2f0fb224b$export$2e2bcd8739ae039(dropzone));
+        else result.push(undefined);
+        return result;
+    })();
+};
+// Some browsers support drag and drog functionality, but not correctly.
+//
+// So I created a blocklist of userAgents. Yes, yes. Browser sniffing, I know.
+// But what to do when browsers *theoretically* support an API, but crash
+// when using it.
+//
+// This is a list of regular expressions tested against navigator.userAgent
+//
+// ** It should only be used on browser that *do* support the API, but
+// incorrectly **
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.blockedBrowsers = [
+    // The mac os and windows phone version of opera 12 seems to have a problem with the File drag'n'drop API.
+    /opera.*(Macintosh|Windows Phone).*version\/12/i, 
+];
+// Checks if the browser is supported
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.isBrowserSupported = function() {
+    let capableBrowser = true;
+    if (window.File && window.FileReader && window.FileList && window.Blob && window.FormData && document.querySelector) {
+        if (!("classList" in document.createElement("a"))) capableBrowser = false;
+        else {
+            if ($3ed269f2f0fb224b$export$2e2bcd8739ae039.blacklistedBrowsers !== undefined) // Since this has been renamed, this makes sure we don't break older
+            // configuration.
+            $3ed269f2f0fb224b$export$2e2bcd8739ae039.blockedBrowsers = $3ed269f2f0fb224b$export$2e2bcd8739ae039.blacklistedBrowsers;
+            // The browser supports the API, but may be blocked.
+            for (let regex of $3ed269f2f0fb224b$export$2e2bcd8739ae039.blockedBrowsers)if (regex.test(navigator.userAgent)) {
+                capableBrowser = false;
+                continue;
+            }
+        }
+    } else capableBrowser = false;
+    return capableBrowser;
+};
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.dataURItoBlob = function(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    let byteString = atob(dataURI.split(",")[1]);
+    // separate out the mime component
+    let mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    // write the bytes of the string to an ArrayBuffer
+    let ab = new ArrayBuffer(byteString.length);
+    let ia = new Uint8Array(ab);
+    for(let i = 0, end = byteString.length, asc = 0 <= end; asc ? i <= end : i >= end; asc ? i++ : i--)ia[i] = byteString.charCodeAt(i);
+    // write the ArrayBuffer to a blob
+    return new Blob([
+        ab
+    ], {
+        type: mimeString
+    });
+};
+// Returns an array without the rejected item
+const $3ed269f2f0fb224b$var$without = (list, rejectedItem)=>list.filter((item)=>item !== rejectedItem
+    ).map((item)=>item
+    )
+;
+// abc-def_ghi -> abcDefGhi
+const $3ed269f2f0fb224b$var$camelize = (str)=>str.replace(/[\-_](\w)/g, (match)=>match.charAt(1).toUpperCase()
+    )
+;
+// Creates an element from string
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.createElement = function(string) {
+    let div = document.createElement("div");
+    div.innerHTML = string;
+    return div.childNodes[0];
+};
+// Tests if given element is inside (or simply is) the container
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.elementInside = function(element, container) {
+    if (element === container) return true;
+     // Coffeescript doesn't support do/while loops
+    while(element = element.parentNode){
+        if (element === container) return true;
+    }
+    return false;
+};
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.getElement = function(el, name) {
+    let element;
+    if (typeof el === "string") element = document.querySelector(el);
+    else if (el.nodeType != null) element = el;
+    if (element == null) throw new Error(`Invalid \`${name}\` option provided. Please provide a CSS selector or a plain HTML element.`);
+    return element;
+};
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.getElements = function(els, name) {
+    let el, elements;
+    if (els instanceof Array) {
+        elements = [];
+        try {
+            for (el of els)elements.push(this.getElement(el, name));
+        } catch (e) {
+            elements = null;
+        }
+    } else if (typeof els === "string") {
+        elements = [];
+        for (el of document.querySelectorAll(els))elements.push(el);
+    } else if (els.nodeType != null) elements = [
+        els
+    ];
+    if (elements == null || !elements.length) throw new Error(`Invalid \`${name}\` option provided. Please provide a CSS selector, a plain HTML element or a list of those.`);
+    return elements;
+};
+// Asks the user the question and calls accepted or rejected accordingly
+//
+// The default implementation just uses `window.confirm` and then calls the
+// appropriate callback.
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.confirm = function(question, accepted, rejected) {
+    if (window.confirm(question)) return accepted();
+    else if (rejected != null) return rejected();
+};
+// Validates the mime type like this:
+//
+// https://developer.mozilla.org/en-US/docs/HTML/Element/input#attr-accept
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.isValidFile = function(file, acceptedFiles) {
+    if (!acceptedFiles) return true;
+     // If there are no accepted mime types, it's OK
+    acceptedFiles = acceptedFiles.split(",");
+    let mimeType = file.type;
+    let baseMimeType = mimeType.replace(/\/.*$/, "");
+    for (let validType of acceptedFiles){
+        validType = validType.trim();
+        if (validType.charAt(0) === ".") {
+            if (file.name.toLowerCase().indexOf(validType.toLowerCase(), file.name.length - validType.length) !== -1) return true;
+        } else if (/\/\*$/.test(validType)) {
+            // This is something like a image/* mime type
+            if (baseMimeType === validType.replace(/\/.*$/, "")) return true;
+        } else {
+            if (mimeType === validType) return true;
+        }
+    }
+    return false;
+};
+// Augment jQuery
+if (typeof jQuery !== "undefined" && jQuery !== null) jQuery.fn.dropzone = function(options) {
+    return this.each(function() {
+        return new $3ed269f2f0fb224b$export$2e2bcd8739ae039(this, options);
+    });
+};
+// Dropzone file status codes
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.ADDED = "added";
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.QUEUED = "queued";
+// For backwards compatibility. Now, if a file is accepted, it's either queued
+// or uploading.
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.ACCEPTED = $3ed269f2f0fb224b$export$2e2bcd8739ae039.QUEUED;
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING = "uploading";
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.PROCESSING = $3ed269f2f0fb224b$export$2e2bcd8739ae039.UPLOADING; // alias
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.CANCELED = "canceled";
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.ERROR = "error";
+$3ed269f2f0fb224b$export$2e2bcd8739ae039.SUCCESS = "success";
+/*
+
+ Bugfix for iOS 6 and 7
+ Source: http://stackoverflow.com/questions/11929099/html5-canvas-drawimage-ratio-bug-ios
+ based on the work of https://github.com/stomita/ios-imagefile-megapixel
+
+ */ // Detecting vertical squash in loaded image.
+// Fixes a bug which squash image vertically while drawing into canvas for some images.
+// This is a bug in iOS6 devices. This function from https://github.com/stomita/ios-imagefile-megapixel
+let $3ed269f2f0fb224b$var$detectVerticalSquash = function(img) {
+    let iw = img.naturalWidth;
+    let ih = img.naturalHeight;
+    let canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = ih;
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    let { data: data  } = ctx.getImageData(1, 0, 1, ih);
+    // search image edge pixel position in case it is squashed vertically.
+    let sy = 0;
+    let ey = ih;
+    let py = ih;
+    while(py > sy){
+        let alpha = data[(py - 1) * 4 + 3];
+        if (alpha === 0) ey = py;
+        else sy = py;
+        py = ey + sy >> 1;
+    }
+    let ratio = py / ih;
+    if (ratio === 0) return 1;
+    else return ratio;
+};
+// A replacement for context.drawImage
+// (args are for source and destination).
+var $3ed269f2f0fb224b$var$drawImageIOSFix = function(ctx, img, sx, sy, sw, sh, dx, dy, dw, dh) {
+    let vertSquashRatio = $3ed269f2f0fb224b$var$detectVerticalSquash(img);
+    return ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh / vertSquashRatio);
+};
+// Based on MinifyJpeg
+// Source: http://www.perry.cz/files/ExifRestorer.js
+// http://elicon.blog57.fc2.com/blog-entry-206.html
+class $3ed269f2f0fb224b$var$ExifRestore {
+    static initClass() {
+        this.KEY_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    }
+    static encode64(input) {
+        let output = "";
+        let chr1 = undefined;
+        let chr2 = undefined;
+        let chr3 = "";
+        let enc1 = undefined;
+        let enc2 = undefined;
+        let enc3 = undefined;
+        let enc4 = "";
+        let i = 0;
+        while(true){
+            chr1 = input[i++];
+            chr2 = input[i++];
+            chr3 = input[i++];
+            enc1 = chr1 >> 2;
+            enc2 = (chr1 & 3) << 4 | chr2 >> 4;
+            enc3 = (chr2 & 15) << 2 | chr3 >> 6;
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) enc3 = enc4 = 64;
+            else if (isNaN(chr3)) enc4 = 64;
+            output = output + this.KEY_STR.charAt(enc1) + this.KEY_STR.charAt(enc2) + this.KEY_STR.charAt(enc3) + this.KEY_STR.charAt(enc4);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+            if (!(i < input.length)) break;
+        }
+        return output;
+    }
+    static restore(origFileBase64, resizedFileBase64) {
+        if (!origFileBase64.match("data:image/jpeg;base64,")) return resizedFileBase64;
+        let rawImage = this.decode64(origFileBase64.replace("data:image/jpeg;base64,", ""));
+        let segments = this.slice2Segments(rawImage);
+        let image = this.exifManipulation(resizedFileBase64, segments);
+        return `data:image/jpeg;base64,${this.encode64(image)}`;
+    }
+    static exifManipulation(resizedFileBase64, segments) {
+        let exifArray = this.getExifArray(segments);
+        let newImageArray = this.insertExif(resizedFileBase64, exifArray);
+        let aBuffer = new Uint8Array(newImageArray);
+        return aBuffer;
+    }
+    static getExifArray(segments) {
+        let seg = undefined;
+        let x = 0;
+        while(x < segments.length){
+            seg = segments[x];
+            if (seg[0] === 255 & seg[1] === 225) return seg;
+            x++;
+        }
+        return [];
+    }
+    static insertExif(resizedFileBase64, exifArray) {
+        let imageData = resizedFileBase64.replace("data:image/jpeg;base64,", "");
+        let buf = this.decode64(imageData);
+        let separatePoint = buf.indexOf(255, 3);
+        let mae = buf.slice(0, separatePoint);
+        let ato = buf.slice(separatePoint);
+        let array = mae;
+        array = array.concat(exifArray);
+        array = array.concat(ato);
+        return array;
+    }
+    static slice2Segments(rawImageArray) {
+        let head = 0;
+        let segments = [];
+        while(true){
+            var length;
+            if (rawImageArray[head] === 255 & rawImageArray[head + 1] === 218) break;
+            if (rawImageArray[head] === 255 & rawImageArray[head + 1] === 216) head += 2;
+            else {
+                length = rawImageArray[head + 2] * 256 + rawImageArray[head + 3];
+                let endPoint = head + length + 2;
+                let seg = rawImageArray.slice(head, endPoint);
+                segments.push(seg);
+                head = endPoint;
+            }
+            if (head > rawImageArray.length) break;
+        }
+        return segments;
+    }
+    static decode64(input) {
+        let output = "";
+        let chr1 = undefined;
+        let chr2 = undefined;
+        let chr3 = "";
+        let enc1 = undefined;
+        let enc2 = undefined;
+        let enc3 = undefined;
+        let enc4 = "";
+        let i = 0;
+        let buf = [];
+        // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+        let base64test = /[^A-Za-z0-9\+\/\=]/g;
+        if (base64test.exec(input)) console.warn("There were invalid base64 characters in the input text.\nValid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\nExpect errors in decoding.");
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+        while(true){
+            enc1 = this.KEY_STR.indexOf(input.charAt(i++));
+            enc2 = this.KEY_STR.indexOf(input.charAt(i++));
+            enc3 = this.KEY_STR.indexOf(input.charAt(i++));
+            enc4 = this.KEY_STR.indexOf(input.charAt(i++));
+            chr1 = enc1 << 2 | enc2 >> 4;
+            chr2 = (enc2 & 15) << 4 | enc3 >> 2;
+            chr3 = (enc3 & 3) << 6 | enc4;
+            buf.push(chr1);
+            if (enc3 !== 64) buf.push(chr2);
+            if (enc4 !== 64) buf.push(chr3);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+            if (!(i < input.length)) break;
+        }
+        return buf;
+    }
+}
+$3ed269f2f0fb224b$var$ExifRestore.initClass();
+/*
+ * contentloaded.js
+ *
+ * Author: Diego Perini (diego.perini at gmail.com)
+ * Summary: cross-browser wrapper for DOMContentLoaded
+ * Updated: 20101020
+ * License: MIT
+ * Version: 1.2
+ *
+ * URL:
+ * http://javascript.nwbox.com/ContentLoaded/
+ * http://javascript.nwbox.com/ContentLoaded/MIT-LICENSE
+ */ // @win window reference
+// @fn function reference
+let $3ed269f2f0fb224b$var$contentLoaded = function(win, fn) {
+    let done = false;
+    let top = true;
+    let doc = win.document;
+    let root = doc.documentElement;
+    let add = doc.addEventListener ? "addEventListener" : "attachEvent";
+    let rem = doc.addEventListener ? "removeEventListener" : "detachEvent";
+    let pre = doc.addEventListener ? "" : "on";
+    var init = function(e) {
+        if (e.type === "readystatechange" && doc.readyState !== "complete") return;
+        (e.type === "load" ? win : doc)[rem](pre + e.type, init, false);
+        if (!done && (done = true)) return fn.call(win, e.type || e);
+    };
+    var poll = function() {
+        try {
+            root.doScroll("left");
+        } catch (e) {
+            setTimeout(poll, 50);
+            return;
+        }
+        return init("poll");
+    };
+    if (doc.readyState !== "complete") {
+        if (doc.createEventObject && root.doScroll) {
+            try {
+                top = !win.frameElement;
+            } catch (error) {
+            }
+            if (top) poll();
+        }
+        doc[add](pre + "DOMContentLoaded", init, false);
+        doc[add](pre + "readystatechange", init, false);
+        return win[add](pre + "load", init, false);
+    }
+};
+function $3ed269f2f0fb224b$var$__guard__(value, transform) {
+    return typeof value !== "undefined" && value !== null ? transform(value) : undefined;
+}
+function $3ed269f2f0fb224b$var$__guardMethod__(obj, methodName, transform) {
+    if (typeof obj !== "undefined" && obj !== null && typeof obj[methodName] === "function") return transform(obj, methodName);
+    else return undefined;
+}
+
+
+
+//# sourceMappingURL=dropzone.mjs.map
 
 
 /***/ })

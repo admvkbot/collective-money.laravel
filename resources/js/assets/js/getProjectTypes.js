@@ -2,29 +2,31 @@
 import { ref, onMounted, onUpdated } from 'vue'
 
 export default function getProjectTypes() {
-  const types = ref([])
-//  const getUserRepositories = async () => {
-//    repositories.value = await fetchUserRepositories(user.value)
-//  }
+   const types = ref([])
+   //  const getUserRepositories = async () => {
+   //    repositories.value = await fetchUserRepositories(user.value)
+   //  }
 
 
-  const connectGetProjectTypes = () => axios.get("/sanctum/csrf-cookie").then((response) => {
-   axios
-     .get("/api/get-types", {})
-     .then((r) => {
+   //const connectGetProjectTypes = () => axios.get("/sanctum/csrf-cookie").then((response) => {
+   //const connectGetProjectTypes = () => {
+   const connectGetProjectTypes = () => axios
+      .get("/api/get-types", {})
+      .then((r) => {
          types.value = r.data;
-     })
-     .catch((err) => {
-       console.log(err);
-       const registerError = "Ошибка получеения типов проектов";
-       alert(registerError);
-     });
- });
+      })
+      .catch((err) => {
+         console.log(err);
+         const registerError = "Ошибка получеения типов проектов";
+         alert(registerError);
+      });
+   //});
+   //};
 
 
-  //onMounted(connectGetAllAccounts)
-  connectGetProjectTypes()
-  //watch(user, getUserRepositories)
+   //onMounted(connectGetAllAccounts)
+   connectGetProjectTypes()
+   //watch(user, getUserRepositories)
 
-  return types
+   return types
 }

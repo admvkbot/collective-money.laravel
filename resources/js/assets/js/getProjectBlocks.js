@@ -9,18 +9,18 @@ export default function getProjectBlocks(projectId) {
    //console.log(1);
 
 
-   const connectGetProjectBlocks = () => axios.get("/sanctum/csrf-cookie").then((response) => {
-      axios
-         .get(`/api/get-blocks/${projectId}`, {})
-         .then((r) => {
-            blocks.value = r.data;
-         })
-         .catch((err) => {
-            console.log(err);
-            const registerError = "Ошибка получеения блоков timeline";
-            alert(registerError);
-         });
-   });
+   //const connectGetProjectBlocks = () => axios.get("/sanctum/csrf-cookie").then((response) => {
+   const connectGetProjectBlocks = () => axios
+      .get(`/api/get-blocks/${projectId}`, {})
+      .then((r) => {
+         blocks.value = r.data;
+      })
+      .catch((err) => {
+         console.log(err);
+         const registerError = "Ошибка получеения блоков timeline";
+         alert(registerError);
+      });
+   //});
 
 
    //onMounted(connectGetAllAccounts)

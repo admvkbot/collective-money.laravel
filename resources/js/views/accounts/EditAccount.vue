@@ -163,7 +163,7 @@
 import getAccountData from "@/assets/js/getAccountData";
 import getAllSocials from "@/assets/js/getSocials";
 import getAccountSocialNetworks from "@/assets/js/getAccountSocialNetworks";
-import SocialsTable from "@/views/components/SocialsTable";
+import SocialsTable from "@/views/components/tables/SocialsTable";
 import VsudButton from "@/components/VsudButton.vue";
 import { computed } from 'vue'
 
