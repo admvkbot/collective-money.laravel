@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import MessagesTable from "./components/MessagesTable";
-import ProjectsTable from "./components/ProjectsTable";
+import MessagesTable from "@/views/components/tables/MessagesTable";
+import ProjectsTable from "@/views/components/tables/ProjectsTable";
 
 export default {
   name: "tgparser",

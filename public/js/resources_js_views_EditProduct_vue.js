@@ -522,16 +522,25 @@ __webpack_require__.r(__webpack_exports__);
     AddProjectBlockModal: _components_modal_AddProjectBlockModal_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
   },
   mounted: function mounted() {
+    var _this = this;
+
     this.addModal = new bootstrap__WEBPACK_IMPORTED_MODULE_18__.Modal(document.getElementById("addProjectBlockModalMessage")); //window.token = localStorage.getItem("x_xsrf_token");
 
-    var token = this.getCookie('XSRF-TOKEN'); //this.eraseCookie('XSRF-TOKEN')
-    //this.setCookie("XSRF-TOKEN", this.token, 1);
-    //console.log(this.token);
+    this.pathLogo = this.projectIn.value.logo_url;
+    var token = this.getCookie("XSRF-TOKEN");
+    /*if (typeof Dropzone !== "undefined") {
+      Dropzone.forElement("dropzone").removeAllFiles(true);
+    }*/
 
     dropzone__WEBPACK_IMPORTED_MODULE_16__.Dropzone.autoDiscover = false;
+
+    try {
+      dropzone__WEBPACK_IMPORTED_MODULE_16__.Dropzone.forElement("dropzone").removeAllFiles(true);
+    } catch (_unused) {}
+
     var drop = document.getElementById("dropzone");
     var myDropzone = new dropzone__WEBPACK_IMPORTED_MODULE_16__.Dropzone(drop, {
-      url: "/api/upload-project-logo",
+      url: "/api/upload-project-logo/" + this.projectId,
       addRemoveLinks: true,
       uploadMultiple: false,
       maxFilesize: 2,
@@ -543,6 +552,7 @@ __webpack_require__.r(__webpack_exports__);
       dictRemoveFile: "Удалить файл",
       maxFiles: 1,
       acceptedFiles: ".jpg,.png",
+      resizeHeight: 128,
       withCredentials: true,
       dictResponseError: "Ошибка загрузки изображения",
       headers: {
@@ -562,6 +572,9 @@ __webpack_require__.r(__webpack_exports__);
         };
 
         setCookie("XSRF-TOKEN", token, 1);
+      },
+      success: function success(file, response) {
+        _this.projectIn.value.logo_url = response;
       }
     }); //this.token = localStorage.getItem("x_xsrf_token");
   },
@@ -636,40 +649,39 @@ __webpack_require__.r(__webpack_exports__);
       document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     },
     sendData: function sendData() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/sanctum/csrf-cookie").then(function (response) {
-        axios.post("/api/edit-project/" + _this.projectId, {
-          name: _this.projectIn.value.name,
-          type: _this.projectIn.value.project_type_id,
-          url: _this.projectIn.value.website_url,
-          twitter: _this.projectIn.value.twitter,
-          discord: _this.projectIn.value.discord,
-          youtube: _this.projectIn.value.youtube,
-          telegram: _this.projectIn.value.telegram,
-          medium: _this.projectIn.value.medium,
-          description: _this.projectIn.value.description
+        axios.post("/api/edit-project/" + _this2.projectId, {
+          name: _this2.projectIn.value.name,
+          type: _this2.projectIn.value.project_type_id,
+          url: _this2.projectIn.value.website_url,
+          twitter: _this2.projectIn.value.twitter,
+          discord: _this2.projectIn.value.discord,
+          youtube: _this2.projectIn.value.youtube,
+          telegram: _this2.projectIn.value.telegram,
+          medium: _this2.projectIn.value.medium,
+          description: _this2.projectIn.value.description
         }).then(function (r) {
-          _this.$router.push({
+          _this2.$router.push({
             name: "Products"
           }); //this.$router.go()
           //this.$emit("socialsReload");
 
         })["catch"](function (err) {
           console.log(err.response);
-          _this.registerError = "Ошибка сохранения проекта";
-          alert(_this.registerError);
+          _this2.registerError = "Ошибка сохранения проекта";
+          alert(_this2.registerError);
         });
       });
     },
     showBlockModal: function showBlockModal() {
-      var _this2 = this;
+      var _this3 = this;
 
-      console.log(this.openModalStatus);
       this.openModalStatus = true;
       this.addModal.show();
       setTimeout(function () {
-        _this2.openModalStatus = false;
+        _this3.openModalStatus = false;
       }, 500);
     },
     projectReload: function projectReload() {
@@ -715,17 +727,17 @@ __webpack_require__.r(__webpack_exports__);
       this.showBlockModal();
     },
     deleteBlock: function deleteBlock(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/sanctum/csrf-cookie").then(function (response) {
         axios.get("/api/delete-block/" + id).then(function (r) {
           //this.$router.push({ name: "Products" });
           //this.$router.go()
-          _this3.projectReload();
+          _this4.projectReload();
         })["catch"](function (err) {
           console.log(err.response);
-          _this3.registerError = "Ошибка сохранения удаления блока timeline";
-          alert(_this3.registerError);
+          _this4.registerError = "Ошибка сохранения удаления блока timeline";
+          alert(_this4.registerError);
         });
       });
     }
@@ -1261,20 +1273,28 @@ var _hoisted_7 = {
 var _hoisted_8 = {
   "class": "col-6"
 };
-
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row\" data-v-b3b26694><div class=\"col-12\" data-v-b3b26694><form action=\"/file-upload\" class=\"form-control dropzone\" id=\"dropzone\" data-v-b3b26694><div class=\"fallback\" data-v-b3b26694><input name=\"file\" type=\"file\" multiple data-v-b3b26694></div></form></div></div>", 1);
-
-var _hoisted_10 = {
+var _hoisted_9 = {
   "class": "row"
 };
-var _hoisted_11 = {
-  "class": "col-12"
+var _hoisted_10 = {
+  "class": "col-3"
 };
+var _hoisted_11 = ["src"];
 
 var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "form-label"
-  }, "Название", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "col-9"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+    action: "/file-upload",
+    "class": "form-control dropzone",
+    id: "dropzone"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "fallback"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    name: "file",
+    type: "file",
+    multiple: ""
+  })])])], -1
   /* HOISTED */
   );
 });
@@ -1286,7 +1306,13 @@ var _hoisted_14 = {
   "class": "col-12"
 };
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ключевые фразы");
+var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "class": "form-label"
+  }, "Название", -1
+  /* HOISTED */
+  );
+});
 
 var _hoisted_16 = {
   "class": "row"
@@ -1295,16 +1321,25 @@ var _hoisted_17 = {
   "class": "col-12"
 };
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Комментарий к проекту");
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ключевые фразы");
 
 var _hoisted_19 = {
   "class": "row"
 };
 var _hoisted_20 = {
+  "class": "col-12"
+};
+
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Комментарий к проекту");
+
+var _hoisted_22 = {
+  "class": "row"
+};
+var _hoisted_23 = {
   "class": "col-12 pb-3"
 };
 
-var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_24 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "form-label"
   }, "Тип проекта", -1
@@ -1312,15 +1347,15 @@ var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_22 = ["value"];
-var _hoisted_23 = {
+var _hoisted_25 = ["value"];
+var _hoisted_26 = {
   "class": "row"
 };
-var _hoisted_24 = {
+var _hoisted_27 = {
   "class": "col-12"
 };
 
-var _hoisted_25 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_28 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "form-label"
   }, "Официальный вебсайт", -1
@@ -1328,91 +1363,91 @@ var _hoisted_25 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_26 = {
+var _hoisted_29 = {
   "class": "row"
 };
-var _hoisted_27 = {
-  "class": "col-12"
-};
-var _hoisted_28 = {
-  "class": "form-label d-flex"
-};
-
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Twitter");
-
 var _hoisted_30 = {
-  "class": "row"
+  "class": "col-12"
 };
 var _hoisted_31 = {
-  "class": "col-12"
-};
-var _hoisted_32 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Discord");
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Twitter");
 
-var _hoisted_34 = {
+var _hoisted_33 = {
   "class": "row"
+};
+var _hoisted_34 = {
+  "class": "col-12"
 };
 var _hoisted_35 = {
-  "class": "col-12"
-};
-var _hoisted_36 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("YouTube");
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Discord");
 
-var _hoisted_38 = {
+var _hoisted_37 = {
   "class": "row"
+};
+var _hoisted_38 = {
+  "class": "col-12"
 };
 var _hoisted_39 = {
-  "class": "col-12"
-};
-var _hoisted_40 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telegram");
+var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("YouTube");
 
-var _hoisted_42 = {
+var _hoisted_41 = {
   "class": "row"
 };
-var _hoisted_43 = {
+var _hoisted_42 = {
   "class": "col-12"
 };
-var _hoisted_44 = {
+var _hoisted_43 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Medium");
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telegram");
 
+var _hoisted_45 = {
+  "class": "row"
+};
 var _hoisted_46 = {
-  "class": "row mt-auto position-sticky top-100 pb-2"
+  "class": "col-12"
 };
 var _hoisted_47 = {
+  "class": "form-label d-flex"
+};
+
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Medium");
+
+var _hoisted_49 = {
+  "class": "row mt-auto position-sticky top-100 pb-2"
+};
+var _hoisted_50 = {
   "class": "col-12 d-flex"
 };
 
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Назад ");
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Назад ");
 
-var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Сохранить ");
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Сохранить ");
 
-var _hoisted_50 = {
+var _hoisted_53 = {
   "class": "col-lg-6 mt-4 mt-lg-0"
 };
-var _hoisted_51 = {
+var _hoisted_54 = {
   "class": "card bg-gradient-dark"
 };
-var _hoisted_52 = {
+var _hoisted_55 = {
   "class": "card-header bg-transparent pb-0"
 };
-var _hoisted_53 = {
+var _hoisted_56 = {
   "class": "mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4"
 };
 
-var _hoisted_54 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_57 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
     "class": "text-white"
   }, " Настройка стадий развития проекта ", -1
@@ -1420,31 +1455,31 @@ var _hoisted_54 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_55 = {
+var _hoisted_58 = {
   "class": "card-body p-3"
 };
-var _hoisted_56 = {
+var _hoisted_59 = {
   "class": "timeline timeline-one-side",
   "data-timeline-axis-style": "dashed"
 };
-var _hoisted_57 = {
+var _hoisted_60 = {
   key: 0
 };
-var _hoisted_58 = {
+var _hoisted_61 = {
   "class": "timeline-step bg-dark"
 };
-var _hoisted_59 = {
+var _hoisted_62 = {
   "class": "timeline-content"
 };
-var _hoisted_60 = {
+var _hoisted_63 = {
   "class": "text-white text-sm font-weight-bold mb-0"
 };
-var _hoisted_61 = {
+var _hoisted_64 = {
   "class": "float-right"
 };
-var _hoisted_62 = ["id"];
+var _hoisted_65 = ["id"];
 
-var _hoisted_63 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_66 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fa fa-ellipsis-v text-xs",
     "aria-hidden": "true"
@@ -1453,21 +1488,21 @@ var _hoisted_63 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_64 = [_hoisted_63];
-var _hoisted_65 = ["aria-labelledby"];
-var _hoisted_66 = ["onClick"];
-var _hoisted_67 = ["onClick"];
-var _hoisted_68 = {
+var _hoisted_67 = [_hoisted_66];
+var _hoisted_68 = ["aria-labelledby"];
+var _hoisted_69 = ["onClick"];
+var _hoisted_70 = ["onClick"];
+var _hoisted_71 = {
   "class": "text-white text-xs mt-1 mb-0"
 };
-var _hoisted_69 = {
+var _hoisted_72 = {
   "class": "text-secondary text-sm mt-3 mb-2"
 };
-var _hoisted_70 = {
+var _hoisted_73 = {
   "class": "timeline-block mb-3"
 };
 
-var _hoisted_71 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_74 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": "timeline-step bg-dark"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -1477,11 +1512,11 @@ var _hoisted_71 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_72 = {
+var _hoisted_75 = {
   "class": "timeline-content"
 };
 
-var _hoisted_73 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_76 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
     "class": "text-white text-sm font-weight-bold mb-0"
   }, " Стадии проекта не описаны ", -1
@@ -1489,7 +1524,7 @@ var _hoisted_73 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_74 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_77 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
     "class": "text-secondary font-weight-bold text-xs mt-1 mb-0"
   }, null, -1
@@ -1497,7 +1532,7 @@ var _hoisted_74 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_75 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_78 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
     "class": "text-secondary text-sm mt-3 mb-2"
   }, " Отсутствует описание стадий развития проекта. ", -1
@@ -1505,10 +1540,10 @@ var _hoisted_75 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_76 = {
+var _hoisted_79 = {
   "class": "row"
 };
-var _hoisted_77 = {
+var _hoisted_80 = {
   "class": "col-md-4"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -1532,7 +1567,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_add_project_block_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("add-project-block-modal");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    src: $setup.projectIn.value.logo_url,
+    "class": "m-2"
+  }, null, 8
+  /* PROPS */
+  , _hoisted_11)]), _hoisted_12]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-name",
     type: "text",
     placeholder: "Crypto Whitelist Pro",
@@ -1546,30 +1586,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
     id: "project-keys",
     value: $setup.index.value,
     onTextareaValue: _cache[1] || (_cache[1] = function (v) {
       return $setup.index.value = v;
     }),
     placeholder: "key1\r\nkey2"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_15];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
-    id: "project-description",
-    placeholder: "Любой текст",
-    value: $setup.projectIn.value.description,
-    onTextareaValue: _cache[2] || (_cache[2] = function (v) {
-      return $setup.projectIn.value.description = v;
-    }),
-    rows: "7"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_18];
@@ -1579,7 +1602,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
+    id: "project-description",
+    placeholder: "Любой текст",
+    value: $setup.projectIn.value.description,
+    onTextareaValue: _cache[2] || (_cache[2] = function (v) {
+      return $setup.projectIn.value.description = v;
+    }),
+    rows: "7"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_21];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
     name: "choices-type-button",
     id: "choices-type",
@@ -1593,12 +1633,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: item.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 9
     /* TEXT, PROPS */
-    , _hoisted_22);
+    , _hoisted_25);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.projectIn.value.project_type_id]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.projectIn.value.project_type_id]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-site-url",
     type: "text",
     placeholder: "https://project.website/",
@@ -1612,9 +1652,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_twitter_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_twitter_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_29]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_32]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-twitter",
     type: "text",
     placeholder: "https://twitter.com/xxxx",
@@ -1628,9 +1668,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_discord_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_discord_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_33]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_36]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-discord",
     type: "text",
     placeholder: "https://discord.com/user/xxxx",
@@ -1644,9 +1684,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_youtube_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_youtube_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_37]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_40]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-youtube",
     type: "text",
     placeholder: "https://youtube.com/channel/xxxx",
@@ -1660,9 +1700,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_telegram_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_telegram_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_41]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_44]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-telegram",
     type: "text",
     placeholder: "https://t.me/xxxx",
@@ -1676,9 +1716,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_medium_icon, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_medium_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_45]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_48]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "project-medium",
     type: "text",
     placeholder: "https://medium.com/@xxxx",
@@ -1692,7 +1732,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: false
   }, null, 8
   /* PROPS */
-  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_button, {
+  , ["value"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_button, {
     "class": "my-4 mb-2 mr-2",
     variant: "outline",
     color: "active",
@@ -1702,7 +1742,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_48];
+      return [_hoisted_51];
     }),
     _: 1
     /* STABLE */
@@ -1715,14 +1755,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($options.sendData, ["prevent"])
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_49];
+      return [_hoisted_52];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "javascript:;",
     onClick: _cache[11] || (_cache[11] = function () {
       return $options.showAddBlockModal && $options.showAddBlockModal.apply($options, arguments);
@@ -1732,24 +1772,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       text: 'Добавить блок описания',
       variant: 'h6'
     }
-  })])]), _hoisted_54]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [$setup.blocks.value.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_57, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.blocks.value, function (block) {
+  })])]), _hoisted_57]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [$setup.blocks.value.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_60, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.blocks.value, function (block) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": "timeline-block mb-3",
       key: block.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.getBlockIcon(block.stage) + ' text-' + $options.getBlockColor(block.stage))
     }, null, 2
     /* CLASS */
-    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.name), 1
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-link text-secondary",
       "data-bs-toggle": "dropdown",
       "aria-expanded": "true",
       id: 'project-dropdown' + block.id
-    }, _hoisted_64, 8
+    }, _hoisted_67, 8
     /* PROPS */
-    , _hoisted_62), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+    , _hoisted_65), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
       "class": "dropdown-menu px-2 py-3 ms-sm-n4 ms-n5",
       "aria-labelledby": 'timeline-block-dropdown' + block.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
@@ -1760,7 +1800,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, "Изменить", 8
     /* PROPS */
-    , _hoisted_66)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_69)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       "class": "dropdown-item border-radius-md",
       href: "javascript:;",
       onClick: function onClick($event) {
@@ -1768,11 +1808,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, "Удалить", 8
     /* PROPS */
-    , _hoisted_67)])], 8
+    , _hoisted_70)])], 8
     /* PROPS */
-    , _hoisted_65)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPrintDate(block.date)), 1
+    , _hoisted_68)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getPrintDate(block.date)), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.description), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_72, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(block.description), 1
     /* TEXT */
     ), block.button1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
       key: 0,
@@ -1804,14 +1844,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 1
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" far fa-baby-carriage "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [_hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_72, [_hoisted_73, _hoisted_74, _hoisted_75, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" far fa-baby-carriage "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_73, [_hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_75, [_hoisted_76, _hoisted_77, _hoisted_78, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "badge badge-sm bg-gradient-secondary",
     onClick: _cache[12] || (_cache[12] = function () {
       return $options.showAddBlockModal && $options.showAddBlockModal.apply($options, arguments);
     })
   }, " Настроить timeline проекта ")])])], 2112
   /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
-  ))])])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_76, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_77, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_add_project_block_modal, {
+  ))])])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_79, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_add_project_block_modal, {
     "project-id": $setup.projectId,
     blockId: $data.blockData.id,
     blockType: $data.blockData.type,
@@ -10030,7 +10070,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-b3b26694],\r\n.dropend .dropdown-menu[data-v-b3b26694] {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\n}\r\n", "",{"version":3,"sources":["webpack://./resources/js/views/EditProduct.vue"],"names":[],"mappings":";AAkrBA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\r\n  <div class=\"container-fluid my-3 py-3\">\r\n    <div class=\"row\">\r\n      <div class=\"col-lg-12 mb-lg-0 mb-4\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <h5>Настройки парсинга проекта</h5>\r\n          </div>\r\n          <div class=\"card-body pt-0\">\r\n            <div class=\"row\">\r\n              <div class=\"col-6\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <form\r\n                      action=\"/file-upload\"\r\n                      class=\"form-control dropzone\"\r\n                      id=\"dropzone\"\r\n                    >\r\n                      <div class=\"fallback\">\r\n                        <input name=\"file\" type=\"file\" multiple />\r\n                      </div>\r\n                    </form>\r\n                  </div>\r\n                </div>\r\n\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label\">Название</label>\r\n                    <vsud-input\r\n                      id=\"project-name\"\r\n                      type=\"text\"\r\n                      placeholder=\"Crypto Whitelist Pro\"\r\n                      aria-label=\"Name\"\r\n                      :isRequired=\"true\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.name\"\r\n                      :disabled=\"false\"\r\n                      @input-value=\"(v) => (projectIn.value.name = v)\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"project-keys\"\r\n                      :value=\"index.value\"\r\n                      @textarea-value=\"(v) => (index.value = v)\"\r\n                      placeholder=\"key1\r\nkey2\"\r\n                      >Ключевые фразы</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"project-description\"\r\n                      placeholder=\"Любой текст\"\r\n                      :value=\"projectIn.value.description\"\r\n                      @textarea-value=\"(v) => (projectIn.value.description = v)\"\r\n                      rows=\"7\"\r\n                      >Комментарий к проекту</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12 pb-3\">\r\n                    <label class=\"form-label\">Тип проекта</label>\r\n                    <select\r\n                      class=\"form-control\"\r\n                      name=\"choices-type-button\"\r\n                      id=\"choices-type\"\r\n                      placeholder=\"Выберите тип проекта\"\r\n                      v-model=\"projectIn.value.project_type_id\"\r\n                    >\r\n                      <option\r\n                        v-for=\"item in types.value\"\r\n                        :value=\"item.id\"\r\n                        :key=\"item.id\"\r\n                      >\r\n                        {{ item.name }}\r\n                      </option>\r\n                    </select>\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label\">Официальный вебсайт</label>\r\n                    <vsud-input\r\n                      id=\"project-site-url\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://project.website/\"\r\n                      aria-label=\"project-site-url\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.website_url\"\r\n                      @input-value=\"(v) => (projectIn.value.website_url = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><twitter-icon class=\"mt-1 mr-1\" />Twitter</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-twitter\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://twitter.com/xxxx\"\r\n                      aria-label=\"project-twitter\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.twitter\"\r\n                      @input-value=\"(v) => (projectIn.value.twitter = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><discord-icon class=\"mt-1 mr-1\" />Discord</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-discord\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://discord.com/user/xxxx\"\r\n                      aria-label=\"project-discord\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.discord\"\r\n                      @input-value=\"(v) => (projectIn.value.discord = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><youtube-icon class=\"mt-1 mr-1\" />YouTube</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-youtube\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://youtube.com/channel/xxxx\"\r\n                      aria-label=\"project-youtube\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.youtube\"\r\n                      @input-value=\"(v) => (projectIn.value.youtube = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><telegram-icon class=\"mt-1 mr-1\" />Telegram</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-telegram\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://t.me/xxxx\"\r\n                      aria-label=\"project-telegram\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.telegram\"\r\n                      @input-value=\"(v) => (projectIn.value.telegram = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><medium-icon class=\"mt-1 mr-1\" />Medium</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-medium\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://medium.com/@xxxx\"\r\n                      aria-label=\"project-medium\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.medium\"\r\n                      @input-value=\"(v) => (projectIn.value.medium = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n\r\n                <div class=\"row mt-auto position-sticky top-100 pb-2\">\r\n                  <div class=\"col-12 d-flex\">\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 mr-2\"\r\n                      variant=\"outline\"\r\n                      color=\"active\"\r\n                      full-width\r\n                      @click=\"$router.go(-1)\"\r\n                      >Назад\r\n                    </vsud-button>\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 ml-2\"\r\n                      variant=\"gradient\"\r\n                      color=\"success\"\r\n                      full-width\r\n                      @click.prevent=\"sendData\"\r\n                      >Сохранить\r\n                    </vsud-button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <!-- -->\r\n              <div class=\"col-lg-6 mt-4 mt-lg-0\">\r\n                <div class=\"card bg-gradient-dark\">\r\n                  <div class=\"card-header bg-transparent pb-0\">\r\n                    <div class=\"mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4\">\r\n                      <a href=\"javascript:;\" @click=\"showAddBlockModal\">\r\n                        <place-holder-horisontal-card\r\n                          :title=\"{\r\n                            text: 'Добавить блок описания',\r\n                            variant: 'h6',\r\n                          }\"\r\n                        />\r\n                      </a>\r\n                    </div>\r\n\r\n                    <h6 class=\"text-white\">\r\n                      Настройка стадий развития проекта\r\n                    </h6>\r\n                  </div>\r\n                  <div class=\"card-body p-3\">\r\n                    <div\r\n                      class=\"timeline timeline-one-side\"\r\n                      data-timeline-axis-style=\"dashed\"\r\n                    >\r\n                      <div v-if=\"blocks.value.length\">\r\n                        <div\r\n                          class=\"timeline-block mb-3\"\r\n                          v-for=\"block in blocks.value\"\r\n                          :key=\"block.id\"\r\n                        >\r\n                          <span class=\"timeline-step bg-dark\">\r\n                            <i\r\n                              :class=\"\r\n                                getBlockIcon(block.stage) +\r\n                                ' text-' +\r\n                                getBlockColor(block.stage)\r\n                              \"\r\n                            ></i>\r\n                          </span>\r\n                          <div class=\"timeline-content\">\r\n                            <h6\r\n                              class=\"text-white text-sm font-weight-bold mb-0\"\r\n                            >\r\n                              {{ block.name }}\r\n                            </h6>\r\n                            <div class=\"float-right\">\r\n                              <button\r\n                                class=\"btn btn-link text-secondary\"\r\n                                data-bs-toggle=\"dropdown\"\r\n                                aria-expanded=\"true\"\r\n                                :id=\"'project-dropdown' + block.id\"\r\n                              >\r\n                                <i\r\n                                  class=\"fa fa-ellipsis-v text-xs\"\r\n                                  aria-hidden=\"true\"\r\n                                ></i>\r\n                              </button>\r\n                              <ul\r\n                                class=\"dropdown-menu px-2 py-3 ms-sm-n4 ms-n5\"\r\n                                :aria-labelledby=\"\r\n                                  'timeline-block-dropdown' + block.id\r\n                                \"\r\n                              >\r\n                                <li>\r\n                                  <a\r\n                                    class=\"dropdown-item border-radius-md\"\r\n                                    href=\"javascript:;\"\r\n                                    @click=\"\r\n                                      showEditBlockModal(\r\n                                        block.id,\r\n                                        block.stage,\r\n                                        block.name,\r\n                                        block.date,\r\n                                        block.description,\r\n                                        block.buttons\r\n                                      )\r\n                                    \"\r\n                                    >Изменить</a\r\n                                  >\r\n                                </li>\r\n                                <li>\r\n                                  <a\r\n                                    class=\"dropdown-item border-radius-md\"\r\n                                    href=\"javascript:;\"\r\n                                    @click=\"\r\n                                      confirm(\r\n                                        block.id,\r\n                                        'Удалить блок timeline?',\r\n                                        'Удаление этапа развития проекта'\r\n                                      )\r\n                                    \"\r\n                                    >Удалить</a\r\n                                  >\r\n                                </li>\r\n                              </ul>\r\n                            </div>\r\n\r\n                            <p class=\"text-white text-xs mt-1 mb-0\">\r\n                              {{ getPrintDate(block.date) }}\r\n                            </p>\r\n                            <p class=\"text-secondary text-sm mt-3 mb-2\">\r\n                              {{ block.description }}\r\n                            </p>\r\n                            <span\r\n                              class=\"badge badge-sm\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button1\"\r\n                              >{{ block.button1 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button2\"\r\n                              >{{ block.button2 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button3\"\r\n                              >{{ block.button3 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button4\"\r\n                              >{{ block.button4 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button5\"\r\n                              >{{ block.button5 }}</span\r\n                            >\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                      <!-- far fa-baby-carriage -->\r\n                      <div v-else class=\"timeline-block mb-3\">\r\n                        <span class=\"timeline-step bg-dark\">\r\n                          <i class=\"fas fa-question text-secondary\"></i>\r\n                        </span>\r\n                        <div class=\"timeline-content\">\r\n                          <h6 class=\"text-white text-sm font-weight-bold mb-0\">\r\n                            Стадии проекта не описаны\r\n                          </h6>\r\n                          <p\r\n                            class=\"\r\n                              text-secondary\r\n                              font-weight-bold\r\n                              text-xs\r\n                              mt-1\r\n                              mb-0\r\n                            \"\r\n                          ></p>\r\n                          <p class=\"text-secondary text-sm mt-3 mb-2\">\r\n                            Отсутствует описание стадий развития проекта.\r\n                          </p>\r\n                          <button\r\n                            class=\"badge badge-sm bg-gradient-secondary\"\r\n                            @click=\"showAddBlockModal\"\r\n                          >\r\n                            Настроить timeline проекта\r\n                          </button>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <!-- Modal -->\r\n  <div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n      <add-project-block-modal\r\n        :project-id=\"projectId\"\r\n        :blockId=\"blockData.id\"\r\n        :blockType=\"blockData.type\"\r\n        :blockName=\"blockData.name\"\r\n        :blockDate=\"blockData.date\"\r\n        :blockText=\"blockData.text\"\r\n        :blockButtons=\"blockData.buttons\"\r\n        :action=\"blockData.do\"\r\n        :add-modal=\"addModal\"\r\n        :openModal=\"openModalStatus\"\r\n        @project-reload=\"projectReload\"\r\n      />\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport ModerateProjectsTable from \"./components/ModerateProjectsTable\";\r\nimport VsudInput from \"@/components/VsudInput.vue\";\r\nimport VsudTextarea from \"@/components/VsudTextarea.vue\";\r\nimport VsudButton from \"@/components/VsudButton.vue\";\r\nimport VsudTimelineBlock from \"@/components/VsudTimelineBlock.vue\";\r\nimport getProjectTypes from \"@/assets/js/getProjectTypes.js\";\r\nimport getProjectData from \"@/assets/js/getProjectData.js\";\r\nimport getIndexesByProjectId from \"@/assets/js/getIndexes.js\";\r\nimport getProjectBlocks from \"@/assets/js/getProjectBlocks.js\";\r\nimport PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\r\nimport AddProjectBlockModal from \"@/components/modal/AddProjectBlockModal.vue\";\r\n\r\nimport TwitterIcon from \"@/components/Icon/Twitter\";\r\nimport TelegramIcon from \"@/components/Icon/Telegram\";\r\nimport DiscordIcon from \"@/components/Icon/Discord\";\r\nimport MediumIcon from \"@/components/Icon/Medium\";\r\nimport YoutubeIcon from \"@/components/Icon/Youtube\";\r\n\r\nimport { Dropzone } from \"dropzone\";\r\n\r\nimport confirmModal from \"@/components/modal/confirmModal.js\";\r\nimport { Modal } from \"bootstrap\";\r\nimport { ref } from \"vue\";\r\nimport { useRoute } from \"vue-router\";\r\n\r\nexport default {\r\n  name: \"edit-product\",\r\n  components: {\r\n    ModerateProjectsTable,\r\n    VsudInput,\r\n    VsudButton,\r\n    VsudTextarea,\r\n    VsudTimelineBlock,\r\n    getProjectTypes,\r\n    getProjectData,\r\n    getIndexesByProjectId,\r\n    getProjectBlocks,\r\n    TwitterIcon,\r\n    TelegramIcon,\r\n    DiscordIcon,\r\n    MediumIcon,\r\n    YoutubeIcon,\r\n    confirmModal,\r\n    PlaceHolderHorisontalCard,\r\n    AddProjectBlockModal,\r\n  },\r\n  mounted() {\r\n    this.addModal = new Modal(\r\n      document.getElementById(\"addProjectBlockModalMessage\")\r\n    );\r\n    //window.token = localStorage.getItem(\"x_xsrf_token\");\r\n    const token = this.getCookie('XSRF-TOKEN');\r\n    //this.eraseCookie('XSRF-TOKEN')\r\n    //this.setCookie(\"XSRF-TOKEN\", this.token, 1);\r\n    //console.log(this.token);\r\n    Dropzone.autoDiscover = false;\r\n    var drop = document.getElementById(\"dropzone\");\r\n    var myDropzone = new Dropzone(drop, {\r\n      url: \"/api/upload-project-logo\",\r\n      addRemoveLinks: true,\r\n      uploadMultiple: false,\r\n      maxFilesize: 2,\r\n      dictDefaultMessage: \"Перетащите сюда файл изображения. Макс. 2 МБ.\",\r\n      dictFileTooBig: \"Файл слишком большой!\",\r\n      dictInvalidFileType: \"Поддерживатся только .jpg и .png\",\r\n      dictCancelUpload: \"Отменить загрузку\",\r\n      dictUploadCanceled: \"Загрузка отменена\",\r\n      dictRemoveFile: \"Удалить файл\",\r\n      maxFiles: 1,\r\n      acceptedFiles: `.jpg,.png`,\r\n      withCredentials: true,\r\n      dictResponseError: \"Ошибка загрузки изображения\",\r\n      headers: {\r\n        \"X-XSRF-TOKEN\": decodeURIComponent(token),\r\n      },\r\n      sending() {\r\n        const setCookie = (name, value, days) => {\r\n          var expires = \"\";\r\n          if (days) {\r\n            var date = new Date();\r\n            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);\r\n            expires = \"; expires=\" + date.toUTCString();\r\n          }\r\n          document.cookie = name + \"=\" + (value || \"\") + expires + \"; path=/\";\r\n        };\r\n        setCookie(\"XSRF-TOKEN\", token, 1);\r\n      },\r\n    });\r\n    //this.token = localStorage.getItem(\"x_xsrf_token\");\r\n  },\r\n\r\n  data() {\r\n    return {\r\n      openModalStatus: false,\r\n      addModal: null,\r\n      blockTypes: globalBlockTypes,\r\n      confirmBlockDelete: false,\r\n      blockData: {\r\n        id: null,\r\n        type: null,\r\n        name: \"\",\r\n        date: \"\",\r\n        text: \"\",\r\n        do: \"add\",\r\n        buttons: \"\",\r\n      },\r\n      token: null,\r\n    };\r\n  },\r\n\r\n  setup() {\r\n    const route = useRoute();\r\n    const projectId = route.params.productId;\r\n    const types = ref([]);\r\n    types.value = getProjectTypes();\r\n    const projectIn = ref([]);\r\n    projectIn.value = getProjectData(projectId);\r\n    const index = ref([]);\r\n    index.value = getIndexesByProjectId(projectId);\r\n    const blocks = ref([]);\r\n    blocks.value = getProjectBlocks(projectId);\r\n    return { projectId, types, projectIn, index, blocks };\r\n  },\r\n  methods: {\r\n    setCookie(name, value, days) {\r\n      var expires = \"\";\r\n      if (days) {\r\n        var date = new Date();\r\n        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);\r\n        expires = \"; expires=\" + date.toUTCString();\r\n      }\r\n      document.cookie = name + \"=\" + (value || \"\") + expires + \"; path=/\";\r\n    },\r\n    getCookie(cname) {\r\n      let name = cname + \"=\";\r\n      let ca = document.cookie.split(\";\");\r\n      for (let i = 0; i < ca.length; i++) {\r\n        let c = ca[i];\r\n        while (c.charAt(0) == \" \") {\r\n          c = c.substring(1);\r\n        }\r\n        if (c.indexOf(name) == 0) {\r\n          return c.substring(name.length, c.length);\r\n        }\r\n      }\r\n      return \"\";\r\n    },\r\n    eraseCookie(name) {\r\n      document.cookie =\r\n        name + \"=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;\";\r\n    },\r\n    sendData() {\r\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\r\n        axios\r\n          .post(\"/api/edit-project/\" + this.projectId, {\r\n            name: this.projectIn.value.name,\r\n            type: this.projectIn.value.project_type_id,\r\n            url: this.projectIn.value.website_url,\r\n            twitter: this.projectIn.value.twitter,\r\n            discord: this.projectIn.value.discord,\r\n            youtube: this.projectIn.value.youtube,\r\n            telegram: this.projectIn.value.telegram,\r\n            medium: this.projectIn.value.medium,\r\n            description: this.projectIn.value.description,\r\n          })\r\n          .then((r) => {\r\n            this.$router.push({ name: \"Products\" });\r\n            //this.$router.go()\r\n            //this.$emit(\"socialsReload\");\r\n          })\r\n          .catch((err) => {\r\n            console.log(err.response);\r\n            this.registerError = \"Ошибка сохранения проекта\";\r\n            alert(this.registerError);\r\n          });\r\n      });\r\n    },\r\n    showBlockModal() {\r\n      console.log(this.openModalStatus);\r\n      this.openModalStatus = true;\r\n      this.addModal.show();\r\n      setTimeout(() => {\r\n        this.openModalStatus = false;\r\n      }, 500);\r\n    },\r\n    projectReload() {\r\n      this.blocks.value = getProjectBlocks(this.projectId);\r\n    },\r\n    getBlockIcon(id) {\r\n      return this.blockTypes[id - 1].icon;\r\n    },\r\n    getBlockColor(id) {\r\n      return this.blockTypes[id - 1].color;\r\n    },\r\n    setFullDateElement(dig) {\r\n      return dig < 10 ? `0${dig}` : dig;\r\n    },\r\n    getPrintDate(date) {\r\n      let tmpDate = new Date(date);\r\n      let day = this.setFullDateElement(tmpDate.getDate());\r\n      let month = this.setFullDateElement(tmpDate.getMonth() + 1);\r\n      let year = tmpDate.getFullYear();\r\n      return `${day}.${month}.${year}`;\r\n    },\r\n    confirm(id, title, text) {\r\n      this.confirmBlockDelete = confirmModal(id, title, text);\r\n    },\r\n    showAddBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = null;\r\n      this.blockData.type = null;\r\n      this.blockData.name = null;\r\n      this.blockData.date = null;\r\n      this.blockData.text = null;\r\n      this.blockData.buttons = \"Пример\";\r\n      this.blockData.do = \"add\";\r\n      this.showBlockModal();\r\n    },\r\n    showEditBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = id;\r\n      this.blockData.type = type;\r\n      this.blockData.name = name;\r\n      this.blockData.date = date;\r\n      this.blockData.text = text;\r\n      this.blockData.buttons = buttons;\r\n      this.blockData.do = \"edit\";\r\n      this.showBlockModal();\r\n    },\r\n    deleteBlock(id) {\r\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\r\n        axios\r\n          .get(\"/api/delete-block/\" + id)\r\n          .then((r) => {\r\n            //this.$router.push({ name: \"Products\" });\r\n            //this.$router.go()\r\n            this.projectReload();\r\n          })\r\n          .catch((err) => {\r\n            console.log(err.response);\r\n            this.registerError = \"Ошибка сохранения удаления блока timeline\";\r\n            alert(this.registerError);\r\n          });\r\n      });\r\n    },\r\n  },\r\n  computed: {\r\n    tokenC() {\r\n      this.setCookie(\"XSRF-TOKEN\", \"888888\", 1);\r\n      return this.token;\r\n    },\r\n    /*projectType(value) {\r\n      this.project.type = value ? value : this.projectIn.value.project_type_id;\r\n      console.log(1);\r\n      console.log(this.project.type);\r\n      return this.project.type;\r\n    },*/\r\n  },\r\n  watch: {\r\n    confirmBlockDelete(newQuestion, oldQuestion) {\r\n      if (newQuestion) {\r\n        this.deleteBlock(newQuestion);\r\n      }\r\n    },\r\n  },\r\n};\r\n</script>\r\n<style scoped>\r\n.dropdown-menu,\r\n.dropend .dropdown-menu {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\r\n}\r\n</style>"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-b3b26694],\r\n.dropend .dropdown-menu[data-v-b3b26694] {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\n}\r\n", "",{"version":3,"sources":["webpack://./resources/js/views/EditProduct.vue"],"names":[],"mappings":";AA6rBA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\r\n  <div class=\"container-fluid my-3 py-3\">\r\n    <div class=\"row\">\r\n      <div class=\"col-lg-12 mb-lg-0 mb-4\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <h5>Настройки парсинга проекта</h5>\r\n          </div>\r\n          <div class=\"card-body pt-0\">\r\n            <div class=\"row\">\r\n              <div class=\"col-6\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-3\">\r\n                    <img :src=\"projectIn.value.logo_url\" class=\"m-2\" />\r\n                  </div>\r\n                  <div class=\"col-9\">\r\n                    <form\r\n                      action=\"/file-upload\"\r\n                      class=\"form-control dropzone\"\r\n                      id=\"dropzone\"\r\n                    >\r\n                      <div class=\"fallback\">\r\n                        <input name=\"file\" type=\"file\" multiple />\r\n                      </div>\r\n                    </form>\r\n                  </div>\r\n                </div>\r\n\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label\">Название</label>\r\n                    <vsud-input\r\n                      id=\"project-name\"\r\n                      type=\"text\"\r\n                      placeholder=\"Crypto Whitelist Pro\"\r\n                      aria-label=\"Name\"\r\n                      :isRequired=\"true\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.name\"\r\n                      :disabled=\"false\"\r\n                      @input-value=\"(v) => (projectIn.value.name = v)\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"project-keys\"\r\n                      :value=\"index.value\"\r\n                      @textarea-value=\"(v) => (index.value = v)\"\r\n                      placeholder=\"key1\r\nkey2\"\r\n                      >Ключевые фразы</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"project-description\"\r\n                      placeholder=\"Любой текст\"\r\n                      :value=\"projectIn.value.description\"\r\n                      @textarea-value=\"(v) => (projectIn.value.description = v)\"\r\n                      rows=\"7\"\r\n                      >Комментарий к проекту</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12 pb-3\">\r\n                    <label class=\"form-label\">Тип проекта</label>\r\n                    <select\r\n                      class=\"form-control\"\r\n                      name=\"choices-type-button\"\r\n                      id=\"choices-type\"\r\n                      placeholder=\"Выберите тип проекта\"\r\n                      v-model=\"projectIn.value.project_type_id\"\r\n                    >\r\n                      <option\r\n                        v-for=\"item in types.value\"\r\n                        :value=\"item.id\"\r\n                        :key=\"item.id\"\r\n                      >\r\n                        {{ item.name }}\r\n                      </option>\r\n                    </select>\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label\">Официальный вебсайт</label>\r\n                    <vsud-input\r\n                      id=\"project-site-url\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://project.website/\"\r\n                      aria-label=\"project-site-url\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.website_url\"\r\n                      @input-value=\"(v) => (projectIn.value.website_url = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><twitter-icon class=\"mt-1 mr-1\" />Twitter</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-twitter\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://twitter.com/xxxx\"\r\n                      aria-label=\"project-twitter\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.twitter\"\r\n                      @input-value=\"(v) => (projectIn.value.twitter = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><discord-icon class=\"mt-1 mr-1\" />Discord</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-discord\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://discord.com/user/xxxx\"\r\n                      aria-label=\"project-discord\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.discord\"\r\n                      @input-value=\"(v) => (projectIn.value.discord = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><youtube-icon class=\"mt-1 mr-1\" />YouTube</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-youtube\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://youtube.com/channel/xxxx\"\r\n                      aria-label=\"project-youtube\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.youtube\"\r\n                      @input-value=\"(v) => (projectIn.value.youtube = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><telegram-icon class=\"mt-1 mr-1\" />Telegram</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-telegram\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://t.me/xxxx\"\r\n                      aria-label=\"project-telegram\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.telegram\"\r\n                      @input-value=\"(v) => (projectIn.value.telegram = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <label class=\"form-label d-flex\"\r\n                      ><medium-icon class=\"mt-1 mr-1\" />Medium</label\r\n                    >\r\n                    <vsud-input\r\n                      id=\"project-medium\"\r\n                      type=\"text\"\r\n                      placeholder=\"https://medium.com/@xxxx\"\r\n                      aria-label=\"project-medium\"\r\n                      :isRequired=\"false\"\r\n                      :active=\"true\"\r\n                      :value=\"projectIn.value.medium\"\r\n                      @input-value=\"(v) => (projectIn.value.medium = v)\"\r\n                      :disabled=\"false\"\r\n                    />\r\n                  </div>\r\n                </div>\r\n\r\n                <div class=\"row mt-auto position-sticky top-100 pb-2\">\r\n                  <div class=\"col-12 d-flex\">\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 mr-2\"\r\n                      variant=\"outline\"\r\n                      color=\"active\"\r\n                      full-width\r\n                      @click=\"$router.go(-1)\"\r\n                      >Назад\r\n                    </vsud-button>\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 ml-2\"\r\n                      variant=\"gradient\"\r\n                      color=\"success\"\r\n                      full-width\r\n                      @click.prevent=\"sendData\"\r\n                      >Сохранить\r\n                    </vsud-button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <!-- -->\r\n              <div class=\"col-lg-6 mt-4 mt-lg-0\">\r\n                <div class=\"card bg-gradient-dark\">\r\n                  <div class=\"card-header bg-transparent pb-0\">\r\n                    <div class=\"mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4\">\r\n                      <a href=\"javascript:;\" @click=\"showAddBlockModal\">\r\n                        <place-holder-horisontal-card\r\n                          :title=\"{\r\n                            text: 'Добавить блок описания',\r\n                            variant: 'h6',\r\n                          }\"\r\n                        />\r\n                      </a>\r\n                    </div>\r\n\r\n                    <h6 class=\"text-white\">\r\n                      Настройка стадий развития проекта\r\n                    </h6>\r\n                  </div>\r\n                  <div class=\"card-body p-3\">\r\n                    <div\r\n                      class=\"timeline timeline-one-side\"\r\n                      data-timeline-axis-style=\"dashed\"\r\n                    >\r\n                      <div v-if=\"blocks.value.length\">\r\n                        <div\r\n                          class=\"timeline-block mb-3\"\r\n                          v-for=\"block in blocks.value\"\r\n                          :key=\"block.id\"\r\n                        >\r\n                          <span class=\"timeline-step bg-dark\">\r\n                            <i\r\n                              :class=\"\r\n                                getBlockIcon(block.stage) +\r\n                                ' text-' +\r\n                                getBlockColor(block.stage)\r\n                              \"\r\n                            ></i>\r\n                          </span>\r\n                          <div class=\"timeline-content\">\r\n                            <h6\r\n                              class=\"text-white text-sm font-weight-bold mb-0\"\r\n                            >\r\n                              {{ block.name }}\r\n                            </h6>\r\n                            <div class=\"float-right\">\r\n                              <button\r\n                                class=\"btn btn-link text-secondary\"\r\n                                data-bs-toggle=\"dropdown\"\r\n                                aria-expanded=\"true\"\r\n                                :id=\"'project-dropdown' + block.id\"\r\n                              >\r\n                                <i\r\n                                  class=\"fa fa-ellipsis-v text-xs\"\r\n                                  aria-hidden=\"true\"\r\n                                ></i>\r\n                              </button>\r\n                              <ul\r\n                                class=\"dropdown-menu px-2 py-3 ms-sm-n4 ms-n5\"\r\n                                :aria-labelledby=\"\r\n                                  'timeline-block-dropdown' + block.id\r\n                                \"\r\n                              >\r\n                                <li>\r\n                                  <a\r\n                                    class=\"dropdown-item border-radius-md\"\r\n                                    href=\"javascript:;\"\r\n                                    @click=\"\r\n                                      showEditBlockModal(\r\n                                        block.id,\r\n                                        block.stage,\r\n                                        block.name,\r\n                                        block.date,\r\n                                        block.description,\r\n                                        block.buttons\r\n                                      )\r\n                                    \"\r\n                                    >Изменить</a\r\n                                  >\r\n                                </li>\r\n                                <li>\r\n                                  <a\r\n                                    class=\"dropdown-item border-radius-md\"\r\n                                    href=\"javascript:;\"\r\n                                    @click=\"\r\n                                      confirm(\r\n                                        block.id,\r\n                                        'Удалить блок timeline?',\r\n                                        'Удаление этапа развития проекта'\r\n                                      )\r\n                                    \"\r\n                                    >Удалить</a\r\n                                  >\r\n                                </li>\r\n                              </ul>\r\n                            </div>\r\n\r\n                            <p class=\"text-white text-xs mt-1 mb-0\">\r\n                              {{ getPrintDate(block.date) }}\r\n                            </p>\r\n                            <p class=\"text-secondary text-sm mt-3 mb-2\">\r\n                              {{ block.description }}\r\n                            </p>\r\n                            <span\r\n                              class=\"badge badge-sm\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button1\"\r\n                              >{{ block.button1 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button2\"\r\n                              >{{ block.button2 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button3\"\r\n                              >{{ block.button3 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button4\"\r\n                              >{{ block.button4 }}</span\r\n                            >\r\n                            <span\r\n                              class=\"badge badge-sm ml-1\"\r\n                              :class=\"\r\n                                'bg-gradient-' +\r\n                                blockTypes[block.stage - 1].color\r\n                              \"\r\n                              v-if=\"block.button5\"\r\n                              >{{ block.button5 }}</span\r\n                            >\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                      <!-- far fa-baby-carriage -->\r\n                      <div v-else class=\"timeline-block mb-3\">\r\n                        <span class=\"timeline-step bg-dark\">\r\n                          <i class=\"fas fa-question text-secondary\"></i>\r\n                        </span>\r\n                        <div class=\"timeline-content\">\r\n                          <h6 class=\"text-white text-sm font-weight-bold mb-0\">\r\n                            Стадии проекта не описаны\r\n                          </h6>\r\n                          <p\r\n                            class=\"\r\n                              text-secondary\r\n                              font-weight-bold\r\n                              text-xs\r\n                              mt-1\r\n                              mb-0\r\n                            \"\r\n                          ></p>\r\n                          <p class=\"text-secondary text-sm mt-3 mb-2\">\r\n                            Отсутствует описание стадий развития проекта.\r\n                          </p>\r\n                          <button\r\n                            class=\"badge badge-sm bg-gradient-secondary\"\r\n                            @click=\"showAddBlockModal\"\r\n                          >\r\n                            Настроить timeline проекта\r\n                          </button>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <!-- Modal -->\r\n  <div class=\"row\">\r\n    <div class=\"col-md-4\">\r\n      <add-project-block-modal\r\n        :project-id=\"projectId\"\r\n        :blockId=\"blockData.id\"\r\n        :blockType=\"blockData.type\"\r\n        :blockName=\"blockData.name\"\r\n        :blockDate=\"blockData.date\"\r\n        :blockText=\"blockData.text\"\r\n        :blockButtons=\"blockData.buttons\"\r\n        :action=\"blockData.do\"\r\n        :add-modal=\"addModal\"\r\n        :openModal=\"openModalStatus\"\r\n        @project-reload=\"projectReload\"\r\n      />\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport ModerateProjectsTable from \"./components/ModerateProjectsTable\";\r\nimport VsudInput from \"@/components/VsudInput.vue\";\r\nimport VsudTextarea from \"@/components/VsudTextarea.vue\";\r\nimport VsudButton from \"@/components/VsudButton.vue\";\r\nimport VsudTimelineBlock from \"@/components/VsudTimelineBlock.vue\";\r\nimport getProjectTypes from \"@/assets/js/getProjectTypes.js\";\r\nimport getProjectData from \"@/assets/js/getProjectData.js\";\r\nimport getIndexesByProjectId from \"@/assets/js/getIndexes.js\";\r\nimport getProjectBlocks from \"@/assets/js/getProjectBlocks.js\";\r\nimport PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\r\nimport AddProjectBlockModal from \"@/components/modal/AddProjectBlockModal.vue\";\r\n\r\nimport TwitterIcon from \"@/components/Icon/Twitter\";\r\nimport TelegramIcon from \"@/components/Icon/Telegram\";\r\nimport DiscordIcon from \"@/components/Icon/Discord\";\r\nimport MediumIcon from \"@/components/Icon/Medium\";\r\nimport YoutubeIcon from \"@/components/Icon/Youtube\";\r\n\r\nimport { Dropzone } from \"dropzone\";\r\n\r\nimport confirmModal from \"@/components/modal/confirmModal.js\";\r\nimport { Modal } from \"bootstrap\";\r\nimport { ref } from \"vue\";\r\nimport { useRoute } from \"vue-router\";\r\n\r\nexport default {\r\n  name: \"edit-product\",\r\n  components: {\r\n    ModerateProjectsTable,\r\n    VsudInput,\r\n    VsudButton,\r\n    VsudTextarea,\r\n    VsudTimelineBlock,\r\n    getProjectTypes,\r\n    getProjectData,\r\n    getIndexesByProjectId,\r\n    getProjectBlocks,\r\n    TwitterIcon,\r\n    TelegramIcon,\r\n    DiscordIcon,\r\n    MediumIcon,\r\n    YoutubeIcon,\r\n    confirmModal,\r\n    PlaceHolderHorisontalCard,\r\n    AddProjectBlockModal,\r\n  },\r\n  mounted() {\r\n    this.addModal = new Modal(\r\n      document.getElementById(\"addProjectBlockModalMessage\")\r\n    );\r\n    //window.token = localStorage.getItem(\"x_xsrf_token\");\r\n    this.pathLogo = this.projectIn.value.logo_url;\r\n    const token = this.getCookie(\"XSRF-TOKEN\");\r\n    /*if (typeof Dropzone !== \"undefined\") {\r\n      Dropzone.forElement(\"dropzone\").removeAllFiles(true);\r\n    }*/\r\n    Dropzone.autoDiscover = false;\r\n    try {\r\n      Dropzone.forElement(\"dropzone\").removeAllFiles(true);\r\n    } catch {}\r\n\r\n    let drop = document.getElementById(\"dropzone\");\r\n    let myDropzone = new Dropzone(drop, {\r\n      url: \"/api/upload-project-logo/\" + this.projectId,\r\n      addRemoveLinks: true,\r\n      uploadMultiple: false,\r\n      maxFilesize: 2,\r\n      dictDefaultMessage: \"Перетащите сюда файл изображения. Макс. 2 МБ.\",\r\n      dictFileTooBig: \"Файл слишком большой!\",\r\n      dictInvalidFileType: \"Поддерживатся только .jpg и .png\",\r\n      dictCancelUpload: \"Отменить загрузку\",\r\n      dictUploadCanceled: \"Загрузка отменена\",\r\n      dictRemoveFile: \"Удалить файл\",\r\n      maxFiles: 1,\r\n      acceptedFiles: `.jpg,.png`,\r\n      resizeHeight: 128,\r\n      withCredentials: true,\r\n      dictResponseError: \"Ошибка загрузки изображения\",\r\n      headers: {\r\n        \"X-XSRF-TOKEN\": decodeURIComponent(token),\r\n      },\r\n      sending() {\r\n        const setCookie = (name, value, days) => {\r\n          var expires = \"\";\r\n          if (days) {\r\n            var date = new Date();\r\n            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);\r\n            expires = \"; expires=\" + date.toUTCString();\r\n          }\r\n          document.cookie = name + \"=\" + (value || \"\") + expires + \"; path=/\";\r\n        };\r\n        setCookie(\"XSRF-TOKEN\", token, 1);\r\n      },\r\n      success: (file, response) => {\r\n         this.projectIn.value.logo_url = response;\r\n      }  \r\n    });\r\n    //this.token = localStorage.getItem(\"x_xsrf_token\");\r\n  },\r\n\r\n  data() {\r\n    return {\r\n      openModalStatus: false,\r\n      addModal: null,\r\n      blockTypes: globalBlockTypes,\r\n      confirmBlockDelete: false,\r\n      blockData: {\r\n        id: null,\r\n        type: null,\r\n        name: \"\",\r\n        date: \"\",\r\n        text: \"\",\r\n        do: \"add\",\r\n        buttons: \"\",\r\n      },\r\n      token: null,\r\n    };\r\n  },\r\n\r\n  setup() {\r\n    const route = useRoute();\r\n    const projectId = route.params.productId;\r\n    const types = ref([]);\r\n    types.value = getProjectTypes();\r\n    const projectIn = ref([]);\r\n    projectIn.value = getProjectData(projectId);\r\n    const index = ref([]);\r\n    index.value = getIndexesByProjectId(projectId);\r\n    const blocks = ref([]);\r\n    blocks.value = getProjectBlocks(projectId);\r\n    return { projectId, types, projectIn, index, blocks };\r\n  },\r\n  methods: {\r\n    setCookie(name, value, days) {\r\n      var expires = \"\";\r\n      if (days) {\r\n        var date = new Date();\r\n        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);\r\n        expires = \"; expires=\" + date.toUTCString();\r\n      }\r\n      document.cookie = name + \"=\" + (value || \"\") + expires + \"; path=/\";\r\n    },\r\n    getCookie(cname) {\r\n      let name = cname + \"=\";\r\n      let ca = document.cookie.split(\";\");\r\n      for (let i = 0; i < ca.length; i++) {\r\n        let c = ca[i];\r\n        while (c.charAt(0) == \" \") {\r\n          c = c.substring(1);\r\n        }\r\n        if (c.indexOf(name) == 0) {\r\n          return c.substring(name.length, c.length);\r\n        }\r\n      }\r\n      return \"\";\r\n    },\r\n    eraseCookie(name) {\r\n      document.cookie =\r\n        name + \"=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;\";\r\n    },\r\n    sendData() {\r\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\r\n        axios\r\n          .post(\"/api/edit-project/\" + this.projectId, {\r\n            name: this.projectIn.value.name,\r\n            type: this.projectIn.value.project_type_id,\r\n            url: this.projectIn.value.website_url,\r\n            twitter: this.projectIn.value.twitter,\r\n            discord: this.projectIn.value.discord,\r\n            youtube: this.projectIn.value.youtube,\r\n            telegram: this.projectIn.value.telegram,\r\n            medium: this.projectIn.value.medium,\r\n            description: this.projectIn.value.description,\r\n          })\r\n          .then((r) => {\r\n            this.$router.push({ name: \"Products\" });\r\n            //this.$router.go()\r\n            //this.$emit(\"socialsReload\");\r\n          })\r\n          .catch((err) => {\r\n            console.log(err.response);\r\n            this.registerError = \"Ошибка сохранения проекта\";\r\n            alert(this.registerError);\r\n          });\r\n      });\r\n    },\r\n    showBlockModal() {\r\n      this.openModalStatus = true;\r\n      this.addModal.show();\r\n      setTimeout(() => {\r\n        this.openModalStatus = false;\r\n      }, 500);\r\n    },\r\n    projectReload() {\r\n      this.blocks.value = getProjectBlocks(this.projectId);\r\n    },\r\n    getBlockIcon(id) {\r\n      return this.blockTypes[id - 1].icon;\r\n    },\r\n    getBlockColor(id) {\r\n      return this.blockTypes[id - 1].color;\r\n    },\r\n    setFullDateElement(dig) {\r\n      return dig < 10 ? `0${dig}` : dig;\r\n    },\r\n    getPrintDate(date) {\r\n      let tmpDate = new Date(date);\r\n      let day = this.setFullDateElement(tmpDate.getDate());\r\n      let month = this.setFullDateElement(tmpDate.getMonth() + 1);\r\n      let year = tmpDate.getFullYear();\r\n      return `${day}.${month}.${year}`;\r\n    },\r\n    confirm(id, title, text) {\r\n      this.confirmBlockDelete = confirmModal(id, title, text);\r\n    },\r\n    showAddBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = null;\r\n      this.blockData.type = null;\r\n      this.blockData.name = null;\r\n      this.blockData.date = null;\r\n      this.blockData.text = null;\r\n      this.blockData.buttons = \"Пример\";\r\n      this.blockData.do = \"add\";\r\n      this.showBlockModal();\r\n    },\r\n    showEditBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = id;\r\n      this.blockData.type = type;\r\n      this.blockData.name = name;\r\n      this.blockData.date = date;\r\n      this.blockData.text = text;\r\n      this.blockData.buttons = buttons;\r\n      this.blockData.do = \"edit\";\r\n      this.showBlockModal();\r\n    },\r\n    deleteBlock(id) {\r\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\r\n        axios\r\n          .get(\"/api/delete-block/\" + id)\r\n          .then((r) => {\r\n            //this.$router.push({ name: \"Products\" });\r\n            //this.$router.go()\r\n            this.projectReload();\r\n          })\r\n          .catch((err) => {\r\n            console.log(err.response);\r\n            this.registerError = \"Ошибка сохранения удаления блока timeline\";\r\n            alert(this.registerError);\r\n          });\r\n      });\r\n    },\r\n  },\r\n  computed: {\r\n    tokenC() {\r\n      this.setCookie(\"XSRF-TOKEN\", \"888888\", 1);\r\n      return this.token;\r\n    },\r\n    /*projectType(value) {\r\n      this.project.type = value ? value : this.projectIn.value.project_type_id;\r\n      console.log(1);\r\n      console.log(this.project.type);\r\n      return this.project.type;\r\n    },*/\r\n  },\r\n  watch: {\r\n    confirmBlockDelete(newQuestion, oldQuestion) {\r\n      if (newQuestion) {\r\n        this.deleteBlock(newQuestion);\r\n      }\r\n    },\r\n  },\r\n};\r\n</script>\r\n<style scoped>\r\n.dropdown-menu,\r\n.dropend .dropdown-menu {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\r\n}\r\n</style>"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
