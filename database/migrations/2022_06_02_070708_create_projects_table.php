@@ -31,6 +31,7 @@ class CreateProjectsTable extends Migration
             $table->string('logo_url')->nullable();
             $table->integer('price')->nullable();
             $table->boolean('is_locked')->default(false);
+            $table->boolean('is_indexed')->default(false);
             $table->text('description')->nullable();
             $table->integer('project_status_id')->nullable();
             $table->timestamps();

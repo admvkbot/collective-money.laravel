@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SocialNetwork extends Model
 {
    protected $table = 'social_networks';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
       'name',

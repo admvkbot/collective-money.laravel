@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TgUser extends Model
 {
    protected $table = 'tg_users';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
       'id',

@@ -18,7 +18,7 @@ class ApiController extends Controller
 
    public function index()
    {
-       return 0;
+      return 0;
    }
 
    public function getAllAccounts()
@@ -123,19 +123,26 @@ class ApiController extends Controller
       return $out;
    }
 
-   public function getMessagesModerate(Request $request)
+   public function getMessagesModerate($project_id, Request $request)
    {
       $filter = $request->instance();
 
       if (!$this->checkModerator())
          return response()->json([]);
 
+      $keys = Index::where('project_id', $project_id)->get();
+
       $out = DB::table('tg_messages')
          ->join('tg_users', 'tg_messages.user_id', '=', 'tg_users.id')
          ->join('tg_channels', 'tg_messages.channel_id', '=', 'tg_channels.id')
          ->where('project_id', '<', 3)
-         ->where('tg_messages.message', 'LIKE', '%' . $filter['filter'] . '%')
-         ->orderByDesc('date')
+         ->where('tg_messages.message', 'LIKE', '%' . $filter['filter'] . '%');
+
+      foreach ($keys as $key) {
+         $out = $out->where('tg_messages.message', 'NOT LIKE', '%' . $key['field'] . '%');
+      }
+
+      $out = $out->orderByDesc('date')
          ->limit(20)
          ->select(
             'message',
@@ -157,14 +164,4 @@ class ApiController extends Controller
       $out = ProjectType::get();
       return response()->json($out);
    }
-
-   public function getIndexesByProjectId($project_id)
-   {
-      $out = Index::where('project_id', $project_id)
-         ->toBase()
-         ->get();
-      return response()->json($out);
-   }
-
-
 }

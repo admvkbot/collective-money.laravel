@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectStatus extends Model
 {
    protected $table = 'project_statuses';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
      'project_id',

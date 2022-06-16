@@ -5,9 +5,9 @@
         <moderate-projects-table />
       </div>
     </div>
-    <div class="row">
+    <div class="row pt-3">
       <div class="col-12">
-        <moderate-messages-table />
+        <messages-table />
       </div>
     </div>
   </div>
@@ -15,13 +15,13 @@
 
 <script>
 import ModerateProjectsTable from "@/views/components/tables/ProjectsTableModerator";
-import ModerateMessagesTable from "@/views/components/tables/MessagesTableModerator";
+import MessagesTable from "@/views/components/tables/MessagesTable";
 
 export default {
   name: "products-moderator",
   components: {
     ModerateProjectsTable,
-    ModerateMessagesTable,
+    MessagesTable
   },
 };
 </script>

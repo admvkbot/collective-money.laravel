@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::get('/get-socials', [ApiController::class, 'getAllSocials']);
    Route::post('/get-referers', [ApiController::class, 'getReferers']);
    Route::post('/get-messages', [ApiController::class, 'getMessages']);
-   Route::post('/get-messages-moderate', [ApiController::class, 'getMessagesModerate']);
+   Route::post('/get-messages-moderate/{project_id}', [ApiController::class, 'getMessagesModerate']);
    Route::get('/get-types', [ApiController::class, 'getProjectTypes']);
    Route::get('/get-blocks/{id}', 'ProjectBlock\IndexController');
    Route::post('/add-block', 'ProjectBlock\CreateController');
@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::get('/get-project/{id}', 'Project\ProjectController');
    Route::post('/edit-project/{project_id}', 'Project\EditController');
    Route::post('/add-project', 'Project\CreateController');
-   Route::get('/get-indexes/{project_id}', [ApiController::class, 'getIndexesByProjectId']);
+   Route::get('/get-indexes/{project_id}', 'Index\IndexController');
+   Route::post('/edit-project-key', 'Index\EditController');
    Route::post('/upload-project-logo/{project_id}', 'Project\UploadController');
 });

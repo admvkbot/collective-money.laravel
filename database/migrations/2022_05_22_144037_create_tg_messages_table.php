@@ -14,7 +14,8 @@ class CreateTgMessagesTable extends Migration
     public function up()
     {
         Schema::create('tg_messages', function (Blueprint $table) {
-            $table->bigInteger('id')->primary()->unsigned();
+            $table->id();
+            $table->bigInteger('tg_message_id')->unsigned();
             $table->bigInteger('channel_id')->unsigned()->nullable();
             $table->datetime('date');
             $table->bigInteger('user_id')->unsigned();

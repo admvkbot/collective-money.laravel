@@ -11,9 +11,12 @@ class ProjectController extends Controller
 {
    public function __invoke($id)
    {
-      $out = Project::where('id', $id) 
-         ->toBase()
+      $project = Project::where('id', $id)
          ->first();
-      return response()->json($out);
+      //$project = Project::find(1);
+         //dd($project);
+         //dd($project->tg_messages()->attach(array(296676, 296668))->toSql());
+         //dd($project->tg_messages()->detach());
+      return response()->json($project);
    }
 }

@@ -67,21 +67,32 @@ def mysql_init():
 def mysql_put_message(message):
     global db
     global cursor
-    sql = "INSERT INTO tg_messages (id, channel_id, date, user_id, message) VALUES (%s, %s, %s, %s, %s)"
-    #print(message['date'])
-    val = (
-        message['id'],
-        message['peer_id']['channel_id'],
-        message['date'],
-        message['from_id']['user_id'],
-        message['message']
-    )
-    try:
-        cursor.execute(sql, val)
-        db.commit()
-        return True
-    except:
+    sql = "SELECT COUNT(tg_message_id) FROM tg_messages WHERE tg_message_id="+str(message['id'])
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    #db.commit()
+    #print(result[0][0])
+    #sys.exit()
+    if not result[0][0]:
+        sql = "INSERT INTO tg_messages (tg_message_id, channel_id, date, user_id, message) VALUES (%s, %s, %s, %s, %s) "
+        #print(message['date'])
+        val = (
+            message['id'],
+            message['peer_id']['channel_id'],
+            message['date'],
+            message['from_id']['user_id'],
+            message['message']
+        )
+        try:
+            cursor.execute(sql, val)
+            db.commit()
+            return True
+        except:
+            return False
+    else:
+        print('Dublicate')
         return False
+
 
 
 def mysql_get_user_info(user_id):
@@ -91,7 +102,7 @@ def mysql_get_user_info(user_id):
     sql = "SELECT * FROM tg_users WHERE id = '" + str(user_id) + "' LIMIT 1"
     cursor.execute(sql)
     user_data = cursor.fetchall()
-    db.commit()
+    #db.commit()
     for row in user_data:
         return {
             'id': row[0],
@@ -154,7 +165,7 @@ def mysql_get_all_channels():
     sql = "SELECT * FROM tg_channels"
     cursor.execute(sql)
     channel_data = cursor.fetchall()
-    db.commit()
+    #db.commit()
     out = []
     #print(channel_data)
     for row in channel_data:
@@ -211,17 +222,21 @@ def mysql_insert_or_update_photo(photo):
 def mysql_insert_or_update_user_channel(user_id, channel_id):
     global db
     global cursor
-    sql = "INSERT INTO tg_user_tg_channel (user_id, channel_id) VALUES (%s, %s)"
-    val = (
-        user_id,
-        channel_id
-    )
-    #try:
-    if 1:
+    sql = "SELECT COUNT(user_id) FROM tg_user_tg_channel WHERE user_id="+str(user_id)+" AND channel_id="+str(channel_id)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    #db.commit()
+    #print(result[0][0])
+    #sys.exit()
+    if not result[0][0]:
+        sql = "INSERT INTO tg_user_tg_channel (user_id, channel_id) VALUES (%s, %s)"
+        val = (
+            user_id,
+            channel_id
+        )
         cursor.execute(sql, val)
         db.commit()
-    #except:
-    #    return False
+    #db.commit()
 
 
 async def tg_get_user_info(channel, user_id):
@@ -364,7 +379,6 @@ async def dump_all_messages(channel):
                 mysql_put_user_info(tg_user_data)
             else:
                 mysql_increment_user_info(user_id)
-
             mysql_insert_or_update_user_channel(user_id, channel.id)
 
         offset_msg = messages[len(messages) - 1].id
@@ -379,6 +393,9 @@ async def dump_all_messages(channel):
         if parsing_messages_flag:
             time.sleep(3)
             break
+        db.commit()
+    db.commit()
+
 
 mysql_init()
 tz = pytz.timezone(config['Bot']['timezone'])
