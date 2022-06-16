@@ -33,6 +33,16 @@ class Id(object):
         self.id = id
 
 
+class TgMessage(object):
+    def __init__(self, id, tg_message_id, channel_id, date, user_id, message):
+        self.id = id
+        self.tg_message_id = tg_message_id
+        self.channel_id = channel_id
+        self.date = date
+        self.user_id = user_id
+        self.message = message
+
+
 def mysql_init():
     global db
     global cursor
@@ -67,7 +77,7 @@ def mysql_get_indexes(project_id):
     sql = "SELECT field FROM indexes WHERE project_id=" + str(project_id)
     cursor.execute(sql)
     data = cursor.fetchall()
-    db.commit()
+    #db.commit()
     out = []
     for row in data:
         index = Index(
@@ -129,6 +139,26 @@ def mysql_set_project_indexed(project_id, status):
     db.commit()
 
 
+def mysql_get_first_message():
+    global cursor
+    sql = "SELECT * FROM tg_messages ORDER BY date LIMIT 1"
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    #db.commit()
+    out = []
+    for row in data:
+        message = TgMessage(
+            row[0],
+            row[1],
+            row[2],
+            row[3],
+            row[4],
+            row[5],
+        )
+        return message
+    return None
+
+
 if __name__ == '__main__':
     mysql_init()
     print('start')
@@ -144,6 +174,10 @@ if __name__ == '__main__':
                     mysql_detach(project.id)
                     mysql_attach(messages, project.id)
                     mysql_set_project_indexed(project.id, 1)
+
+            date_begin = mysql_get_first_message().date
+            print("Date:", date_begin)
+            #metrics = collect_metrics(project.id)
 
 
 
