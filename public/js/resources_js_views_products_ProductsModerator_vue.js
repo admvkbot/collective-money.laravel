@@ -117,11 +117,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _views_components_tables_ProjectsTableModerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/views/components/tables/ProjectsTableModerator */ "./resources/js/views/components/tables/ProjectsTableModerator.vue");
+/* harmony import */ var _views_components_tables_MessagesTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/views/components/tables/MessagesTable */ "./resources/js/views/components/tables/MessagesTable.vue");
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "products-moderator",
   components: {
-    ModerateProjectsTable: _views_components_tables_ProjectsTableModerator__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ModerateProjectsTable: _views_components_tables_ProjectsTableModerator__WEBPACK_IMPORTED_MODULE_0__["default"],
+    MessagesTable: _views_components_tables_MessagesTable__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -472,10 +475,18 @@ var _hoisted_2 = {
 var _hoisted_3 = {
   "class": "col-12"
 };
+var _hoisted_4 = {
+  "class": "row pt-3"
+};
+var _hoisted_5 = {
+  "class": "col-12"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_moderate_projects_table = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("moderate-projects-table");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_moderate_projects_table)])])]);
+  var _component_messages_table = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("messages-table");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_moderate_projects_table)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_messages_table)])])]);
 }
 
 /***/ }),
