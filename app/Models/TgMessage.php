@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TgMessage extends Model
 {
    protected $table = 'tg_messages';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
       'id',
@@ -18,6 +18,10 @@ class TgMessage extends Model
       'message',
       'is_primary'
    ];
-   protected $primaryKey = 'id'; // or null
-   public $incrementing = false;
+   //protected $primaryKey = 'id'; // or null
+   //public $incrementing = false;
+
+   public function projects() {
+      return $this->belongsToMany(Project::class, 'message_projects', 'message_id', 'project_id');
+   }
 }

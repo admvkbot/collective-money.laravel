@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     protected $table = 'accounts';
-    protected $quarded = false;
+    protected $guarded = false;
 
     protected $fillable = [
       'user_id',

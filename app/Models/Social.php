@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Social extends Model
 {
    protected $table = 'socials';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
       'account_id',

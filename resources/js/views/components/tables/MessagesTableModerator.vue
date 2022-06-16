@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0">
-      <h5>Необработанные сообщения из Telegram каналов</h5>
+      <h5>Cообщения из Telegram каналов, не содержащие ключи</h5>
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="row">
@@ -13,7 +13,7 @@
               name="liveSearchReferers"
               class="form-control"
               type="text"
-              placeholder="Вводите ключевые слова"
+              placeholder="Вводите ключевое слово"
               v-model="searchTerm"
             />
           </div>
@@ -63,8 +63,7 @@
               >
                 OTC канал
               </th>
-              <th>
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -80,8 +79,9 @@
                 </div>
               </td>
               <td>
-                 <span v-if="item.first_name">{{item.first_name}}</span>
-                 <span v-if="item.last_name">{{item.last_name}}</span><br>
+                <span v-if="item.first_name">{{ item.first_name }}</span>
+                <span v-if="item.last_name">{{ item.last_name }}</span
+                ><br />
                 <a
                   :href="'https://t.me/' + item.username"
                   class="text-sm font-weight-bold mb-0"
@@ -121,7 +121,8 @@ import { defineComponent, reactive, ref, computed, watch, inject } from "vue";
 export default {
   name: "moderate-messages-table",
   components: {},
-  setup() {
+  props: { projectId: { type: Number, default: null } },
+  setup(props) {
     const searchTerm = ref(""); // Search text
     // Fake data
     const data = reactive({
@@ -132,23 +133,21 @@ export default {
      * Get server data request
      */
     const myRequest = (keyword) => {
-      axios.get("/sanctum/csrf-cookie").then((response) => {
-        axios
-          .post("/api/get-messages-moderate", {
-            filter: keyword,
-          })
-          .then((r) => {
-            console.log(r.data);
-            data.rows = r.data;
-            //this.$emit("accountsReload");
-          })
-          .catch((err) => {
-            console.log("Fetch error", err.response);
-            const registerError =
-              "Неизвестная ошибка работы live filter messages";
-            alert(registerError);
-          });
-      });
+      axios
+        .post("/api/get-messages-moderate/" + props.projectId, {
+          filter: keyword,
+        })
+        .then((r) => {
+          //console.log(r.data);
+          data.rows = r.data;
+          //this.$emit("accountsReload");
+        })
+        .catch((err) => {
+          console.log("Fetch error", err.response);
+          const registerError =
+            "Неизвестная ошибка работы live filter messages";
+          alert(registerError);
+        });
     };
 
     const table = reactive({
@@ -179,6 +178,6 @@ export default {
 <style scoped>
 .table td {
   white-space: normal !important;
-  padding: 3px 5px 3px 5px !important; 
+  padding: 3px 5px 3px 5px !important;
 }
 </style>

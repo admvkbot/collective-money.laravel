@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TgPhoto extends Model
 {
    protected $table = 'tg_photos';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
       'id',

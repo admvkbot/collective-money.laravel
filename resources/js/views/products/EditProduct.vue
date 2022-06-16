@@ -4,7 +4,7 @@
       <div class="col-lg-12 mb-lg-0 mb-4">
         <div class="card">
           <div class="card-header">
-            <h5>Настройки парсинга проекта</h5>
+            <h5>Настройки данных проекта</h5>
           </div>
           <div class="card-body pt-0">
             <div class="row">
@@ -503,8 +503,8 @@ export default {
         setCookie("XSRF-TOKEN", token, 1);
       },
       success: (file, response) => {
-         this.projectIn.value.logo_url = response;
-      }  
+        this.projectIn.value.logo_url = response;
+      },
     });
     //this.token = localStorage.getItem("x_xsrf_token");
   },
@@ -568,30 +568,28 @@ export default {
         name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     },
     sendData() {
-      axios.get("/sanctum/csrf-cookie").then((response) => {
-        axios
-          .post("/api/edit-project/" + this.projectId, {
-            name: this.projectIn.value.name,
-            type: this.projectIn.value.project_type_id,
-            url: this.projectIn.value.website_url,
-            twitter: this.projectIn.value.twitter,
-            discord: this.projectIn.value.discord,
-            youtube: this.projectIn.value.youtube,
-            telegram: this.projectIn.value.telegram,
-            medium: this.projectIn.value.medium,
-            description: this.projectIn.value.description,
-          })
-          .then((r) => {
-            this.$router.push({ name: "Products" });
-            //this.$router.go()
-            //this.$emit("socialsReload");
-          })
-          .catch((err) => {
-            console.log(err.response);
-            this.registerError = "Ошибка сохранения проекта";
-            alert(this.registerError);
-          });
-      });
+      axios
+        .post("/api/edit-project/" + this.projectId, {
+          name: this.projectIn.value.name,
+          type: this.projectIn.value.project_type_id,
+          url: this.projectIn.value.website_url,
+          twitter: this.projectIn.value.twitter,
+          discord: this.projectIn.value.discord,
+          youtube: this.projectIn.value.youtube,
+          telegram: this.projectIn.value.telegram,
+          medium: this.projectIn.value.medium,
+          description: this.projectIn.value.description,
+        })
+        .then((r) => {
+          this.$router.push({ name: "Products" });
+          //this.$router.go()
+          //this.$emit("socialsReload");
+        })
+        .catch((err) => {
+          console.log(err.response);
+          this.registerError = "Ошибка сохранения проекта";
+          alert(this.registerError);
+        });
     },
     showBlockModal() {
       this.openModalStatus = true;

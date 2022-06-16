@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TgChannel extends Model
 {
    protected $table = 'tg_channels';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
       'id',

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Index extends Model
 {
    protected $table = 'indexes';
-   protected $quarded = false;
+   protected $guarded = false;
 
    protected $fillable = [
       'project_id',
