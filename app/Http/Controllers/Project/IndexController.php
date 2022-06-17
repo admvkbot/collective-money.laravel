@@ -13,7 +13,6 @@ class IndexController extends Controller
       $filter = $request->instance();
       $out = Project::where(function ($query) use ($filter) {
          $query->where('name', 'LIKE', '%' . $filter['filter'] . '%')
-            ->orWhere('website_name', 'LIKE', '%' . $filter['filter'] . '%')
             ->orWhere('website_url', 'LIKE', '%' . $filter['filter'] . '%');
       });
       if ($top) {

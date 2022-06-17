@@ -163,7 +163,12 @@ export default {
     watch(
       () => searchTerm.value,
       (val) => {
-        myRequest(val);
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+          myRequest(val);
+        }, 500);
       }
     );
     // Get data on first rendering

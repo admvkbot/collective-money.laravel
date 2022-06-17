@@ -340,7 +340,7 @@ async def dump_all_messages(channel):
             #print(message.to_dict())
             is_channel = False
 
-            if message.date < tz.localize(datetime.now() - timedelta(days=int(config['Bot']['timedelta']))):
+            if message.date < tz.localize(datetime.now() - timedelta(days=int(config['Grabber']['timedelta']))):
                 print('Сообщения спаршены')
                 parsing_messages_flag = True
                 flag_start = True
@@ -356,7 +356,7 @@ async def dump_all_messages(channel):
                 is_channel = True
                 message_dict['from_id']['user_id'] = user_id
 
-            if not mysql_put_message(message_dict) and not parsing_messages_flag and not int(config['Bot']['first-run']):
+            if not mysql_put_message(message_dict) and not parsing_messages_flag and not int(config['Grabber']['first-run']):
                 print('Новые сообщения спаршены')
                 parsing_messages_flag = True
                 flag_start = True
@@ -398,7 +398,7 @@ async def dump_all_messages(channel):
 
 
 mysql_init()
-tz = pytz.timezone(config['Bot']['timezone'])
+tz = pytz.timezone(config['Grabber']['timezone'])
 parsing_messages_flag = False
 url = config['Telegram']['url_channel']
 
@@ -410,7 +410,7 @@ async def main():
     global flag_start
     global parsing_messages_flag
     global channels
-    if int(config['Bot']['first-run']):
+    if int(config['Grabber']['first-run']):
         item_channel = None
         print("flag_start:", flag_start)
         #await dump_all_participants(channel)

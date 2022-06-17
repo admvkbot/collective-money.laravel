@@ -76,7 +76,13 @@
                     find the full documentation.
                   </p>
                   <a
-                    class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
+                    class="
+                      text-body text-sm
+                      font-weight-bold
+                      mb-0
+                      icon-move-right
+                      mt-auto
+                    "
                     href="javascript:;"
                   >
                     Read More
@@ -95,7 +101,13 @@
                     alt="waves"
                   />
                   <div
-                    class="position-relative d-flex align-items-center justify-content-center h-100"
+                    class="
+                      position-relative
+                      d-flex
+                      align-items-center
+                      justify-content-center
+                      h-100
+                    "
                   >
                     <img
                       class="w-100 position-relative z-index-2 pt-4"
@@ -112,7 +124,13 @@
       <div class="col-lg-5">
         <div class="card h-100 p-3">
           <div
-            class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
+            class="
+              overflow-hidden
+              position-relative
+              border-radius-lg
+              bg-cover
+              h-100
+            "
             style="
               background-image: url('https://demos.creative-tim.com/soft-ui-dashboard/assets/img/ivancik.jpg');
             "
@@ -128,7 +146,14 @@
                   It is all about who take the opportunity first.
                 </p>
                 <a
-                  class="text-white font-weight-bold ps-1 mb-0 icon-move-left mt-auto"
+                  class="
+                    text-white
+                    font-weight-bold
+                    ps-1
+                    mb-0
+                    icon-move-left
+                    mt-auto
+                  "
                   href="javascript:;"
                 >
                   Read more
@@ -202,9 +227,18 @@
         <div class="card z-index-2">
           <gradient-line-chart
             id="chart-line"
-            title="Gradient Line Chart"
+            title="Тестовый график"
             description="<i class='fa fa-arrow-up text-success'></i>
-      <span class='font-weight-bold'>4% more</span> in 2021"
+      <span class='font-weight-bold'>4% more</span> in 2022"
+            :chart="chartTg"
+            v-if="chartTg.datasets"
+          />
+          
+          <!--<gradient-line-chart
+            id="chart-line"
+            title="Тестовый график"
+            description="<i class='fa fa-arrow-up text-success'></i>
+      <span class='font-weight-bold'>4% more</span> in 2022"
             :chart="{
               labels: [
                 'Apr',
@@ -216,19 +250,20 @@
                 'Oct',
                 'Nov',
                 'Dec',
+                'Pisia',
               ],
               datasets: [
                 {
                   label: 'Mobile Apps',
-                  data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                  data: [50, 40, 300, 220, 500, 250, 400, 230, 1000, 500],
                 },
                 {
                   label: 'Websites',
-                  data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+                  data: [30, 90, 40, 140, 290, 290, 340, 230, 1000, 400],
                 },
               ],
             }"
-          />
+          />-->
         </div>
       </div>
     </div>
@@ -286,8 +321,8 @@
 </template>
 <script>
 import MiniStatisticsCard from "../examples/Cards/MiniStatisticsCard.vue";
-import ReportsBarChart from "../examples/Charts/ReportsBarChart.vue";
-import GradientLineChart from "../examples/Charts/GradientLineChart.vue";
+import ReportsBarChart from "../Charts/ReportsBarChart.vue";
+import GradientLineChart from "../Charts/GradientLineChart.vue";
 import TimelineList from "./components/TimelineList.vue";
 import TimelineItem from "./components/TimelineItem.vue";
 import ProjectsCard from "./components/ProjectsCard.vue";
@@ -301,6 +336,9 @@ import {
   faCreditCard,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
+import getChartData from "@/assets/js/charts/getProjectTgChart";
+import { ref } from "vue";
+
 export default {
   name: "dashboard-default",
   data() {
@@ -338,8 +376,9 @@ export default {
           value: "$143,960",
           bounce: "32.14%",
           flag: BR,
-        },
+        },      
       },
+      chartTg: {},
     };
   },
   components: {
@@ -349,6 +388,10 @@ export default {
     ProjectsCard,
     TimelineList,
     TimelineItem,
+    getChartData,
+  },
+  created() {
+    this.chartTg = getChartData(1, "day");
   },
 };
 </script>

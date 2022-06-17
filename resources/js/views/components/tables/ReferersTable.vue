@@ -350,14 +350,14 @@
 import { defineComponent, reactive, ref, computed, watch, inject } from "vue";
 import VsudProgress from "@/components/VsudProgress";
 import VsudBadge from "@/components/VsudBadge.vue";
-import getMyData from "@/assets/js/getMyData.js";
+//import getMyData from "@/assets/js/getMyData.js";
 
 export default {
   name: "referers-table",
   components: {
     VsudProgress,
     VsudBadge,
-    getMyData,
+    /*getMyData,*/
   },
   setup() {
     //const myData = ref("");

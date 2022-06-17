@@ -46,4 +46,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::get('/get-indexes/{project_id}', 'Index\IndexController');
    Route::post('/edit-project-key', 'Index\EditController');
    Route::post('/upload-project-logo/{project_id}', 'Project\UploadController');
+
+   Route::post('/get-project-tg-chart/{top}', 'API\Chart\TgChartController');
+
 });

@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0">
-      <h5>Cообщения из Telegram каналов, не содержащие ключи</h5>
+      <h5>{{ title }}</h5>
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="row">
@@ -121,7 +121,17 @@ import { defineComponent, reactive, ref, computed, watch, inject } from "vue";
 export default {
   name: "moderate-messages-table",
   components: {},
-  props: { projectId: { type: Number, default: null } },
+  props: {
+    projectId: { type: Number, default: null },
+    title: {
+      type: String,
+      default: "Сообщения Telegram",
+    },
+    withTags: {
+      type: Boolean,
+      default: false,
+    },
+  },
   setup(props) {
     const searchTerm = ref(""); // Search text
     // Fake data
@@ -136,6 +146,7 @@ export default {
       axios
         .post("/api/get-messages-moderate/" + props.projectId, {
           filter: keyword,
+          with_tags: props.withTags,
         })
         .then((r) => {
           //console.log(r.data);
@@ -158,11 +169,16 @@ export default {
         return data.rows.length;
       }),
     });
-    let count;
+    let timeout = null;
     watch(
       () => searchTerm.value,
       (val) => {
-        myRequest(val);
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+          myRequest(val);
+        }, 500);
       }
     );
     // Get data on first rendering

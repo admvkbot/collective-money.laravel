@@ -238,8 +238,41 @@ def mysql_put_metric(project_id, metric, table):
 
 
 def put_metric(project_id, metric, type):
+    if type == 'day':
+        mysql_put_tg_users_to_project(project_id, metric.num_id)
     mysql_delete_metric(project_id, metric, type+'_tg_metrics')
     return mysql_put_metric(project_id, metric, type+'_tg_metrics')
+
+
+def mysql_put_rating(project_id, rating):
+    global db
+    global cursor
+    sql = f"SELECT rating FROM projects WHERE id={project_id}"
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    for row in data:
+        rating_past = row[0]
+
+    sql = f"UPDATE projects SET rating_past={rating_past} WHERE id={project_id}"
+    cursor.execute(sql)
+    sql = f"UPDATE projects SET rating={rating} WHERE id={project_id}"
+    cursor.execute(sql)
+    db.commit()
+
+
+def mysql_put_tg_users_to_project(project_id, num_id):
+    global db
+    global cursor
+    sql = f"SELECT num_tg_users FROM projects WHERE id={project_id}"
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    for row in data:
+        num_past = row[0]
+    sql = f"UPDATE projects SET num_tg_users_past={num_past} WHERE id={project_id}"
+    cursor.execute(sql)
+    sql = f"UPDATE projects SET num_tg_users={num_id} WHERE id={project_id}"
+    cursor.execute(sql)
+    db.commit()
 
 
 def change_day(day_str):
@@ -277,9 +310,22 @@ def create_metrics(project_id, date, type='day'):
         )
         return metric
 
+# вычисление рейтинга по метрикам
+def collect_rating(metric):
+    # соотношение количества активных пользователей Tg и активных по проекту - ?%
+    # соотношение количества активных WTS и WTB по проекту - ?%
+    # если какая-то метрика = 0, то возвращается рейтинг типа "Недостаточно данных" (0)
+    # если помметка scam, то рейтинг делится на (10 * metric.num_scam)
+    if not metric.num_all or not metric.num_id or not metric.num_wtb or not metric.num_wts:
+        return 0
+
+    rating = (metric.num_id / metric.num_all + metric.num_wtb / metric.num_wts) * 100
+    if metric.num_scam:
+        rating = rating / (10 * metric.num_scam)
+    return int(round(rating))
 
 
-tz = pytz.timezone(config['Bot']['timezone'])
+tz = pytz.timezone(config['Grabber']['timezone'])
 
 if __name__ == '__main__':
     mysql_init()
@@ -311,9 +357,11 @@ if __name__ == '__main__':
                     metric_day = create_metrics(project.id, date_item, 'day')
                     put_metric(project.id, metric_day, 'day')
                     date_item = date_item + timedelta(days=1)
+                    rating = collect_rating(metric_day)
+                    mysql_put_rating(project.id, rating)
 
                 date_item = date_begin
-                while date_item <= date_yesterday:
+                while date_item <= date_yesterday - timedelta(days=7):
                     metric_week = create_metrics(project.id, date_item, 'week')
                     put_metric(project.id, metric_week, 'week')
                     date_item = date_item + timedelta(days=7)
