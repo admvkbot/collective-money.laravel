@@ -203,6 +203,13 @@
                     <a
                       class="dropdown-item border-radius-md"
                       href="javascript:;"
+                      @click="
+                        confirm(
+                          item.id,
+                          'Удалить проект?',
+                          'Удаление проекта вместе с его статистикой, индексами и блоком timeline'
+                        )
+                      "
                       >Удалить</a
                     >
                   </li>
@@ -225,6 +232,8 @@ import MediumIcon from "@/components/Icon/Medium";
 import YoutubeIcon from "@/components/Icon/Youtube";
 import PlaceHolderHorisontalCard from "@/Cards/PlaceHolderHorisontalCard.vue";
 
+import confirmModal from "@/components/modal/confirmModal.js";
+
 import { reactive, ref, computed, watch } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -239,6 +248,7 @@ export default {
     YoutubeIcon,
     FontAwesomeIcon,
     PlaceHolderHorisontalCard,
+    confirmModal,
   },
   props: {
     is_liveSearch: {
@@ -260,10 +270,10 @@ export default {
     /**
      * Get server data request
      */
-    const myRequest = (keyword) => {
+    const myRequest = (keyword, top) => {
       axios.get("/sanctum/csrf-cookie").then((response) => {
         axios
-          .post("/api/get-projects/" + props.top, {
+          .post("/api/get-projects/" + top, {
             filter: keyword,
           })
           .then((r) => {
@@ -292,17 +302,54 @@ export default {
       watch(
         () => searchTerm.value,
         (val) => {
-          myRequest(val);
+          myRequest(val, props.top);
         }
       );
     }
     // Get data on first rendering
-    myRequest("");
-    console.log(table);
+    myRequest("", props.top);
+    //console.log(table);
     return {
       searchTerm,
       table,
+      myRequest,
     };
+  },
+  data() {
+    return {
+      confirmDelete: false,
+    };
+  },
+  methods: {
+    confirm(id, title, text) {
+      this.confirmDelete = confirmModal(id, title, text);
+    },
+    projectsReload() {
+      this.myRequest(this.searchTerm, this.top);
+    },
+    deleteProject(id) {
+      axios.get("/sanctum/csrf-cookie").then((response) => {
+        axios
+          .get("/api/delete-project/" + id)
+          .then((r) => {
+            //this.$router.push({ name: "Products" });
+            //this.$router.go()
+            this.projectsReload();
+          })
+          .catch((err) => {
+            console.log(err.response);
+            let registerError = "Ошибка сохранения удаления проекта";
+            alert(registerError);
+          });
+      });
+    },
+  },
+  watch: {
+    confirmDelete(newQuestion, oldQuestion) {
+      if (newQuestion) {
+        this.deleteProject(newQuestion);
+      }
+    },
   },
 };
 </script>

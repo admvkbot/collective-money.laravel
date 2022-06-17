@@ -44,7 +44,7 @@ key2"
 
     <div class="row">
       <div class="col-12 pt-3">
-        <moderate-messages-table :project-id="projectId" :key="indexes" />
+        <moderate-messages-table :project-id="projectId" title="Сообщения Telegram, не прикреплённые с проектам" :key="indexes" />
       </div>
     </div>
   </div>

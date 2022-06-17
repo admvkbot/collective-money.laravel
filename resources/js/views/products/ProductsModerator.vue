@@ -7,7 +7,10 @@
     </div>
     <div class="row pt-3">
       <div class="col-12">
-        <messages-table />
+        <messages-table-moderator
+          title="Coобщения Telegram с тегами WTS и WTB, не привязанные к проектам"
+          :withTags="true"
+        />
       </div>
     </div>
   </div>
@@ -15,13 +18,13 @@
 
 <script>
 import ModerateProjectsTable from "@/views/components/tables/ProjectsTableModerator";
-import MessagesTable from "@/views/components/tables/MessagesTable";
+import MessagesTableModerator from "@/views/components/tables/MessagesTableModerator";
 
 export default {
   name: "products-moderator",
   components: {
     ModerateProjectsTable,
-    MessagesTable
+    MessagesTableModerator,
   },
 };
 </script>

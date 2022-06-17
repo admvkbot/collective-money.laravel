@@ -141,6 +141,12 @@ class ApiController extends Controller
       foreach ($keys as $key) {
          $out = $out->where('tg_messages.message', 'NOT LIKE', '%' . $key['field'] . '%');
       }
+      if ($filter['with_tags']) {
+         $out = $out->where(function ($query) {
+            $query->where('tg_messages.message', 'LIKE', '%WTS%')
+               ->orWhere('tg_messages.message', 'LIKE', '%WTB%');
+         });
+      }
 
       $out = $out->orderByDesc('date')
          ->limit(20)

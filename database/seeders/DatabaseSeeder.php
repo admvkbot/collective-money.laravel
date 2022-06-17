@@ -66,21 +66,19 @@ class DatabaseSeeder extends Seeder
 
      $data = [
       [
-         'name' => 'Test',
-         'website_name' => 'test.com',
+         'name' => 'Mimi\'s Adventure',
          'website_url' => 'https://google.com',
-         'rating' => 73,
+         'rating' => 1,
          'twitter' => 'https://twitter.com/',
-         'num_tg_users' => 66,
+         'num_tg_users' => 0,
          'logo_url' => '/images/uploads/project-logo-1.png'
       ],
       [
-         'name' => 'Test2',
-         'website_name' => 'test2.com',
+         'name' => 'Pengsol',
          'website_url' => 'https://google.com',
-         'rating' => 49,
+         'rating' => 1,
          'twitter' => 'https://twitter.com/',
-         'num_tg_users' => 13,
+         'num_tg_users' => 0,
          'logo_url' => '/images/uploads/project-logo-2.png'
       ]
      ];

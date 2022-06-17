@@ -19,9 +19,9 @@ class CreateProjectsTable extends Migration
             $table->integer('project_type_id')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('rating')->default(0);
-            $table->integer('num_tg_mesages')->default(0);
+            $table->tinyInteger('rating_past')->default(0);
             $table->integer('num_tg_users')->default(0);
-            $table->string('website_name')->nullable();
+            $table->integer('num_tg_users_past')->default(0);
             $table->string('website_url')->nullable();
             $table->string('discord')->nullable();
             $table->string('twitter')->nullable();
