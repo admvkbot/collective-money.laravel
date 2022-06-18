@@ -96,14 +96,17 @@
               </td>
               <td class="align-middle text-center">
                 <div class="d-flex align-items-center justify-content-center">
-                  <span class="me-2 text-xs font-weight-bold"
-                    >{{ item.rating }}%</span
-                  >
-                  <div>
+                  <div v-if="item.rating">
+                    <span class="me-2 text-xs font-weight-bold"
+                      >{{ item.rating }}%</span
+                    >
                     <vsud-progress-plus
                       variant="gradient"
                       :percentage="item.rating"
                     />
+                  </div>
+                  <div v-else class="me-2 text-xs font-weight-bold">
+                    Недостаточно данных
                   </div>
                 </div>
               </td>

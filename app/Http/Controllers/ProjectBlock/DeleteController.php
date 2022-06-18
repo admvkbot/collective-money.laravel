@@ -12,7 +12,7 @@ class DeleteController extends Controller
     public function __invoke($id)
     {
       if (ApiController::checkModerator()) {
-         return ProjectStatus::firstWhere('id', $id)->delete();
+         return $this->service->deleteBlock($id);
       }  
     }
 }

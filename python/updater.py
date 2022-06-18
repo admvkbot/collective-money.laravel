@@ -1,6 +1,6 @@
 import configparser
 import json
-import time
+import re
 import pytz
 
 from datetime import date, datetime, timedelta
@@ -35,13 +35,14 @@ class Id(object):
 
 
 class TgMessage(object):
-    def __init__(self, id, tg_message_id, channel_id, date, user_id, message):
+    def __init__(self, id, tg_message_id, channel_id, date, user_id, message, is_scam):
         self.id = id
         self.tg_message_id = tg_message_id
         self.channel_id = channel_id
         self.date = date
         self.user_id = user_id
         self.message = message
+        self.is_scam = is_scam
 
 
 class TgMetric(object):
@@ -118,13 +119,19 @@ def mysql_get_messages_by_indexes(indexes):
             str = str + " OR"
         str = str + " message LIKE '%" + index.field + "%'"
         i = i + 1
-    sql = "SELECT id FROM tg_messages WHERE" + str
+    sql = "SELECT id, message FROM tg_messages WHERE" + str
     cursor.execute(sql)
     data = cursor.fetchall()
     out = []
     for row in data:
-        message = Id(
+        message = TgMessage(
             row[0],
+            None,
+            None,
+            None,
+            None,
+            row[1],
+            False,
         )
         out.insert(0, message)
     return out
@@ -175,10 +182,11 @@ def mysql_attach(messages, project_id):
     global db
     global cursor
     for message in messages:
-        sql = "INSERT INTO tg_message_project (message_id, project_id) VALUES (%s, %s)"
+        sql = "INSERT INTO tg_message_project (message_id, project_id, is_scam) VALUES (%s, %s, %s)"
         val = (
             message.id,
-            project_id
+            project_id,
+            message.is_scam
         )
         cursor.execute(sql, val)
     db.commit()
@@ -197,7 +205,6 @@ def mysql_get_first_message():
     sql = "SELECT * FROM tg_messages ORDER BY date LIMIT 1"
     cursor.execute(sql)
     data = cursor.fetchall()
-    out = []
     for row in data:
         message = TgMessage(
             row[0],
@@ -206,6 +213,7 @@ def mysql_get_first_message():
             row[3],
             row[4],
             row[5],
+            False
         )
         return message
     return None
@@ -325,6 +333,17 @@ def collect_rating(metric):
     return int(round(rating))
 
 
+def check_for_scam(messages):
+    out_messages = []
+    scam_pattern = "\Wscam(|er)(\W.*|)$"
+    no_scam_pattern = "\Wno(t|) scam(\W.*|)$"
+    for message in messages:
+        if message.message and re.search(scam_pattern, message.message, re.IGNORECASE) and not re.search(no_scam_pattern, message.message, re.IGNORECASE):
+            message.is_scam = True
+        out_messages.insert(0, message)
+    return out_messages
+
+
 tz = pytz.timezone(config['Grabber']['timezone'])
 
 if __name__ == '__main__':
@@ -338,6 +357,7 @@ if __name__ == '__main__':
                 if indexes:
                     print(len(indexes), 'ключей')
                     messages = mysql_get_messages_by_indexes(indexes)
+                    messages = check_for_scam(messages)
                     print(len(messages), 'сообщений')
                     mysql_detach(project.id)
                     mysql_attach(messages, project.id)
