@@ -12,7 +12,7 @@ class Project extends Model
    
    public function tg_messages()
    {
-      return $this->belongsToMany(TgMessage::class, 'message_projects', 'project_id', 'message_id');//->using(MessageProject::class);;
+      return $this->belongsToMany(TgMessage::class, 'tg_message_project', 'project_id', 'message_id');//->using(MessageProject::class);;
    }
 
 }

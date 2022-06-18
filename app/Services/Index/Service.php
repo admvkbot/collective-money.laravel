@@ -7,6 +7,12 @@ use App\Models\Project;
 
 class Service
 {
+   public function getIndexesByProjectId($project_id)
+   {
+      return Index::where('project_id', $project_id)
+      ->toBase()
+      ->get();
+   }
    public function eraseIndex($project_id)
    {
       return Index::where('project_id', $project_id)

@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::post('/get-projects/{id}', 'Project\IndexController');
    Route::get('/get-project/{id}', 'Project\ProjectController');
    Route::post('/edit-project/{project_id}', 'Project\EditController');
+   Route::get('/delete-project/{project_id}', 'Project\DeleteController');
    Route::post('/add-project', 'Project\CreateController');
    Route::get('/get-indexes/{project_id}', 'Index\IndexController');
    Route::post('/edit-project-key', 'Index\EditController');
