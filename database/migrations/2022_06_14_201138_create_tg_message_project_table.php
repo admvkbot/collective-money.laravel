@@ -17,7 +17,6 @@ class CreateTgMessageProjectTable extends Migration
          $table->unsignedBigInteger('message_id');
          $table->unsignedBigInteger('project_id');
          $table->boolean('is_scam')->default(false);
-         $table->boolean('is_verified')->default(false);
 
          $table->index('message_id', 'tg_message_project_message_idx');
          $table->index('project_id', 'tg_message_project_project_idx');

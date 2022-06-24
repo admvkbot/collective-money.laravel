@@ -117,6 +117,7 @@
 
 <script>
 import { defineComponent, reactive, ref, computed, watch, inject } from "vue";
+import { useLoading } from "vue-loading-overlay";
 
 export default {
   name: "moderate-messages-table",
@@ -138,11 +139,17 @@ export default {
     const data = reactive({
       rows: [],
     });
+    const $loading = useLoading();
+    let loader;
+    const submit = () => {
+      loader = $loading.show({});
+    };
 
     /**
      * Get server data request
      */
     const myRequest = (keyword) => {
+      submit();
       axios
         .post("/api/get-messages-moderate/" + props.projectId, {
           filter: keyword,
@@ -152,8 +159,10 @@ export default {
           //console.log(r.data);
           data.rows = r.data;
           //this.$emit("accountsReload");
+          loader.hide();
         })
         .catch((err) => {
+          loader.hide();
           console.log("Fetch error", err.response);
           const registerError =
             "Неизвестная ошибка работы live filter messages";

@@ -239,6 +239,7 @@ import confirmModal from "@/components/modal/confirmModal.js";
 
 import { reactive, ref, computed, watch } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useLoading } from "vue-loading-overlay";
 
 export default {
   name: "moderate-projects-table",
@@ -270,27 +271,33 @@ export default {
     const data = reactive({
       rows: [],
     });
+    const $loading = useLoading();
+    let loader;
+    const submit = () => {
+      loader = $loading.show({});
+    };
     /**
      * Get server data request
      */
     const myRequest = (keyword, top) => {
-      axios.get("/sanctum/csrf-cookie").then((response) => {
-        axios
-          .post("/api/get-projects/" + top, {
-            filter: keyword,
-          })
-          .then((r) => {
-            console.log(r.data);
-            data.rows = r.data;
-            //this.$emit("accountsReload");
-          })
-          .catch((err) => {
-            console.log("Fetch error", err.response);
-            const registerError =
-              "Неизвестная ошибка при полученнии списка проектов";
-            alert(registerError);
-          });
-      });
+      submit();
+      axios
+        .post("/api/get-projects/" + top, {
+          filter: keyword,
+        })
+        .then((r) => {
+          loader.hide();
+          console.log(r.data);
+          data.rows = r.data;
+          //this.$emit("accountsReload");
+        })
+        .catch((err) => {
+          loader.hide();
+          console.log("Fetch error", err.response);
+          const registerError =
+            "Неизвестная ошибка при полученнии списка проектов";
+          alert(registerError);
+        });
     };
 
     const table = reactive({

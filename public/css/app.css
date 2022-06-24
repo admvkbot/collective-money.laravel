@@ -1,4 +1,38 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
+.vld-shown {
+  overflow: hidden;
+}
+.vld-overlay {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  align-items: center;
+  display: none;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 9999;
+}
+.vld-overlay.is-active {
+  display: flex;
+}
+.vld-overlay.is-full-page {
+  z-index: 9999;
+  position: fixed;
+}
+.vld-overlay .vld-background {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fff;
+  opacity: 0.5;
+}
+.vld-overlay .vld-icon, .vld-parent {
+  position: relative;
+}
 /*
 ! tailwindcss v3.0.24 | MIT License | https://tailwindcss.com
 */
@@ -1283,6 +1317,9 @@ select{
 }
 .justify-between{
   justify-content: space-between;
+}
+.justify-items-center{
+  justify-items: center;
 }
 .gap-6{
   gap: 1.5rem;
@@ -8556,6 +8593,9 @@ select {
 }
 .justify-between {
   justify-content: space-between;
+}
+.justify-items-center {
+  justify-items: center;
 }
 .gap-6 {
   gap: 1.5rem;

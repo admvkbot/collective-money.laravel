@@ -6,6 +6,7 @@ import "./assets/css/nucleo-icons.css";
 import "./assets/css/nucleo-svg.css";
 import SoftUIDashboard from "./soft-ui-dashboard";
 import axios from 'axios'
+import VueLoading from 'vue-loading-overlay';
 
 require('@/assets/js/plugins/init.js')
 //import { config } from 'dotenv';
@@ -64,6 +65,7 @@ window.globalBlockTypes = [
 
 const appInstance = createApp(App);
 document.querySelector('#app').classList = ['g-sidenav-show'];
+appInstance.use(VueLoading);
 appInstance.use(store);
 appInstance.use(router);
 appInstance.use(SoftUIDashboard);

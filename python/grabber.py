@@ -1,6 +1,7 @@
 import configparser
 import json
 import time
+import re
 
 from telethon.sync import TelegramClient
 from telethon import connection
@@ -74,14 +75,14 @@ def mysql_put_message(message):
     #print(result[0][0])
     #sys.exit()
     if not result[0][0]:
-        sql = "INSERT INTO tg_messages (tg_message_id, channel_id, date, user_id, message) VALUES (%s, %s, %s, %s, %s) "
-        #print(message['date'])
+        sql = "INSERT INTO tg_messages (tg_message_id, channel_id, date, user_id, message, is_scam) VALUES (%s, %s, %s, %s, %s, %s)"
         val = (
             message['id'],
             message['peer_id']['channel_id'],
             message['date'],
             message['from_id']['user_id'],
-            message['message']
+            message['message'],
+            message['is_scam']
         )
         try:
             cursor.execute(sql, val)
@@ -249,6 +250,13 @@ async def tg_get_user_info(channel, user_id):
     return user_data.user
 
 
+def check_for_scam(message):
+    scam_pattern = config['Grabber']['scam_pattern']
+    no_scam_pattern = config['Grabber']['no_scam_pattern']
+    if message and re.search(scam_pattern, message, re.IGNORECASE) and not re.search(no_scam_pattern, message, re.IGNORECASE):
+        return True
+    return False
+
 def reconnect():
     global client
     client.disconnect()
@@ -345,7 +353,11 @@ async def dump_all_messages(channel):
                 parsing_messages_flag = True
                 flag_start = True
                 break
+
             message_dict = message.to_dict()
+            message_dict['is_scam'] = check_for_scam(message_dict['message'])
+            if message_dict['is_scam']:
+                print(message_dict['is_scam'])
 
             try:
                 user_id = message_dict['from_id']['user_id']

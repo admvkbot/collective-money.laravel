@@ -21,6 +21,8 @@ class CreateTgMessagesTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->text('message');
             $table->integer('project_id')->default(0); // 0-новое, 1-в отбросы
+            $table->boolean('is_scam')->default(false);
+            $table->boolean('is_scam_verified')->default(false);
             $table->timestamps();
         });
     }

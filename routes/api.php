@@ -48,6 +48,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::post('/edit-project-key', 'Index\EditController');
    Route::post('/upload-project-logo/{project_id}', 'Project\UploadController');
 
+   Route::post('/scam-messages', 'Scam\IndexController');
+
    Route::post('/get-project-tg-chart/{top}', 'API\Chart\TgChartController');
+   
+   Route::post('/search-tg-username', 'Scam\SearchTgUserController'); //searchTgUsername.js
+   Route::post('/search-project', 'Scam\SearchProjectController'); //searchProject.js
 
 });

@@ -17,8 +17,18 @@ class Service
       Project::firstWhere('id', $project_id)->delete();
    }
 
-   public function detachTgMessageProject($project_id) {
+   public function detachTgMessageProject($project_id)
+   {
       $project = Project::where('id', $project_id)->find(1);
       $project->tg_messages()->detach();
+   }
+
+   public function getProjectByString($filter)
+   {
+      if (!$filter['query']) {
+         return "";
+      }
+      //return  Project::first();
+      return Project::firstWhere('name', $filter['query']);
    }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0">
-      <h6>{{top? "Топ " + top : "Список"}} криптопроектов</h6>
+      <h6>{{ top ? "Топ " + top : "Список" }} криптопроектов</h6>
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="row" v-if="is_liveSearch">
@@ -66,7 +66,7 @@
               >
                 Соцсети
               </th>
-              <th></th>
+              <!--<th></th>-->
             </tr>
           </thead>
           <tbody>
@@ -159,14 +159,14 @@
                   </a>
                 </div>
               </td>
-              <td class="align-middle">
+              <!--<td class="align-middle">
                 <button
                   class="btn btn-link text-secondary mb-0"
                   v-if="is_liveSearch"
                 >
                   <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
                 </button>
-              </td>
+              </td>-->
             </tr>
           </tbody>
         </table>
@@ -184,6 +184,7 @@ import MediumIcon from "@/components/Icon/Medium";
 import YoutubeIcon from "@/components/Icon/Youtube";
 import { reactive, ref, computed, watch } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useLoading } from "vue-loading-overlay";
 
 export default {
   name: "projects-table",
@@ -213,27 +214,33 @@ export default {
     const data = reactive({
       rows: [],
     });
+    const $loading = useLoading();
+    let loader;
+    const submit = () => {
+      loader = $loading.show({});
+    };
     /**
      * Get server data request
      */
     const myRequest = (keyword) => {
-      axios.get("/sanctum/csrf-cookie").then((response) => {
-        axios
-          .post("/api/get-projects/" + props.top, {
-            filter: keyword,
-          })
-          .then((r) => {
-            console.log(r.data);
-            data.rows = r.data;
-            //this.$emit("accountsReload");
-          })
-          .catch((err) => {
-            console.log("Fetch error", err.response);
-            const registerError =
-              "Неизвестная ошибка при полученнии списка проектов";
-            alert(registerError);
-          });
-      });
+      submit();
+      axios
+        .post("/api/get-projects/" + props.top, {
+          filter: keyword,
+        })
+        .then((r) => {
+          loader.hide();
+          console.log(r.data);
+          data.rows = r.data;
+          //this.$emit("accountsReload");
+        })
+        .catch((err) => {
+          loader.hide();
+          console.log("Fetch error", err.response);
+          const registerError =
+            "Неизвестная ошибка при полученнии списка проектов";
+          alert(registerError);
+        });
     };
 
     const table = reactive({

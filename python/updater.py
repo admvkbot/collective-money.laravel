@@ -335,8 +335,8 @@ def collect_rating(metric):
 
 def check_for_scam(messages):
     out_messages = []
-    scam_pattern = "\Wscam(|er)(\W.*|)$"
-    no_scam_pattern = "\Wno(t|) scam(\W.*|)$"
+    scam_pattern = '\Wscam(|mer|er)(\W.*|)$'
+    no_scam_pattern = '\Wno(t|) scam(\W.*|)$'
     for message in messages:
         if message.message and re.search(scam_pattern, message.message, re.IGNORECASE) and not re.search(no_scam_pattern, message.message, re.IGNORECASE):
             message.is_scam = True

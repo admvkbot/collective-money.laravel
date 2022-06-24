@@ -2587,6 +2587,11 @@
     "es5-ext" "^0.10.50"
     "type" "^1.0.1"
 
+"date-fns@^2.17.0":
+  "integrity" "sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw=="
+  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-2.28.0.tgz"
+  "version" "2.28.0"
+
 "de-indent@^1.0.2":
   "integrity" "sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0="
   "resolved" "https://registry.npmjs.org/de-indent/-/de-indent-1.0.2.tgz"
@@ -5845,6 +5850,14 @@
   "resolved" "https://registry.npmjs.org/vue-demi/-/vue-demi-0.12.1.tgz"
   "version" "0.12.1"
 
+"vue-good-table@^2.21.11":
+  "integrity" "sha512-OpVPdxbBTahtfq1aXxEa5P1CMy1wiLcBg4mo7k6Qs537l9v8KVrvF+fXqbnxqNrAfmd1Mw9LidcjgTErjmVU8g=="
+  "resolved" "https://registry.npmjs.org/vue-good-table/-/vue-good-table-2.21.11.tgz"
+  "version" "2.21.11"
+  dependencies:
+    "date-fns" "^2.17.0"
+    "lodash.isequal" "^4.5.0"
+
 "vue-loader@^17.0.0":
   "integrity" "sha512-OWSXjrzIvbF2LtOUmxT3HYgwwubbfFelN8PAP9R9dwpIkj48TVioHhWWSx7W7fk+iF5cgg3CBJRxwTdtLU4Ecg=="
   "resolved" "https://registry.npmjs.org/vue-loader/-/vue-loader-17.0.0.tgz"
@@ -5853,6 +5866,11 @@
     "chalk" "^4.1.0"
     "hash-sum" "^2.0.0"
     "loader-utils" "^2.0.0"
+
+"vue-loading-overlay@5.0":
+  "integrity" "sha512-6JWZalwlHF4do3HXsFZGt6PcWYseAI5FuNKpveEkljkzqskDWRr7rYmYHVx2kKu4qIvK0vLpL25T/hpFMNoevQ=="
+  "resolved" "https://registry.npmjs.org/vue-loading-overlay/-/vue-loading-overlay-5.0.3.tgz"
+  "version" "5.0.3"
 
 "vue-next-select@^2.10.4":
   "integrity" "sha512-9Lg1mD2h9w6mm4gkXPyVMWhOdUPtA/JF9VrNyo6mqjkh4ktGLVQpNhygVBCg13RFHdEq3iqawjeFmp3FJq+CUw=="

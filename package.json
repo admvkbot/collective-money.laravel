@@ -56,6 +56,8 @@
         "jsencrypt": "^3.2.1",
         "mix-env-file": "^0.1.1",
         "sweetalert2": "^11.4.17",
+        "vue-good-table": "^2.21.11",
+        "vue-loading-overlay": "5.0",
         "vue-next-select": "^2.10.4",
         "vue-router": "^4.0.12",
         "vuelidate": "^0.7.7",

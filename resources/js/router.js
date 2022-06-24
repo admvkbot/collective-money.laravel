@@ -47,27 +47,32 @@ const routes = [
       props: true,
    },
    {
-      path: "/products",
+      path: "/moderator/products",
       name: "Products",
       component: defineAsyncComponent(() => import("@/views/products/ProductsModerator.vue")),
    },
    {
-      path: "/products/add",
+      path: "/moderator/products/add",
       name: "Add Product",
       component: defineAsyncComponent(() => import("@/views/products/AddProduct.vue")),
       props: true,
    },
    {
-      path: "/products/edit/:productId",
+      path: "/moderator/products/edit/:productId",
       name: "Edit Product",
       component: defineAsyncComponent(() => import("@/views/products/EditProduct.vue")),
       props: true,
    },
    {
-      path: "/products/edit-key/:productId",
+      path: "/moderator/products/edit-key/:productId",
       name: "Edit Product Key",
       component: defineAsyncComponent(() => import("@/views/products/EditProductKey.vue")),
       props: true,
+   },
+   {
+      path: "/moderator/scam",
+      name: "Scam",
+      component: defineAsyncComponent(() => import("@/views/scam/ScamModerator.vue")),
    },
    {
       path: "/sign-in",
