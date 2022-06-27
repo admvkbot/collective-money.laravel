@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      *
-     * @return void
+     * @return roduct
      */
     public function run()
     {
@@ -52,12 +52,12 @@ class DatabaseSeeder extends Seeder
          [
             'id' => 1,
             'url' => 'https://t.me/doubletop_otc',
-            'project_type_id' => 1
+            'product_type_id' => 1
          ],
          [
             'id' => 2,
             'url' => 'https://t.me/terncrypto_otc',
-            'project_type_id' => 1
+            'product_type_id' => 1
          ],
     ];
      DB::table('tg_channels')->insert(
@@ -67,22 +67,24 @@ class DatabaseSeeder extends Seeder
      $data = [
       [
          'name' => 'Mimi\'s Adventure',
+         'uri' => 'mimis-adventure',
          'website_url' => 'https://google.com',
          'rating' => 1,
          'twitter' => 'https://twitter.com/',
          'num_tg_users' => 0,
-         'logo_url' => '/images/uploads/project-logo-1.png'
+         'logo_url' => '/images/uploads/product-logo-1.png'
       ],
       [
          'name' => 'Pengsol',
+         'uri' => 'pengsol',
          'website_url' => 'https://google.com',
          'rating' => 1,
          'twitter' => 'https://twitter.com/',
          'num_tg_users' => 0,
-         'logo_url' => '/images/uploads/project-logo-2.png'
+         'logo_url' => '/images/uploads/product-logo-2.png'
       ]
      ];
-     DB::table('projects')->insert(
+     DB::table('products')->insert(
          $data
      );
 
@@ -92,7 +94,7 @@ class DatabaseSeeder extends Seeder
           'description' => 'Описание'
       ],
       ];
-      DB::table('project_types')->insert(
+      DB::table('product_types')->insert(
          $data
       );
 

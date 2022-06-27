@@ -12,6 +12,13 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
+        <sidenav-collapse navText="Проекты" :to="{ name: 'Products' }">
+          <template #icon>
+            <products />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
         <sidenav-collapse navText="Парсер Telegram" :to="{ name: 'TgParser' }">
           <template #icon>
             <office />
@@ -101,7 +108,7 @@
           </sidenav-collapse>
         </li>
         <li class="nav-item">
-          <sidenav-collapse navText="Продукты" :to="{ name: 'Products' }">
+          <sidenav-collapse navText="Продукты" :to="{ name: 'ProductsModerator' }">
             <template #icon>
               <humidity />
             </template>
@@ -142,6 +149,7 @@ import ReferersIcon from "../components/Icon/Referers.vue";
 import Humidity from "../components/Icon/Humidity.vue";
 import ScamIcon from "../components/Icon/Scam.vue";
 import SpaceshipIcon from "../components/Icon/Spaceship.vue";
+import Products from "../components/Icon/Products.vue";
 import { inject } from "vue";
 
 export default {
@@ -175,6 +183,7 @@ export default {
     Humidity,
     SpaceshipIcon,
     ScamIcon,
+    Products,
     /*AsyncComponent: defineAsyncComponent(() => import("@/views/Moderator.vue")),*/
   },
   methods: {

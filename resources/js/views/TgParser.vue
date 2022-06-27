@@ -7,12 +7,12 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <projects-table :is_liveSearch="false" top="5"/>
+        <products-table :is_liveSearch="false" top="5"/>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <projects-table />
+        <products-table />
       </div>
     </div>
     <div class="row">
@@ -25,13 +25,13 @@
 
 <script>
 import MessagesTable from "@/views/components/tables/MessagesTable";
-import ProjectsTable from "@/views/components/tables/ProjectsTable";
+import ProductsTable from "@/views/components/tables/ProductsTable";
 
 export default {
   name: "tgparser",
   components: {
     MessagesTable,
-    ProjectsTable,
+    ProductsTable,
   },
 };
 </script>

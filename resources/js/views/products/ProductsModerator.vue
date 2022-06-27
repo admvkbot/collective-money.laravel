@@ -2,7 +2,7 @@
   <div class="py-4 container-fluid">
     <div class="row">
       <div class="col-12">
-        <moderate-projects-table />
+        <moderate-products-table />
       </div>
     </div>
     <div class="row pt-3">
@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import ModerateProjectsTable from "@/views/components/tables/ProjectsTableModerator";
+import ModerateProductsTable from "@/views/components/tables/ProductsTableModerator";
 import MessagesTableModerator from "@/views/components/tables/MessagesTableModerator";
 
 export default {
   name: "products-moderator",
   components: {
-    ModerateProjectsTable,
+    ModerateProductsTable,
     MessagesTableModerator,
   },
 };

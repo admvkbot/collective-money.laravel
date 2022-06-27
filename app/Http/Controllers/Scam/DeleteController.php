@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class DeleteController extends BaseController
 {
-    public function __invoke($project_id)
+    public function __invoke($product_id)
     {
     }
 }

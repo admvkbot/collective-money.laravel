@@ -21,7 +21,7 @@ class TgMessage extends Model
    //protected $primaryKey = 'id'; // or null
    //public $incrementing = false;
 
-   public function projects() {
-      return $this->belongsToMany(Project::class, 'message_projects', 'message_id', 'project_id');
+   public function products() {
+      return $this->belongsToMany(Product::class, 'message_products', 'message_id', 'product_id');
    }
 }

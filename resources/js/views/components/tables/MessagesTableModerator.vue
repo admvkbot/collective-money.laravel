@@ -123,7 +123,7 @@ export default {
   name: "moderate-messages-table",
   components: {},
   props: {
-    projectId: { type: Number, default: null },
+    product: { type: Number, default: null },
     title: {
       type: String,
       default: "Сообщения Telegram",
@@ -151,7 +151,7 @@ export default {
     const myRequest = (keyword) => {
       submit();
       axios
-        .post("/api/get-messages-moderate/" + props.projectId, {
+        .post("/api/get-messages-moderate/" + props.product, {
           filter: keyword,
           with_tags: props.withTags,
         })

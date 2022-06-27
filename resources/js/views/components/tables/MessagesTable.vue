@@ -78,9 +78,6 @@
                 </div>
               </td>
               <td>
-                <span v-if="item.first_name">{{ item.first_name }}</span>
-                <span v-if="item.last_name">{{ item.last_name }}</span
-                ><br />
                 <a
                   :href="'https://t.me/' + item.username"
                   class="text-sm font-weight-bold mb-0"
@@ -88,7 +85,10 @@
                   v-if="item.username"
                 >
                   @{{ item.username }}
-                </a>
+                </a><br />
+                <span v-if="item.first_name">{{ item.first_name }}</span>
+                <span v-if="item.last_name">{{ item.last_name }}</span
+                >
               </td>
               <td>
                 <a
@@ -97,7 +97,7 @@
                   target="_blank"
                   v-if="item.channel_username"
                 >
-                  {{ item.channel_username }}
+                  @{{ item.channel_username }}
                 </a>
                 <span v-else>-</span>
               </td>

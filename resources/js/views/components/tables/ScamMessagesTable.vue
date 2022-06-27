@@ -180,7 +180,7 @@
         :modal="theModal"
         :rawString="rawString"
         :tgUserData="tgUserData"
-        :projectData="projectData"
+        :product="product"
         :messageId="messageId"
         @mesages-reload="mesagesReload"
       />
@@ -193,7 +193,7 @@ import { defineComponent, reactive, ref, computed, watch, inject } from "vue";
 import { convertMessageTableDate } from "@/assets/js/convertDate.js";
 import AddScamModal from "@/components/modal/AddScamModal.vue";
 import searchTgUsername from "@/assets/js/searchTgUsername.js";
-import searchProject from "@/assets/js/searchProject.js";
+import searchProduct from "@/assets/js/searchProduct.js";
 import { useLoading } from "vue-loading-overlay";
 
 import { Modal } from "bootstrap";
@@ -207,7 +207,7 @@ export default {
   components: {
     AddScamModal,
     searchTgUsername,
-    searchProject,
+    searchProduct,
   },
   props: {
     title: {
@@ -309,7 +309,7 @@ export default {
         id: null,
         username: "",
       },
-      projectData: {
+      product: {
         id: null,
         name: "",
       },
@@ -330,25 +330,25 @@ export default {
       if (string.match(regexp)) {
         const username = string.slice(1);
         this.tgUserData = searchTgUsername(username, true);
-        this.projectData = {
+        this.product = {
           id: null,
           name: "",
         };
       } else if (string.match(regexp2)) {
         this.tgUserData = searchTgUsername(string, false);
-        this.projectData = searchProject(string);
+        this.product = searchProduct(string);
       } else if (string.match(regexp3)) {
         this.tgUserData = {
           id: null,
           username: "",
         };
-        this.projectData = searchProject(string);
+        this.product = searchProduct(string);
       } else {
         this.tgUserData = {
           id: null,
           username: "",
         };
-        this.projectData = {
+        this.product = {
           id: null,
           name: "",
         };

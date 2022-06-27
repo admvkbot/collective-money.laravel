@@ -8,8 +8,8 @@ use App\Models\Index;
 
 class IndexController extends BaseController
 {
-   public function __invoke($project_id, Request $request)
+   public function __invoke($product_id, Request $request)
    {
-      return response()->json($this->service->getIndexesByProjectId($project_id));
+      return response()->json($this->service->getIndexesByProductId($product_id));
    }
 }

@@ -6,6 +6,8 @@ import Profile from "./views/Profile.vue";
 import Accounts from "./views/accounts/Accounts.vue";
 import Referers from "./views/referers/Referers.vue";
 import EditAccount from "./views/accounts/EditAccount.vue";
+import Products from "./views/products/Products.vue";
+import Product from "./views/products/Product.vue";
 import SignIn from "./views/SignIn.vue";
 import SignUp from "./views/SignUp.vue";
 
@@ -19,6 +21,11 @@ const routes = [
       path: "/dashboard",
       name: "Dashboard",
       component: Dashboard,
+   },
+   {
+      path: "/products",
+      name: "Products",
+      component: Products,
    },
    {
       path: "/tgparser",
@@ -48,8 +55,14 @@ const routes = [
    },
    {
       path: "/moderator/products",
-      name: "Products",
+      name: "ProductsModerator",
       component: defineAsyncComponent(() => import("@/views/products/ProductsModerator.vue")),
+   },
+   {
+      path: "/product/:productNameUri",
+      name: "Product",
+      component: Product,
+      props: true,
    },
    {
       path: "/moderator/products/add",

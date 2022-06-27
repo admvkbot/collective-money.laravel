@@ -8,10 +8,10 @@ use App\Models\MonthTgMetric;
 
 class Service
 {
-   public function deleteMetricsByProjectId($project_id)
+   public function deleteMetricsByProductId($product_id)
    {
-      DayTgMetric::where('project_id', $project_id)->delete();
-      WeekTgMetric::where('project_id', $project_id)->delete();
-      MonthTgMetric::where('project_id', $project_id)->delete();
+      DayTgMetric::where('product_id', $product_id)->delete();
+      WeekTgMetric::where('product_id', $product_id)->delete();
+      MonthTgMetric::where('product_id', $product_id)->delete();
    }
 }

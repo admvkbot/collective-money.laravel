@@ -13,7 +13,7 @@
                   <div class="col-12">
                     <label class="form-label">Название</label>
                     <vsud-input
-                      id="project-name"
+                      id="product-name"
                       type="text"
                       placeholder="Crypto Whitelist Pro"
                       aria-label="Name"
@@ -21,15 +21,15 @@
                       :active="true"
                       value=""
                       :disabled="false"
-                      @input-value="(v) => this.project.name = v"
+                      @input-value="(v) => this.product.name = v"
                     />
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12">
                     <vsud-textarea
-                      id="project-keys"
-                      @textarea-value="(v) => this.project.keys = v"
+                      id="product-keys"
+                      @textarea-value="(v) => this.product.keys = v"
                       placeholder="key1
 key2"
                       >Ключевые фразы</vsud-textarea
@@ -39,9 +39,9 @@ key2"
                 <div class="row">
                   <div class="col-12">
                     <vsud-textarea
-                      id="project-description"
+                      id="product-description"
                       placeholder="Любой текст"
-                      @input-value="(v) => this.project.description = v"
+                      @input-value="(v) => this.product.description = v"
                       rows="7"
                       >Комментарий к проекту</vsud-textarea
                     >
@@ -77,7 +77,7 @@ key2"
                       name="choices-type-button"
                       id="choices-type"
                       placeholder="Выберите тип проекта"
-                      v-model="project.type"                  
+                      v-model="product.type"                  
                     >
                       <option
                         v-for="item in types.value"
@@ -93,14 +93,14 @@ key2"
                   <div class="col-12">
                     <label class="form-label">Официальный вебсайт</label>
                     <vsud-input
-                      id="project-site-url"
+                      id="product-site-url"
                       type="text"
-                      placeholder="https://project.website/"
-                      aria-label="project-site-url"
+                      placeholder="https://product.website/"
+                      aria-label="product-site-url"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.project.url = v"
+                      @input-value="(v) => this.product.url = v"
                       :disabled="false"
                     />
                   </div>
@@ -111,14 +111,14 @@ key2"
                       ><twitter-icon class="mt-1 mr-1" />Twitter</label
                     >
                     <vsud-input
-                      id="project-twitter"
+                      id="product-twitter"
                       type="text"
                       placeholder="https://twitter.com/xxxx"
-                      aria-label="project-twitter"
+                      aria-label="product-twitter"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.project.twitter = v"
+                      @input-value="(v) => this.product.twitter = v"
                       :disabled="false"
                     />
                   </div>
@@ -129,14 +129,14 @@ key2"
                       ><discord-icon class="mt-1 mr-1" />Discord</label
                     >
                     <vsud-input
-                      id="project-discord"
+                      id="product-discord"
                       type="text"
                       placeholder="https://discord.com/user/xxxx"
-                      aria-label="project-discord"
+                      aria-label="product-discord"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.project.discord = v"
+                      @input-value="(v) => this.product.discord = v"
                       :disabled="false"
                     />
                   </div>
@@ -147,14 +147,14 @@ key2"
                       ><youtube-icon class="mt-1 mr-1" />YouTube</label
                     >
                     <vsud-input
-                      id="project-youtube"
+                      id="product-youtube"
                       type="text"
                       placeholder="https://youtube.com/channel/xxxx"
-                      aria-label="project-youtube"
+                      aria-label="product-youtube"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.project.youtube = v"
+                      @input-value="(v) => this.product.youtube = v"
                       :disabled="false"
                     />
                   </div>
@@ -165,14 +165,14 @@ key2"
                       ><telegram-icon class="mt-1 mr-1" />Telegram</label
                     >
                     <vsud-input
-                      id="project-telegram"
+                      id="product-telegram"
                       type="text"
                       placeholder="https://t.me/xxxx"
-                      aria-label="project-telegram"
+                      aria-label="product-telegram"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.project.telegram = v"
+                      @input-value="(v) => this.product.telegram = v"
                       :disabled="false"
                     />
                   </div>
@@ -183,14 +183,14 @@ key2"
                       ><medium-icon class="mt-1 mr-1" />Medium</label
                     >
                     <vsud-input
-                      id="project-medium"
+                      id="product-medium"
                       type="text"
                       placeholder="https://medium.com/@xxxx"
-                      aria-label="project-medium"
+                      aria-label="product-medium"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.project.medium = v"
+                      @input-value="(v) => this.product.medium = v"
                       :disabled="false"
                     />
                   </div>
@@ -210,12 +210,12 @@ key2"
 </template>
 
 <script>
-import ModerateProjectsTable from "@/views/components/tables/ProjectsTableModerator";
+import ModerateProductsTable from "@/views/components/tables/ProductsTableModerator";
 import ModerateMessagesTable from "@/views/components/tables/MessagesTableModerator";
 import VsudInput from "@/components/VsudInput.vue";
 import VsudTextarea from "@/components/VsudTextarea.vue";
 import VsudButton from "@/components/VsudButton.vue";
-import getProjectTypes from "@/assets/js/getProjectTypes.js";
+import getProductTypes from "@/assets/js/getProductTypes.js";
 import TwitterIcon from "@/components/Icon/Twitter";
 import TelegramIcon from "@/components/Icon/Telegram";
 import DiscordIcon from "@/components/Icon/Discord";
@@ -227,12 +227,12 @@ import { ref } from "vue";
 export default {
   name: "add-product",
   components: {
-    ModerateProjectsTable,
+    ModerateProductsTable,
     ModerateMessagesTable,
     VsudInput,
     VsudButton,
     VsudTextarea,
-    getProjectTypes,
+    getProductTypes,
     TwitterIcon,
     TelegramIcon,
     DiscordIcon,
@@ -241,7 +241,7 @@ export default {
   },
   data() {
     return {
-      project: {
+      product: {
          name: "",
          type: 1,
          keys: "",
@@ -257,27 +257,27 @@ export default {
   },
   setup() {
     const types = ref([]);
-    types.value = getProjectTypes();
+    types.value = getProductTypes();
     return { types };
   },
   methods: {
      sendData() {
         axios.get("/sanctum/csrf-cookie").then((response) => {
           axios
-            .post("/api/add-project", {
-              name: this.project.name,
-              type: this.project.type,
-              keys: this.project.keys,
-              url: this.project.url,
-              twitter: this.project.twitter,
-              discord: this.project.discord,
-              youtube: this.project.youtube,
-              telegram: this.project.telegram,
-              medium: this.project.medium,
+            .post("/api/add-product", {
+              name: this.product.name,
+              type: this.product.type,
+              keys: this.product.keys,
+              url: this.product.url,
+              twitter: this.product.twitter,
+              discord: this.product.discord,
+              youtube: this.product.youtube,
+              telegram: this.product.telegram,
+              medium: this.product.medium,
               description: this.description,
             })
             .then((r) => {
-              this.$router.push({name: 'Products'});
+              this.$router.push({name: 'ProductsModerator'});
               //this.$router.go()
               //this.$emit("socialsReload");
             })

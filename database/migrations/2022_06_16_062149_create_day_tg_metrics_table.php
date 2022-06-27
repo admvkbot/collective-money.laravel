@@ -9,13 +9,13 @@ class CreateDayTgMetricsTable extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
+     * @return roduct
      */
     public function up()
     {
         Schema::create('day_tg_metrics', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('project_id');
+            $table->unsignedInteger('product_id');
             $table->dateTime('date');
             $table->unsignedInteger('quantity_all')->default(0);
             $table->unsignedInteger('quantity_id')->default(0);
@@ -29,7 +29,7 @@ class CreateDayTgMetricsTable extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
+     * @return roduct
      */
     public function down()
     {

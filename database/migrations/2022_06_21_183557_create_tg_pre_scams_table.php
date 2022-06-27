@@ -9,14 +9,14 @@ return new class extends Migration
    /**
     * Run the migrations.
     *
-    * @return void
+    * @return roduct
     */
    public function up()
    {
       Schema::create('tg_pre_scams', function (Blueprint $table) {
          $table->unsignedBigInteger('tg_message_id');
          $table->unsignedBigInteger('tg_user_id')->nullable();
-         $table->unsignedBigInteger('project_id')->nullable();
+         $table->unsignedBigInteger('product_id')->nullable();
          $table->string('tg_username')->nullable();
       });
    }
@@ -24,7 +24,7 @@ return new class extends Migration
    /**
     * Reverse the migrations.
     *
-    * @return void
+    * @return roduct
     */
    public function down()
    {

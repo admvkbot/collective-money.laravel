@@ -336,7 +336,7 @@ import {
   faCreditCard,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
-import getChartData from "@/assets/js/charts/getProjectTgChart";
+import getChartData from "@/assets/js/charts/getProductTgChart";
 import { ref } from "vue";
 
 export default {

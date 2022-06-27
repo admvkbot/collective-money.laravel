@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\Chart;
 
 use App\Models\DayTgMetric;
 use Illuminate\Http\Request;
-use App\Models\Project;
+use App\Models\Product;
 
 
 class TgChartController extends BaseController
@@ -19,10 +19,10 @@ class TgChartController extends BaseController
       $result = DayTgMetric::where('id', $top)->sortBy('quantity_id')->get(3);
 
       $out = $this->service->collectChartData($result);
-      //$project = Project::find(1);
-      //dd($project);
-      //dd($project->tg_messages()->attach(array(296676, 296668))->toSql());
-      //dd($project->tg_messages()->detach());
+      //$product = Product::find(1);
+      //dd($product);
+      //dd($product->tg_messages()->attach(array(296676, 296668))->toSql());
+      //dd($product->tg_messages()->detach());
       return response()->json($chart);
    }
 }

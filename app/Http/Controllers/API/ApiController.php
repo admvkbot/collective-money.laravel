@@ -8,7 +8,7 @@ use App\Models\Account;
 use App\Models\SocialNetwork;
 use App\Models\Social;
 use App\Models\User;
-use App\Models\ProjectType;
+use App\Models\ProductType;
 use App\Models\Index;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -123,19 +123,19 @@ class ApiController extends Controller
       return $out;
    }
 
-   public function getMessagesModerate($project_id, Request $request)
+   public function getMessagesModerate($product_id, Request $request)
    {
       $filter = $request->instance();
 
       if (!$this->checkModerator())
          return response()->json([]);
 
-      $keys = Index::where('project_id', $project_id)->get();
+      $keys = Index::where('product_id', $product_id)->get();
 
       $out = DB::table('tg_messages')
          ->join('tg_users', 'tg_messages.user_id', '=', 'tg_users.id')
          ->join('tg_channels', 'tg_messages.channel_id', '=', 'tg_channels.id')
-         ->where('project_id', '<', 3)
+         ->where('product_id', '<', 3)
          ->where('tg_messages.message', 'LIKE', '%' . $filter['filter'] . '%');
 
       foreach ($keys as $key) {
@@ -165,9 +165,9 @@ class ApiController extends Controller
       return response()->json($out);
    }
 
-   public function getProjectTypes()
+   public function getProductTypes()
    {
-      $out = ProjectType::get();
+      $out = ProductType::get();
       return response()->json($out);
    }
 }

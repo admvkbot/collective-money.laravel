@@ -14,7 +14,7 @@ class EditController extends BaseController
       if (ApiController::checkModerator()) {
          $data = $request->instance();
 
-         $this->service->eraseIndex($data['project_id']);
+         $this->service->eraseIndex($data['product_id']);
 
          $out = $this->service->insertIndex($data);
 

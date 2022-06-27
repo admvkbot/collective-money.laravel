@@ -15,7 +15,7 @@ class CreateIndexesTable extends Migration
     {
         Schema::create('indexes', function (Blueprint $table) {
             $table->id();
-            $table->integer('project_id');
+            $table->integer('product_id');
             $table->string('field');
             $table->boolean('is_primary')->default(False);
             $table->timestamps();

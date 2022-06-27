@@ -9,7 +9,7 @@ use App\Http\Controllers\API\ApiController;
 
 class EditController extends Controller
 {
-   public function __invoke($project_id, Request $request)
+   public function __invoke($product_id, Request $request)
    {
       if (ApiController::checkModerator()) {
          $data = $request->instance();

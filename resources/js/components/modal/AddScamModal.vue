@@ -22,7 +22,7 @@
         </div>
         <div class="modal-body">
           <form>
-            <div v-if="tgUserData.username || projectData.name">
+            <div v-if="tgUserData.username || product.name">
               <div class="form-group" v-if="tgUserData.username">
                 <label>Telegram username</label>
                 <div class="row">
@@ -48,25 +48,25 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group" v-if="projectData.name">
+              <div class="form-group" v-if="product.name">
                 <label>Проект</label>
                 <div class="row">
                   <div class="col-12 col-sm-8">
                     <vsud-input
-                      id="project-name"
+                      id="product-name"
                       type="text"
                       placeholder="Название проекта"
-                      aria-label="project-name"
+                      aria-label="product-name"
                       :isRequired="false"
-                      :value="projectData.name"
-                      @input-value="(v) => (projectData.name = v)"
+                      :value="product.name"
+                      @input-value="(v) => (product.name = v)"
                     />
                   </div>
                   <div class="col-12 col-sm-4 mt-3 mt-sm-0">
                     <button
                       type="button"
                       class="btn bg-gradient-primary"
-                      @click.prevent="sendSetScamProjectStatusData(messageId)"
+                      @click.prevent="sendSetScamProductStatusData(messageId)"
                     >
                       Подтвердить
                     </button>
@@ -127,7 +127,7 @@ export default {
         username: "",
       },
     },
-    projectData: {
+    product: {
       type: Object,
       require: true,
     },
@@ -161,7 +161,7 @@ export default {
         .post("/api/pre-scam-tg-user/" + messageId, {
           tgUsername: this.tgUserData.username,
           tgUserId: this.tgUserData.id,
-          projectId: this.projectData.id,
+          productId: this.product.id,
         })
         .then((r) => {
           this.closeModal();
@@ -173,12 +173,12 @@ export default {
           alert(this.registerError);
         });
     },
-    sendSetScamProjectStatusData(messageId) {
+    sendSetScamProductStatusData(messageId) {
       axios
-        .post("/api/pre-scam-project/" + messageId, {
+        .post("/api/pre-scam-product/" + messageId, {
           tgUsername: this.tgUserData.username,
           tgUserId: this.tgUserData.id,
-          projectId: this.projectData.id,
+          productId: this.product.id,
         })
         .then((r) => {
           this.closeModal();
