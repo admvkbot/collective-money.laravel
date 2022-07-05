@@ -1,2 +1,4 @@
 php artisan make:resource ProjectBlockResourceCollection --collection
 
+php artisan storage:link
+

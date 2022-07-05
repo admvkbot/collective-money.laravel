@@ -14,7 +14,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <projects-table />
+        <poducts-table />
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
 
 <script>
 import AccountsTable from "@/views/components/tables/AccountsTable";
-import ProjectsTable from "@/views/components/tables/ProjectsTable";
+import ProductsTable from "@/views/components/tables/ProductsTable";
 import getAllAccounts from "@/assets/js/getAccounts";
 import { Modal } from "bootstrap";
 
@@ -57,7 +57,7 @@ export default {
   },
   components: {
     AccountsTable,
-    ProjectsTable,
+    ProductsTable,
     getAllAccounts,
     PlaceHolderHorisontalCard,
     AddAccountModal,

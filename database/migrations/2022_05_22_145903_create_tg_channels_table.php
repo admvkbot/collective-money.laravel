@@ -24,7 +24,7 @@ class CreateTgChannelsTable extends Migration
             $table->text("description")->nullable();
             $table->string("access_hash")->nullable();
             $table->boolean("is_active")->default(true);
-            $table->integer("project_type_id")->default(0); // если указан primary_type_id, то он является приоритетным для добавления проектов выбранного типа
+            $table->integer("product_type_id")->default(0); // если указан primary_type_id, то он является приоритетным для добавления проектов выбранного типа
             $table->timestamps();
         });
     }

@@ -48,12 +48,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var vue_loading_overlay__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-loading-overlay */ "./node_modules/vue-loading-overlay/dist/vue-loading.min.js");
+/* harmony import */ var vue_loading_overlay__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_loading_overlay__WEBPACK_IMPORTED_MODULE_1__);
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "moderate-messages-table",
   components: {},
   props: {
-    projectId: {
+    product: {
       type: Number,
       "default": null
     },
@@ -73,18 +76,29 @@ __webpack_require__.r(__webpack_exports__);
     var data = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
       rows: []
     });
+    var $loading = (0,vue_loading_overlay__WEBPACK_IMPORTED_MODULE_1__.useLoading)();
+    var loader;
+
+    var submit = function submit() {
+      loader = $loading.show({});
+    };
     /**
      * Get server data request
      */
 
+
     var myRequest = function myRequest(keyword) {
-      axios.post("/api/get-messages-moderate/" + props.projectId, {
+      submit();
+      axios.post("/api/get-messages-moderate/" + props.product, {
         filter: keyword,
         with_tags: props.withTags
       }).then(function (r) {
         //console.log(r.data);
         data.rows = r.data; //this.$emit("accountsReload");
+
+        loader.hide();
       })["catch"](function (err) {
+        loader.hide();
         console.log("Fetch error", err.response);
         var registerError = "Неизвестная ошибка работы live filter messages";
         alert(registerError);
@@ -135,7 +149,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_VsudInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/VsudInput.vue */ "./resources/js/components/VsudInput.vue");
 /* harmony import */ var _components_VsudTextarea_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/VsudTextarea.vue */ "./resources/js/components/VsudTextarea.vue");
 /* harmony import */ var _components_VsudButton_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/VsudButton.vue */ "./resources/js/components/VsudButton.vue");
-/* harmony import */ var _assets_js_getProjectData_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/assets/js/getProjectData.js */ "./resources/js/assets/js/getProjectData.js");
+/* harmony import */ var _assets_js_getProductData_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/assets/js/getProductData.js */ "./resources/js/assets/js/getProductData.js");
 /* harmony import */ var _assets_js_getIndexes_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/assets/js/getIndexes.js */ "./resources/js/assets/js/getIndexes.js");
 /* harmony import */ var _views_components_tables_MessagesTableModerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/views/components/tables/MessagesTableModerator */ "./resources/js/views/components/tables/MessagesTableModerator.vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
@@ -157,8 +171,8 @@ __webpack_require__.r(__webpack_exports__);
     VsudInput: _components_VsudInput_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     VsudButton: _components_VsudButton_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     VsudTextarea: _components_VsudTextarea_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    getProjectData: _assets_js_getProjectData_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    getIndexesByProjectId: _assets_js_getIndexes_js__WEBPACK_IMPORTED_MODULE_4__["default"],
+    getProductData: _assets_js_getProductData_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    getIndexesByProductId: _assets_js_getIndexes_js__WEBPACK_IMPORTED_MODULE_4__["default"],
     ModerateMessagesTable: _views_components_tables_MessagesTableModerator__WEBPACK_IMPORTED_MODULE_5__["default"]
     /*confirmModal,
     PlaceHolderHorisontalCard,*/
@@ -171,14 +185,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   setup: function setup() {
     var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_7__.useRoute)();
-    var projectId = route.params.productId;
-    var projectIn = (0,vue__WEBPACK_IMPORTED_MODULE_6__.ref)([]);
-    projectIn.value = (0,_assets_js_getProjectData_js__WEBPACK_IMPORTED_MODULE_3__["default"])(projectId);
+    var productId = route.params.productId;
+    var productIn = (0,vue__WEBPACK_IMPORTED_MODULE_6__.ref)([]);
+    productIn.value = (0,_assets_js_getProductData_js__WEBPACK_IMPORTED_MODULE_3__["default"])(productId);
     var index = (0,vue__WEBPACK_IMPORTED_MODULE_6__.ref)([]);
-    index.value = (0,_assets_js_getIndexes_js__WEBPACK_IMPORTED_MODULE_4__["default"])(projectId);
+    index.value = (0,_assets_js_getIndexes_js__WEBPACK_IMPORTED_MODULE_4__["default"])(productId);
     return {
-      projectId: projectId,
-      projectIn: projectIn,
+      productId: productId,
+      productIn: productIn,
       index: index
     };
   },
@@ -186,8 +200,8 @@ __webpack_require__.r(__webpack_exports__);
     sendData: function sendData() {
       var _this = this;
 
-      axios.post("/api/edit-project-key", {
-        project_id: this.projectId,
+      axios.post("/api/edit-product-key", {
+        product_id: this.productId,
         index: this.index.value
       }).then(function (r) {
         _this.indexes = _this.getIndexesFromStr(_this.index.value); //this.$router.push({ name: "Products" });
@@ -511,10 +525,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_moderate_messages_table = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("moderate-messages-table");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "Настройки ключей парсинга проекта " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.projectIn.value.name), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "Настройки ключей парсинга проекта " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.productIn.value.name), 1
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_textarea, {
-    id: "project-keys",
+    id: "product-keys",
     value: $setup.index.value,
     onTextareaValue: _cache[0] || (_cache[0] = function (v) {
       return $setup.index.value = v;
@@ -545,12 +559,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8
   /* PROPS */
   , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ")])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_moderate_messages_table, {
-    "project-id": $setup.projectId,
+    "product-id": $setup.productId,
     title: "Сообщения Telegram, не прикреплённые с проектам",
     key: $data.indexes
   }, null, 8
   /* PROPS */
-  , ["project-id"]))])])]);
+  , ["product-id"]))])])]);
 }
 
 /***/ }),
@@ -563,19 +577,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ getIndexesByProjectId)
+/* harmony export */   "default": () => (/* binding */ getIndexesByProductId)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 //import { ref, onMounted, watch } from 'vue'
 
-function getIndexesByProjectId(project_id) {
+function getIndexesByProductId(product_id) {
   var indexes = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); //  const getUserRepositories = async () => {
   //    repositories.value = await fetchUserRepositories(user.value)
   //  }
-  //const connectGetIndexes = (project_id) => axios.get("/sanctum/csrf-cookie").then((response) => {
+  //const connectGetIndexes = (product_id) => axios.get("/sanctum/csrf-cookie").then((response) => {
 
-  var connectGetIndexes = function connectGetIndexes(project_id) {
-    return axios.get("/api/get-indexes/" + project_id, {}).then(function (r) {
+  var connectGetIndexes = function connectGetIndexes(product_id) {
+    return axios.get("/api/get-indexes/" + product_id, {}).then(function (r) {
       var str = '';
       r.data.forEach(function (element) {
         str += "".concat(element.field, "\n");
@@ -589,35 +603,35 @@ function getIndexesByProjectId(project_id) {
   }; //});
 
 
-  connectGetIndexes(project_id);
+  connectGetIndexes(product_id);
   return indexes;
 }
 
 /***/ }),
 
-/***/ "./resources/js/assets/js/getProjectData.js":
+/***/ "./resources/js/assets/js/getProductData.js":
 /*!**************************************************!*\
-  !*** ./resources/js/assets/js/getProjectData.js ***!
+  !*** ./resources/js/assets/js/getProductData.js ***!
   \**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ getProjectData)
+/* harmony export */   "default": () => (/* binding */ getProductData)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 //import { ref, onMounted, watch } from 'vue'
 
-function getProjectData(projectId) {
-  var project = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); //  const getUserRepositories = async () => {
+function getProductData(productId) {
+  var product = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); //  const getUserRepositories = async () => {
   //    repositories.value = await fetchUserRepositories(user.value)
   //  }
   //console.log(1);
-  //const connectGetProject = () => axios.get("/sanctum/csrf-cookie").then((response) => {
+  //const connectGetProduct = () => axios.get("/sanctum/csrf-cookie").then((response) => {
 
-  var connectGetProject = function connectGetProject() {
-    return axios.get("/api/get-project/".concat(projectId), {}).then(function (r) {
-      project.value = r.data;
+  var connectGetProduct = function connectGetProduct() {
+    return axios.get("/api/product-moderator/".concat(productId), {}).then(function (r) {
+      product.value = r.data;
     })["catch"](function (err) {
       console.log(err);
       var registerError = "Ошибка получеения данных проекта";
@@ -627,9 +641,9 @@ function getProjectData(projectId) {
   //onMounted(connectGetAllAccounts)
 
 
-  connectGetProject(); //watch(user, getUserRepositories)
+  connectGetProduct(); //watch(user, getUserRepositories)
 
-  return project;
+  return product;
 }
 
 /***/ }),
@@ -653,7 +667,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.table td[data-v-12f55d13] {\n  white-space: normal !important;\n  padding: 3px 5px 3px 5px !important;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/components/tables/MessagesTableModerator.vue"],"names":[],"mappings":";AAkMA;EACE,8BAA8B;EAC9B,mCAAmC;AACrC","sourcesContent":["<template>\n  <div class=\"card mb-4\">\n    <div class=\"card-header pb-0\">\n      <h5>{{ title }}</h5>\n    </div>\n    <div class=\"card-body px-0 pt-0 pb-2\">\n      <div class=\"row\">\n        <div class=\"col-6\">\n          <label class=\"form-label pl-3\">Поиск по сообщениям</label>\n          <div class=\"input-group pl-3\">\n            <input\n              id=\"liveSearchReferers\"\n              name=\"liveSearchReferers\"\n              class=\"form-control\"\n              type=\"text\"\n              placeholder=\"Вводите ключевое слово\"\n              v-model=\"searchTerm\"\n            />\n          </div>\n        </div>\n      </div>\n      <div class=\"table-responsive px-3\">\n        <table class=\"table align-items-center justify-content-center mb-0\">\n          <thead>\n            <tr>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                \"\n                style=\"width: 50%\"\n              >\n                Текст сообщения\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                \"\n              >\n                Дата\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                \"\n              >\n                Автор сообщения\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                \"\n              >\n                OTC канал\n              </th>\n              <th></th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for=\"item in table.filteredList\" :key=\"item\" class=\"my-0\">\n              <td>\n                <div class=\"text-sm\">\n                  {{ item.message }}\n                </div>\n              </td>\n              <td>\n                <div class=\"text-sm\">\n                  {{ item.date }}\n                </div>\n              </td>\n              <td>\n                <span v-if=\"item.first_name\">{{ item.first_name }}</span>\n                <span v-if=\"item.last_name\">{{ item.last_name }}</span\n                ><br />\n                <a\n                  :href=\"'https://t.me/' + item.username\"\n                  class=\"text-sm font-weight-bold mb-0\"\n                  target=\"_blank\"\n                  v-if=\"item.username\"\n                >\n                  @{{ item.username }}\n                </a>\n              </td>\n              <td>\n                <a\n                  :href=\"'https://t.me/' + item.channel_username\"\n                  class=\"text-sm font-weight-bold mb-0\"\n                  target=\"_blank\"\n                  v-if=\"item.channel_username\"\n                >\n                  {{ item.channel_username }}\n                </a>\n                <span v-else>-</span>\n              </td>\n              <td class=\"align-middle\">\n                <button class=\"btn btn-link text-secondary mb-0\">\n                  <i class=\"fa fa-ellipsis-v text-xs\" aria-hidden=\"true\"></i>\n                </button>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</template>\n\n<script>\nimport { defineComponent, reactive, ref, computed, watch, inject } from \"vue\";\n\nexport default {\n  name: \"moderate-messages-table\",\n  components: {},\n  props: {\n    projectId: { type: Number, default: null },\n    title: {\n      type: String,\n      default: \"Сообщения Telegram\",\n    },\n    withTags: {\n      type: Boolean,\n      default: false,\n    },\n  },\n  setup(props) {\n    const searchTerm = ref(\"\"); // Search text\n    // Fake data\n    const data = reactive({\n      rows: [],\n    });\n\n    /**\n     * Get server data request\n     */\n    const myRequest = (keyword) => {\n      axios\n        .post(\"/api/get-messages-moderate/\" + props.projectId, {\n          filter: keyword,\n          with_tags: props.withTags,\n        })\n        .then((r) => {\n          //console.log(r.data);\n          data.rows = r.data;\n          //this.$emit(\"accountsReload\");\n        })\n        .catch((err) => {\n          console.log(\"Fetch error\", err.response);\n          const registerError =\n            \"Неизвестная ошибка работы live filter messages\";\n          alert(registerError);\n        });\n    };\n\n    const table = reactive({\n      filteredList: computed(() => {\n        return data.rows;\n      }),\n      totalRecordCount: computed(() => {\n        return data.rows.length;\n      }),\n    });\n    let timeout = null;\n    watch(\n      () => searchTerm.value,\n      (val) => {\n        if (timeout) {\n          clearTimeout(timeout);\n        }\n        timeout = setTimeout(() => {\n          myRequest(val);\n        }, 500);\n      }\n    );\n    // Get data on first rendering\n    myRequest(\"\");\n\n    return {\n      searchTerm,\n      table,\n    };\n  },\n};\n</script>\n<style scoped>\n.table td {\n  white-space: normal !important;\n  padding: 3px 5px 3px 5px !important;\n}\n</style>\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.table td[data-v-12f55d13] {\n  white-space: normal !important;\n  padding: 3px 5px 3px 5px !important;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/components/tables/MessagesTableModerator.vue"],"names":[],"mappings":";AA2MA;EACE,8BAA8B;EAC9B,mCAAmC;AACrC","sourcesContent":["<template>\n  <div class=\"card mb-4\">\n    <div class=\"card-header pb-0\">\n      <h5>{{ title }}</h5>\n    </div>\n    <div class=\"card-body px-0 pt-0 pb-2\">\n      <div class=\"row\">\n        <div class=\"col-6\">\n          <label class=\"form-label pl-3\">Поиск по сообщениям</label>\n          <div class=\"input-group pl-3\">\n            <input\n              id=\"liveSearchReferers\"\n              name=\"liveSearchReferers\"\n              class=\"form-control\"\n              type=\"text\"\n              placeholder=\"Вводите ключевое слово\"\n              v-model=\"searchTerm\"\n            />\n          </div>\n        </div>\n      </div>\n      <div class=\"table-responsive px-3\">\n        <table class=\"table align-items-center justify-content-center mb-0\">\n          <thead>\n            <tr>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                \"\n                style=\"width: 50%\"\n              >\n                Текст сообщения\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                \"\n              >\n                Дата\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                \"\n              >\n                Автор сообщения\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                \"\n              >\n                OTC канал\n              </th>\n              <th></th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for=\"item in table.filteredList\" :key=\"item\" class=\"my-0\">\n              <td>\n                <div class=\"text-sm\">\n                  {{ item.message }}\n                </div>\n              </td>\n              <td>\n                <div class=\"text-sm\">\n                  {{ item.date }}\n                </div>\n              </td>\n              <td>\n                <span v-if=\"item.first_name\">{{ item.first_name }}</span>\n                <span v-if=\"item.last_name\">{{ item.last_name }}</span\n                ><br />\n                <a\n                  :href=\"'https://t.me/' + item.username\"\n                  class=\"text-sm font-weight-bold mb-0\"\n                  target=\"_blank\"\n                  v-if=\"item.username\"\n                >\n                  @{{ item.username }}\n                </a>\n              </td>\n              <td>\n                <a\n                  :href=\"'https://t.me/' + item.channel_username\"\n                  class=\"text-sm font-weight-bold mb-0\"\n                  target=\"_blank\"\n                  v-if=\"item.channel_username\"\n                >\n                  {{ item.channel_username }}\n                </a>\n                <span v-else>-</span>\n              </td>\n              <td class=\"align-middle\">\n                <button class=\"btn btn-link text-secondary mb-0\">\n                  <i class=\"fa fa-ellipsis-v text-xs\" aria-hidden=\"true\"></i>\n                </button>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</template>\n\n<script>\nimport { defineComponent, reactive, ref, computed, watch, inject } from \"vue\";\nimport { useLoading } from \"vue-loading-overlay\";\n\nexport default {\n  name: \"moderate-messages-table\",\n  components: {},\n  props: {\n    product: { type: Number, default: null },\n    title: {\n      type: String,\n      default: \"Сообщения Telegram\",\n    },\n    withTags: {\n      type: Boolean,\n      default: false,\n    },\n  },\n  setup(props) {\n    const searchTerm = ref(\"\"); // Search text\n    // Fake data\n    const data = reactive({\n      rows: [],\n    });\n    const $loading = useLoading();\n    let loader;\n    const submit = () => {\n      loader = $loading.show({});\n    };\n\n    /**\n     * Get server data request\n     */\n    const myRequest = (keyword) => {\n      submit();\n      axios\n        .post(\"/api/get-messages-moderate/\" + props.product, {\n          filter: keyword,\n          with_tags: props.withTags,\n        })\n        .then((r) => {\n          //console.log(r.data);\n          data.rows = r.data;\n          //this.$emit(\"accountsReload\");\n          loader.hide();\n        })\n        .catch((err) => {\n          loader.hide();\n          console.log(\"Fetch error\", err.response);\n          const registerError =\n            \"Неизвестная ошибка работы live filter messages\";\n          alert(registerError);\n        });\n    };\n\n    const table = reactive({\n      filteredList: computed(() => {\n        return data.rows;\n      }),\n      totalRecordCount: computed(() => {\n        return data.rows.length;\n      }),\n    });\n    let timeout = null;\n    watch(\n      () => searchTerm.value,\n      (val) => {\n        if (timeout) {\n          clearTimeout(timeout);\n        }\n        timeout = setTimeout(() => {\n          myRequest(val);\n        }, 500);\n      }\n    );\n    // Get data on first rendering\n    myRequest(\"\");\n\n    return {\n      searchTerm,\n      table,\n    };\n  },\n};\n</script>\n<style scoped>\n.table td {\n  white-space: normal !important;\n  padding: 3px 5px 3px 5px !important;\n}\n</style>\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -679,7 +693,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-f80286d4],\r\n.dropend .dropdown-menu[data-v-f80286d4] {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\n}\r\n", "",{"version":3,"sources":["webpack://./resources/js/views/products/EditProductKey.vue"],"names":[],"mappings":";AAgJA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\r\n  <div class=\"container-fluid my-3 py-3\">\r\n    <div class=\"row\">\r\n      <div class=\"col-lg-12 mb-lg-0 mb-4\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <h5>Настройки ключей парсинга проекта {{ projectIn.value.name }}</h5>\r\n          </div>\r\n          <div class=\"card-body pt-0\">\r\n            <div class=\"row\">\r\n              <div class=\"col-12\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"project-keys\"\r\n                      :value=\"index.value\"\r\n                      @textarea-value=\"(v) => (index.value = v)\"\r\n                      placeholder=\"key1\r\nkey2\"\r\n                      >Ключевые фразы</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row mt-auto position-sticky top-100 pb-2\">\r\n                  <div class=\"col-9\"></div>\r\n                  <div class=\"col-3 d-flex\">\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 ml-2\"\r\n                      variant=\"gradient\"\r\n                      color=\"success\"\r\n                      full-width\r\n                      @click.prevent=\"sendData\"\r\n                      >Обновить\r\n                    </vsud-button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <!-- -->\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n      <div class=\"col-12 pt-3\">\r\n        <moderate-messages-table :project-id=\"projectId\" title=\"Сообщения Telegram, не прикреплённые с проектам\" :key=\"indexes\" />\r\n      </div>\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport VsudInput from \"@/components/VsudInput.vue\";\r\nimport VsudTextarea from \"@/components/VsudTextarea.vue\";\r\nimport VsudButton from \"@/components/VsudButton.vue\";\r\nimport getProjectData from \"@/assets/js/getProjectData.js\";\r\nimport getIndexesByProjectId from \"@/assets/js/getIndexes.js\";\r\nimport ModerateMessagesTable from \"@/views/components/tables/MessagesTableModerator\";\r\n//import PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\r\n\r\n//import confirmModal from \"@/components/modal/confirmModal.js\";\r\n//import { Modal } from \"bootstrap\";\r\nimport { ref } from \"vue\";\r\nimport { useRoute } from \"vue-router\";\r\n\r\nexport default {\r\n  name: \"edit-product-key\",\r\n  components: {\r\n    VsudInput,\r\n    VsudButton,\r\n    VsudTextarea,\r\n    getProjectData,\r\n    getIndexesByProjectId,\r\n    ModerateMessagesTable,\r\n    /*confirmModal,\r\n    PlaceHolderHorisontalCard,*/\r\n  },\r\n  data() {\r\n    return {\r\n      indexes: [],\r\n    };\r\n  },\r\n\r\n  setup() {\r\n    const route = useRoute();\r\n    const projectId = route.params.productId;\r\n    const projectIn = ref([]);\r\n    projectIn.value = getProjectData(projectId);\r\n    const index = ref([]);\r\n    index.value = getIndexesByProjectId(projectId);\r\n    return { projectId, projectIn, index };\r\n  },\r\n  methods: {\r\n    sendData() {\r\n      axios\r\n        .post(\"/api/edit-project-key\", {\r\n          project_id: this.projectId,\r\n          index: this.index.value,\r\n        })\r\n        .then((r) => {\r\n          this.indexes = this.getIndexesFromStr(this.index.value);\r\n          //this.$router.push({ name: \"Products\" });\r\n        })\r\n        .catch((err) => {\r\n          console.log(err.response);\r\n          this.registerError = \"Ошибка сохранения Indexes\";\r\n          alert(this.registerError);\r\n        });\r\n    },\r\n    getIndexesFromStr(str) {\r\n      return str.split(\"\\n\").filter((element) => element);\r\n    },\r\n    showBlockModal() {\r\n      this.openModalStatus = true;\r\n      this.addModal.show();\r\n      setTimeout(() => {\r\n        this.openModalStatus = false;\r\n      }, 500);\r\n    },\r\n    showAddBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = null;\r\n      this.blockData.type = null;\r\n      this.blockData.name = null;\r\n      this.blockData.date = null;\r\n      this.blockData.text = null;\r\n      this.blockData.buttons = \"Пример\";\r\n      this.blockData.do = \"add\";\r\n      this.showBlockModal();\r\n    },\r\n    showEditBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = id;\r\n      this.blockData.type = type;\r\n      this.blockData.name = name;\r\n      this.blockData.date = date;\r\n      this.blockData.text = text;\r\n      this.blockData.buttons = buttons;\r\n      this.blockData.do = \"edit\";\r\n      this.showBlockModal();\r\n    },\r\n  },\r\n};\r\n</script>\r\n<style scoped>\r\n.dropdown-menu,\r\n.dropend .dropdown-menu {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\r\n}\r\n</style>"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-f80286d4],\r\n.dropend .dropdown-menu[data-v-f80286d4] {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\n}\r\n", "",{"version":3,"sources":["webpack://./resources/js/views/products/EditProductKey.vue"],"names":[],"mappings":";AAgJA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\r\n  <div class=\"container-fluid my-3 py-3\">\r\n    <div class=\"row\">\r\n      <div class=\"col-lg-12 mb-lg-0 mb-4\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <h5>Настройки ключей парсинга проекта {{ productIn.value.name }}</h5>\r\n          </div>\r\n          <div class=\"card-body pt-0\">\r\n            <div class=\"row\">\r\n              <div class=\"col-12\">\r\n                <div class=\"row\">\r\n                  <div class=\"col-12\">\r\n                    <vsud-textarea\r\n                      id=\"product-keys\"\r\n                      :value=\"index.value\"\r\n                      @textarea-value=\"(v) => (index.value = v)\"\r\n                      placeholder=\"key1\r\nkey2\"\r\n                      >Ключевые фразы</vsud-textarea\r\n                    >\r\n                  </div>\r\n                </div>\r\n                <div class=\"row mt-auto position-sticky top-100 pb-2\">\r\n                  <div class=\"col-9\"></div>\r\n                  <div class=\"col-3 d-flex\">\r\n                    <vsud-button\r\n                      class=\"my-4 mb-2 ml-2\"\r\n                      variant=\"gradient\"\r\n                      color=\"success\"\r\n                      full-width\r\n                      @click.prevent=\"sendData\"\r\n                      >Обновить\r\n                    </vsud-button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <!-- -->\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n      <div class=\"col-12 pt-3\">\r\n        <moderate-messages-table :product-id=\"productId\" title=\"Сообщения Telegram, не прикреплённые с проектам\" :key=\"indexes\" />\r\n      </div>\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport VsudInput from \"@/components/VsudInput.vue\";\r\nimport VsudTextarea from \"@/components/VsudTextarea.vue\";\r\nimport VsudButton from \"@/components/VsudButton.vue\";\r\nimport getProductData from \"@/assets/js/getProductData.js\";\r\nimport getIndexesByProductId from \"@/assets/js/getIndexes.js\";\r\nimport ModerateMessagesTable from \"@/views/components/tables/MessagesTableModerator\";\r\n//import PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\r\n\r\n//import confirmModal from \"@/components/modal/confirmModal.js\";\r\n//import { Modal } from \"bootstrap\";\r\nimport { ref } from \"vue\";\r\nimport { useRoute } from \"vue-router\";\r\n\r\nexport default {\r\n  name: \"edit-product-key\",\r\n  components: {\r\n    VsudInput,\r\n    VsudButton,\r\n    VsudTextarea,\r\n    getProductData,\r\n    getIndexesByProductId,\r\n    ModerateMessagesTable,\r\n    /*confirmModal,\r\n    PlaceHolderHorisontalCard,*/\r\n  },\r\n  data() {\r\n    return {\r\n      indexes: [],\r\n    };\r\n  },\r\n\r\n  setup() {\r\n    const route = useRoute();\r\n    const productId = route.params.productId;\r\n    const productIn = ref([]);\r\n    productIn.value = getProductData(productId);\r\n    const index = ref([]);\r\n    index.value = getIndexesByProductId(productId);\r\n    return { productId, productIn, index };\r\n  },\r\n  methods: {\r\n    sendData() {\r\n      axios\r\n        .post(\"/api/edit-product-key\", {\r\n          product_id: this.productId,\r\n          index: this.index.value,\r\n        })\r\n        .then((r) => {\r\n          this.indexes = this.getIndexesFromStr(this.index.value);\r\n          //this.$router.push({ name: \"Products\" });\r\n        })\r\n        .catch((err) => {\r\n          console.log(err.response);\r\n          this.registerError = \"Ошибка сохранения Indexes\";\r\n          alert(this.registerError);\r\n        });\r\n    },\r\n    getIndexesFromStr(str) {\r\n      return str.split(\"\\n\").filter((element) => element);\r\n    },\r\n    showBlockModal() {\r\n      this.openModalStatus = true;\r\n      this.addModal.show();\r\n      setTimeout(() => {\r\n        this.openModalStatus = false;\r\n      }, 500);\r\n    },\r\n    showAddBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = null;\r\n      this.blockData.type = null;\r\n      this.blockData.name = null;\r\n      this.blockData.date = null;\r\n      this.blockData.text = null;\r\n      this.blockData.buttons = \"Пример\";\r\n      this.blockData.do = \"add\";\r\n      this.showBlockModal();\r\n    },\r\n    showEditBlockModal(id, type, name, date, text, buttons) {\r\n      this.blockData.id = id;\r\n      this.blockData.type = type;\r\n      this.blockData.name = name;\r\n      this.blockData.date = date;\r\n      this.blockData.text = text;\r\n      this.blockData.buttons = buttons;\r\n      this.blockData.do = \"edit\";\r\n      this.showBlockModal();\r\n    },\r\n  },\r\n};\r\n</script>\r\n<style scoped>\r\n.dropdown-menu,\r\n.dropend .dropdown-menu {\r\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\r\n    0 8px 9px -5px rgb(20 20 20 / 6%);\r\n  cursor: pointer;\r\n}\r\n</style>"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

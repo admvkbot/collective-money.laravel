@@ -4,7 +4,7 @@
       <div class="col-lg-12 mb-lg-0 mb-4">
         <div class="card">
           <div class="card-header">
-            <h5>Настройки ключей парсинга проекта {{ projectIn.value.name }}</h5>
+            <h5>Настройки ключей парсинга проекта {{ productIn.value.name }}</h5>
           </div>
           <div class="card-body pt-0">
             <div class="row">
@@ -12,7 +12,7 @@
                 <div class="row">
                   <div class="col-12">
                     <vsud-textarea
-                      id="project-keys"
+                      id="product-keys"
                       :value="index.value"
                       @textarea-value="(v) => (index.value = v)"
                       placeholder="key1
@@ -44,7 +44,7 @@ key2"
 
     <div class="row">
       <div class="col-12 pt-3">
-        <moderate-messages-table :project-id="projectId" title="Сообщения Telegram, не прикреплённые с проектам" :key="indexes" />
+        <moderate-messages-table :product-id="productId" title="Сообщения Telegram, не прикреплённые с проектам" :key="indexes" />
       </div>
     </div>
   </div>
@@ -54,8 +54,8 @@ key2"
 import VsudInput from "@/components/VsudInput.vue";
 import VsudTextarea from "@/components/VsudTextarea.vue";
 import VsudButton from "@/components/VsudButton.vue";
-import getProjectData from "@/assets/js/getProjectData.js";
-import getIndexesByProjectId from "@/assets/js/getIndexes.js";
+import getProductData from "@/assets/js/getProductData.js";
+import getIndexesByProductId from "@/assets/js/getIndexes.js";
 import ModerateMessagesTable from "@/views/components/tables/MessagesTableModerator";
 //import PlaceHolderHorisontalCard from "@/Cards/PlaceHolderHorisontalCard.vue";
 
@@ -70,8 +70,8 @@ export default {
     VsudInput,
     VsudButton,
     VsudTextarea,
-    getProjectData,
-    getIndexesByProjectId,
+    getProductData,
+    getIndexesByProductId,
     ModerateMessagesTable,
     /*confirmModal,
     PlaceHolderHorisontalCard,*/
@@ -84,18 +84,18 @@ export default {
 
   setup() {
     const route = useRoute();
-    const projectId = route.params.productId;
-    const projectIn = ref([]);
-    projectIn.value = getProjectData(projectId);
+    const productId = route.params.productId;
+    const productIn = ref([]);
+    productIn.value = getProductData(productId);
     const index = ref([]);
-    index.value = getIndexesByProjectId(projectId);
-    return { projectId, projectIn, index };
+    index.value = getIndexesByProductId(productId);
+    return { productId, productIn, index };
   },
   methods: {
     sendData() {
       axios
-        .post("/api/edit-project-key", {
-          project_id: this.projectId,
+        .post("/api/edit-product-key", {
+          product_id: this.productId,
           index: this.index.value,
         })
         .then((r) => {

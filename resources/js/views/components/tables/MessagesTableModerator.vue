@@ -117,12 +117,13 @@
 
 <script>
 import { defineComponent, reactive, ref, computed, watch, inject } from "vue";
+import { useLoading } from "vue-loading-overlay";
 
 export default {
   name: "moderate-messages-table",
   components: {},
   props: {
-    projectId: { type: Number, default: null },
+    product: { type: Number, default: null },
     title: {
       type: String,
       default: "Сообщения Telegram",
@@ -138,13 +139,19 @@ export default {
     const data = reactive({
       rows: [],
     });
+    const $loading = useLoading();
+    let loader;
+    const submit = () => {
+      loader = $loading.show({});
+    };
 
     /**
      * Get server data request
      */
     const myRequest = (keyword) => {
+      submit();
       axios
-        .post("/api/get-messages-moderate/" + props.projectId, {
+        .post("/api/get-messages-moderate/" + props.product, {
           filter: keyword,
           with_tags: props.withTags,
         })
@@ -152,8 +159,10 @@ export default {
           //console.log(r.data);
           data.rows = r.data;
           //this.$emit("accountsReload");
+          loader.hide();
         })
         .catch((err) => {
+          loader.hide();
           console.log("Fetch error", err.response);
           const registerError =
             "Неизвестная ошибка работы live filter messages";

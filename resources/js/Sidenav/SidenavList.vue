@@ -7,7 +7,14 @@
       <li class="nav-item">
         <sidenav-collapse navText="Dashboard" :to="{ name: 'Dashboard' }">
           <template #icon>
-            <shop />
+            <spaceship-icon />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Проекты" :to="{ name: 'Products' }">
+          <template #icon>
+            <products />
           </template>
         </sidenav-collapse>
       </li>
@@ -94,9 +101,16 @@
           </h6>
         </li>
         <li class="nav-item">
-          <sidenav-collapse navText="Продукты" :to="{ name: 'Products' }">
+          <sidenav-collapse navText="Scam" :to="{ name: 'Scam' }">
             <template #icon>
-              <referers-icon />
+              <scam-icon />
+            </template>
+          </sidenav-collapse>
+        </li>
+        <li class="nav-item">
+          <sidenav-collapse navText="Продукты" :to="{ name: 'ProductsModerator' }">
+            <template #icon>
+              <humidity />
             </template>
           </sidenav-collapse>
         </li>
@@ -123,7 +137,6 @@
 <script>
 import SidenavCollapse from "./SidenavCollapse.vue";
 //import SidenavCard from "./SidenavCard.vue";
-import Shop from "../components/Icon/Shop.vue";
 import Office from "../components/Icon/Office.vue";
 import CreditCard from "../components/Icon/CreditCard.vue";
 import Box3d from "../components/Icon/Box3d.vue";
@@ -133,6 +146,10 @@ import Document from "../components/Icon/Document.vue";
 import Spaceship from "../components/Icon/Spaceship.vue";
 import Settings from "../components/Icon/Settings.vue";
 import ReferersIcon from "../components/Icon/Referers.vue";
+import Humidity from "../components/Icon/Humidity.vue";
+import ScamIcon from "../components/Icon/Scam.vue";
+import SpaceshipIcon from "../components/Icon/Spaceship.vue";
+import Products from "../components/Icon/Products.vue";
 import { inject } from "vue";
 
 export default {
@@ -154,7 +171,6 @@ export default {
   components: {
     SidenavCollapse,
     /*SidenavCard,*/
-    Shop,
     Office,
     CreditCard,
     Box3d,
@@ -164,6 +180,10 @@ export default {
     Spaceship,
     Settings,
     ReferersIcon,
+    Humidity,
+    SpaceshipIcon,
+    ScamIcon,
+    Products,
     /*AsyncComponent: defineAsyncComponent(() => import("@/views/Moderator.vue")),*/
   },
   methods: {

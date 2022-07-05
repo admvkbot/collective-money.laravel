@@ -19,7 +19,7 @@
           </div>
         </div>
       </div>
-      <div class="table-responsive p-0">
+      <div class="table-responsive px-3">
         <table class="table align-items-center justify-content-center mb-0">
           <thead>
             <tr>
@@ -63,8 +63,6 @@
               >
                 OTC канал
               </th>
-              <th>
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -80,8 +78,6 @@
                 </div>
               </td>
               <td>
-                 <span v-if="item.first_name">{{item.first_name}}</span>
-                 <span v-if="item.last_name">{{item.last_name}}</span><br>
                 <a
                   :href="'https://t.me/' + item.username"
                   class="text-sm font-weight-bold mb-0"
@@ -89,7 +85,10 @@
                   v-if="item.username"
                 >
                   @{{ item.username }}
-                </a>
+                </a><br />
+                <span v-if="item.first_name">{{ item.first_name }}</span>
+                <span v-if="item.last_name">{{ item.last_name }}</span
+                >
               </td>
               <td>
                 <a
@@ -98,14 +97,9 @@
                   target="_blank"
                   v-if="item.channel_username"
                 >
-                  {{ item.channel_username }}
+                  @{{ item.channel_username }}
                 </a>
                 <span v-else>-</span>
-              </td>
-              <td class="align-middle">
-                <button class="btn btn-link text-secondary mb-0">
-                  <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                </button>
               </td>
             </tr>
           </tbody>
@@ -117,6 +111,7 @@
 
 <script>
 import { defineComponent, reactive, ref, computed, watch, inject } from "vue";
+import { useLoading } from "vue-loading-overlay";
 
 export default {
   name: "messages-table",
@@ -127,28 +122,33 @@ export default {
     const data = reactive({
       rows: [],
     });
-
+    const $loading = useLoading();
+    let loader;
+    const submit = () => {
+      loader = $loading.show({});
+    };
     /**
      * Get server data request
      */
     const myRequest = (keyword) => {
-      axios.get("/sanctum/csrf-cookie").then((response) => {
-        axios
-          .post("/api/get-messages", {
-            filter: keyword,
-          })
-          .then((r) => {
-            console.log(r.data);
-            data.rows = r.data;
-            //this.$emit("accountsReload");
-          })
-          .catch((err) => {
-            console.log("Fetch error", err.response);
-            const registerError =
-              "Неизвестная ошибка работы live filter messages";
-            alert(registerError);
-          });
-      });
+      submit();
+      axios
+        .post("/api/get-messages", {
+          filter: keyword,
+        })
+        .then((r) => {
+          loader.hide();
+          console.log(r.data);
+          data.rows = r.data;
+          //this.$emit("accountsReload");
+        })
+        .catch((err) => {
+          loader.hide();
+          console.log("Fetch error", err.response);
+          const registerError =
+            "Неизвестная ошибка работы live filter messages";
+          alert(registerError);
+        });
     };
 
     const table = reactive({
@@ -159,7 +159,7 @@ export default {
         return data.rows.length;
       }),
     });
-
+    let timeout = null;
     watch(
       () => searchTerm.value,
       (val) => {

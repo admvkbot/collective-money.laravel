@@ -11,7 +11,7 @@ class Index extends Model
    protected $guarded = false;
 
    protected $fillable = [
-      'project_id',
+      'product_id',
       'field',
       'is_primary'
  ];

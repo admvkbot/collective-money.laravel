@@ -6,7 +6,7 @@
     data-scroll="true"
   >
     <div class="px-3 py-1 container-fluid">
-      <breadcrumbs :currentPage="currentRouteName" :textWhite="textWhite" />
+      <!--<breadcrumbs :currentPage="currentRouteName" :textWhite="textWhite" />-->
       <div
         class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4"
         :class="this.$store.state.isRTL ? 'px-0' : 'me-sm-4'"

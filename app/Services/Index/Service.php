@@ -3,19 +3,19 @@
 namespace App\Services\Index;
 
 use App\Models\Index;
-use App\Models\Project;
+use App\Models\Product;
 
 class Service
 {
-   public function getIndexesByProjectId($project_id)
+   public function getIndexesByProductId($product_id)
    {
-      return Index::where('project_id', $project_id)
+      return Index::where('product_id', $product_id)
       ->toBase()
       ->get();
    }
-   public function eraseIndex($project_id)
+   public function eraseIndex($product_id)
    {
-      return Index::where('project_id', $project_id)
+      return Index::where('product_id', $product_id)
          ->delete();
    }
 
@@ -27,10 +27,10 @@ class Service
 
       foreach ($keys as $row) {
          if ($row) 
-            Index::insert(['project_id' => $data['project_id'], 'field' => $row]);      
+            Index::insert(['product_id' => $data['product_id'], 'field' => $row]);      
       }
 
-      Project::where('id', $data['project_id'])->update(['is_indexed' => False]);
+      Product::where('id', $data['product_id'])->update(['is_indexed' => False]);
 
       return count($keys);
    }

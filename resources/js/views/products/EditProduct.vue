@@ -11,7 +11,7 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-3">
-                    <img :src="projectIn.value.logo_url" class="m-2" />
+                    <img :src="product.value.logo_url" class="m-2" />
                   </div>
                   <div class="col-9">
                     <form
@@ -30,25 +30,25 @@
                   <div class="col-12">
                     <label class="form-label">Название</label>
                     <vsud-input
-                      id="project-name"
+                      id="product-name"
                       type="text"
                       placeholder="Crypto Whitelist Pro"
                       aria-label="Name"
                       :isRequired="true"
                       :active="true"
-                      :value="projectIn.value.name"
+                      :value="product.value.name"
                       :disabled="false"
-                      @input-value="(v) => (projectIn.value.name = v)"
+                      @input-value="(v) => (product.value.name = v)"
                     />
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12">
                     <vsud-textarea
-                      id="project-description"
+                      id="product-description"
                       placeholder="Любой текст"
-                      :value="projectIn.value.description"
-                      @textarea-value="(v) => (projectIn.value.description = v)"
+                      :value="product.value.description"
+                      @textarea-value="(v) => (product.value.description = v)"
                       rows="7"
                       >Комментарий к проекту</vsud-textarea
                     >
@@ -62,7 +62,7 @@
                       name="choices-type-button"
                       id="choices-type"
                       placeholder="Выберите тип проекта"
-                      v-model="projectIn.value.project_type_id"
+                      v-model="product.value.product_type_id"
                     >
                       <option
                         v-for="item in types.value"
@@ -78,14 +78,14 @@
                   <div class="col-12">
                     <label class="form-label">Официальный вебсайт</label>
                     <vsud-input
-                      id="project-site-url"
+                      id="product-site-url"
                       type="text"
-                      placeholder="https://project.website/"
-                      aria-label="project-site-url"
+                      placeholder="https://product.website/"
+                      aria-label="product-site-url"
                       :isRequired="false"
                       :active="true"
-                      :value="projectIn.value.website_url"
-                      @input-value="(v) => (projectIn.value.website_url = v)"
+                      :value="product.value.website_url"
+                      @input-value="(v) => (product.value.website_url = v)"
                       :disabled="false"
                     />
                   </div>
@@ -96,14 +96,14 @@
                       ><twitter-icon class="mt-1 mr-1" />Twitter</label
                     >
                     <vsud-input
-                      id="project-twitter"
+                      id="product-twitter"
                       type="text"
                       placeholder="https://twitter.com/xxxx"
-                      aria-label="project-twitter"
+                      aria-label="product-twitter"
                       :isRequired="false"
                       :active="true"
-                      :value="projectIn.value.twitter"
-                      @input-value="(v) => (projectIn.value.twitter = v)"
+                      :value="product.value.twitter"
+                      @input-value="(v) => (product.value.twitter = v)"
                       :disabled="false"
                     />
                   </div>
@@ -114,14 +114,14 @@
                       ><discord-icon class="mt-1 mr-1" />Discord</label
                     >
                     <vsud-input
-                      id="project-discord"
+                      id="product-discord"
                       type="text"
                       placeholder="https://discord.com/user/xxxx"
-                      aria-label="project-discord"
+                      aria-label="product-discord"
                       :isRequired="false"
                       :active="true"
-                      :value="projectIn.value.discord"
-                      @input-value="(v) => (projectIn.value.discord = v)"
+                      :value="product.value.discord"
+                      @input-value="(v) => (product.value.discord = v)"
                       :disabled="false"
                     />
                   </div>
@@ -132,14 +132,14 @@
                       ><youtube-icon class="mt-1 mr-1" />YouTube</label
                     >
                     <vsud-input
-                      id="project-youtube"
+                      id="product-youtube"
                       type="text"
                       placeholder="https://youtube.com/channel/xxxx"
-                      aria-label="project-youtube"
+                      aria-label="product-youtube"
                       :isRequired="false"
                       :active="true"
-                      :value="projectIn.value.youtube"
-                      @input-value="(v) => (projectIn.value.youtube = v)"
+                      :value="product.value.youtube"
+                      @input-value="(v) => (product.value.youtube = v)"
                       :disabled="false"
                     />
                   </div>
@@ -150,14 +150,14 @@
                       ><telegram-icon class="mt-1 mr-1" />Telegram</label
                     >
                     <vsud-input
-                      id="project-telegram"
+                      id="product-telegram"
                       type="text"
                       placeholder="https://t.me/xxxx"
-                      aria-label="project-telegram"
+                      aria-label="product-telegram"
                       :isRequired="false"
                       :active="true"
-                      :value="projectIn.value.telegram"
-                      @input-value="(v) => (projectIn.value.telegram = v)"
+                      :value="product.value.telegram"
+                      @input-value="(v) => (product.value.telegram = v)"
                       :disabled="false"
                     />
                   </div>
@@ -168,14 +168,14 @@
                       ><medium-icon class="mt-1 mr-1" />Medium</label
                     >
                     <vsud-input
-                      id="project-medium"
+                      id="product-medium"
                       type="text"
                       placeholder="https://medium.com/@xxxx"
-                      aria-label="project-medium"
+                      aria-label="product-medium"
                       :isRequired="false"
                       :active="true"
-                      :value="projectIn.value.medium"
-                      @input-value="(v) => (projectIn.value.medium = v)"
+                      :value="product.value.medium"
+                      @input-value="(v) => (product.value.medium = v)"
                       :disabled="false"
                     />
                   </div>
@@ -252,7 +252,7 @@
                                 class="btn btn-link text-secondary"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="true"
-                                :id="'project-dropdown' + block.id"
+                                :id="'product-dropdown' + block.id"
                               >
                                 <i
                                   class="fa fa-ellipsis-v text-xs"
@@ -395,8 +395,8 @@
   <!-- Modal -->
   <div class="row">
     <div class="col-md-4">
-      <add-project-block-modal
-        :project-id="projectId"
+      <add-product-block-modal
+        :product-id="productId"
         :blockId="blockData.id"
         :blockType="blockData.type"
         :blockName="blockData.name"
@@ -406,7 +406,7 @@
         :action="blockData.do"
         :add-modal="addModal"
         :openModal="openModalStatus"
-        @project-reload="projectReload"
+        @product-reload="productReload"
       />
     </div>
   </div>
@@ -417,11 +417,11 @@ import VsudInput from "@/components/VsudInput.vue";
 import VsudTextarea from "@/components/VsudTextarea.vue";
 import VsudButton from "@/components/VsudButton.vue";
 import VsudTimelineBlock from "@/components/VsudTimelineBlock.vue";
-import getProjectTypes from "@/assets/js/getProjectTypes.js";
-import getProjectData from "@/assets/js/getProjectData.js";
-import getProjectBlocks from "@/assets/js/getProjectBlocks.js";
+import getProductTypes from "@/assets/js/getProductTypes.js";
+import getProductData from "@/assets/js/getProductData.js";
+import getProductBlocks from "@/assets/js/getProductBlocks.js";
 import PlaceHolderHorisontalCard from "@/Cards/PlaceHolderHorisontalCard.vue";
-import AddProjectBlockModal from "@/components/modal/AddProjectBlockModal.vue";
+import AddProductBlockModal from "@/components/modal/AddProductBlockModal.vue";
 
 import TwitterIcon from "@/components/Icon/Twitter";
 import TelegramIcon from "@/components/Icon/Telegram";
@@ -443,9 +443,9 @@ export default {
     VsudButton,
     VsudTextarea,
     VsudTimelineBlock,
-    getProjectTypes,
-    getProjectData,
-    getProjectBlocks,
+    getProductTypes,
+    getProductData,
+    getProductBlocks,
     TwitterIcon,
     TelegramIcon,
     DiscordIcon,
@@ -453,14 +453,14 @@ export default {
     YoutubeIcon,
     confirmModal,
     PlaceHolderHorisontalCard,
-    AddProjectBlockModal,
+    AddProductBlockModal,
   },
   mounted() {
     this.addModal = new Modal(
-      document.getElementById("addProjectBlockModalMessage")
+      document.getElementById("addProductBlockModalMessage")
     );
     //window.token = localStorage.getItem("x_xsrf_token");
-    this.pathLogo = this.projectIn.value.logo_url;
+    this.pathLogo = this.product.value.logo_url;
     const token = this.getCookie("XSRF-TOKEN");
     /*if (typeof Dropzone !== "undefined") {
       Dropzone.forElement("dropzone").removeAllFiles(true);
@@ -472,7 +472,7 @@ export default {
 
     let drop = document.getElementById("dropzone");
     let myDropzone = new Dropzone(drop, {
-      url: "/api/upload-project-logo/" + this.projectId,
+      url: "/api/upload-product-logo/" + this.productId,
       addRemoveLinks: true,
       uploadMultiple: false,
       maxFilesize: 2,
@@ -503,7 +503,7 @@ export default {
         setCookie("XSRF-TOKEN", token, 1);
       },
       success: (file, response) => {
-        this.projectIn.value.logo_url = response;
+        this.product.value.logo_url = response;
       },
     });
     //this.token = localStorage.getItem("x_xsrf_token");
@@ -530,14 +530,14 @@ export default {
 
   setup() {
     const route = useRoute();
-    const projectId = route.params.productId;
+    const productId = route.params.productId;
     const types = ref([]);
-    types.value = getProjectTypes();
-    const projectIn = ref([]);
-    projectIn.value = getProjectData(projectId);
+    types.value = getProductTypes();
+    const product = ref([]);
+    product.value = getProductData(productId);
     const blocks = ref([]);
-    blocks.value = getProjectBlocks(projectId);
-    return { projectId, types, projectIn, blocks };
+    blocks.value = getProductBlocks(productId);
+    return { productId, types, product, blocks };
   },
   methods: {
     setCookie(name, value, days) {
@@ -569,19 +569,19 @@ export default {
     },
     sendData() {
       axios
-        .post("/api/edit-project/" + this.projectId, {
-          name: this.projectIn.value.name,
-          type: this.projectIn.value.project_type_id,
-          url: this.projectIn.value.website_url,
-          twitter: this.projectIn.value.twitter,
-          discord: this.projectIn.value.discord,
-          youtube: this.projectIn.value.youtube,
-          telegram: this.projectIn.value.telegram,
-          medium: this.projectIn.value.medium,
-          description: this.projectIn.value.description,
+        .post("/api/edit-product/" + this.productId, {
+          name: this.product.value.name,
+          type: this.product.value.product_type_id,
+          url: this.product.value.website_url,
+          twitter: this.product.value.twitter,
+          discord: this.product.value.discord,
+          youtube: this.product.value.youtube,
+          telegram: this.product.value.telegram,
+          medium: this.product.value.medium,
+          description: this.product.value.description,
         })
         .then((r) => {
-          this.$router.push({ name: "Products" });
+          this.$router.push({ name: "ProductsModerator" });
           //this.$router.go()
           //this.$emit("socialsReload");
         })
@@ -598,8 +598,8 @@ export default {
         this.openModalStatus = false;
       }, 500);
     },
-    projectReload() {
-      this.blocks.value = getProjectBlocks(this.projectId);
+    productReload() {
+      this.blocks.value = getProductBlocks(this.productId);
     },
     getBlockIcon(id) {
       return this.blockTypes[id - 1].icon;
@@ -647,7 +647,7 @@ export default {
           .then((r) => {
             //this.$router.push({ name: "Products" });
             //this.$router.go()
-            this.projectReload();
+            this.productReload();
           })
           .catch((err) => {
             console.log(err.response);
@@ -662,11 +662,11 @@ export default {
       this.setCookie("XSRF-TOKEN", "888888", 1);
       return this.token;
     },
-    /*projectType(value) {
-      this.project.type = value ? value : this.projectIn.value.project_type_id;
+    /*productType(value) {
+      this.product.type = value ? value : this.product.value.product_type_id;
       console.log(1);
-      console.log(this.project.type);
-      return this.project.type;
+      console.log(this.product.type);
+      return this.product.type;
     },*/
   },
   watch: {

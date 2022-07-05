@@ -69,13 +69,14 @@ def mysql_init():
 
 def mysql_get_all_projects():
     global cursor
-    sql = "SELECT id, is_indexed FROM projects WHERE is_indexed"
+    sql = "SELECT id, is_indexed FROM products" # WHERE is_indexed"
     cursor.execute(sql)
     data = cursor.fetchall()
     out = []
     for row in data:
-        project = Id(
+        project = Project(
             row[0],
+            row[1]
         )
         out.insert(0, project)
     return out
@@ -83,7 +84,7 @@ def mysql_get_all_projects():
 
 def mysql_get_no_index_projects():
     global cursor
-    sql = "SELECT id, is_indexed FROM projects WHERE NOT is_indexed"
+    sql = "SELECT id, is_indexed FROM products WHERE NOT is_indexed"
     cursor.execute(sql)
     data = cursor.fetchall()
     out = []
@@ -98,7 +99,7 @@ def mysql_get_no_index_projects():
 
 def mysql_get_indexes(project_id):
     global cursor
-    sql = "SELECT field FROM indexes WHERE project_id=" + str(project_id)
+    sql = "SELECT field FROM indexes WHERE product_id=" + str(project_id)
     cursor.execute(sql)
     data = cursor.fetchall()
     out = []
@@ -148,9 +149,9 @@ def mysql_count_tg_users_by_dates(date_start, date_end, project_id=None, whereto
         str_whereto = ""
         if whereto:
             str_whereto = " AND tg_messages.message LIKE '%" + whereto + "%'"
-        sql = "SELECT COUNT(DISTINCT(tg_user_tg_channel.user_id)) FROM tg_messages INNER JOIN tg_message_project ON tg_messages.id = tg_message_project.message_id" \
+        sql = "SELECT COUNT(DISTINCT(tg_user_tg_channel.user_id)) FROM tg_messages INNER JOIN tg_message_product ON tg_messages.id = tg_message_product.message_id" \
               " INNER JOIN tg_user_tg_channel ON tg_messages.user_id = tg_user_tg_channel.user_id" \
-              " WHERE tg_message_project.project_id=" + str(project_id) + \
+              " WHERE tg_message_product.product_id=" + str(project_id) + \
               " AND tg_messages.date > '" + str(date_start) + "'" \
               " AND tg_messages.date < '" + str(date_end) + "'" \
               + str_whereto
@@ -173,7 +174,7 @@ def mysql_count_tg_users_by_dates(date_start, date_end, project_id=None, whereto
 def mysql_detach(project_id):
     global db
     global cursor
-    sql = "DELETE FROM tg_message_project WHERE project_id=" + str(project_id)
+    sql = "DELETE FROM tg_message_product WHERE product_id=" + str(project_id)
     cursor.execute(sql)
     db.commit()
 
@@ -182,11 +183,16 @@ def mysql_attach(messages, project_id):
     global db
     global cursor
     for message in messages:
-        sql = "INSERT INTO tg_message_project (message_id, project_id, is_scam) VALUES (%s, %s, %s)"
+        #sql = "INSERT INTO tg_message_product (message_id, product_id, is_scam) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO tg_message_product (message_id, product_id) VALUES (%s, %s)"
+#        val = (
+#            message.id,
+#            project_id,
+#            message.is_scam
+#        )
         val = (
             message.id,
             project_id,
-            message.is_scam
         )
         cursor.execute(sql, val)
     db.commit()
@@ -195,7 +201,7 @@ def mysql_attach(messages, project_id):
 def mysql_set_project_indexed(project_id, status):
     global db
     global cursor
-    sql = "UPDATE projects SET is_indexed=" + str(status) + " WHERE id=" + str(project_id)
+    sql = "UPDATE products SET is_indexed=" + str(status) + " WHERE id=" + str(project_id)
     cursor.execute(sql)
     db.commit()
 
@@ -222,7 +228,7 @@ def mysql_get_first_message():
 def mysql_delete_metric(project_id, metric, table):
     global db
     global cursor
-    sql = f"DELETE FROM {table} WHERE project_id={project_id} AND date='{metric.date}'"
+    sql = f"DELETE FROM {table} WHERE product_id={project_id} AND date='{metric.date}'"
     cursor.execute(sql)
     db.commit()
 
@@ -231,7 +237,7 @@ def mysql_put_metric(project_id, metric, table):
     global db
     global cursor
     if 1:
-        sql = f"INSERT INTO {table} (project_id, date, quantity_all, quantity_id, quantity_wts, quantity_wtb, quantity_scam) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        sql = f"INSERT INTO {table} (product_id, date, quantity_all, quantity_id, quantity_wts, quantity_wtb, quantity_scam) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         val = (
             project_id,
             metric.date,
@@ -255,15 +261,15 @@ def put_metric(project_id, metric, type):
 def mysql_put_rating(project_id, rating):
     global db
     global cursor
-    sql = f"SELECT rating FROM projects WHERE id={project_id}"
+    sql = f"SELECT rating FROM products WHERE id={project_id}"
     cursor.execute(sql)
     data = cursor.fetchall()
     for row in data:
         rating_past = row[0]
 
-    sql = f"UPDATE projects SET rating_past={rating_past} WHERE id={project_id}"
+    sql = f"UPDATE products SET rating_past={rating_past} WHERE id={project_id}"
     cursor.execute(sql)
-    sql = f"UPDATE projects SET rating={rating} WHERE id={project_id}"
+    sql = f"UPDATE products SET rating={rating} WHERE id={project_id}"
     cursor.execute(sql)
     db.commit()
 
@@ -271,16 +277,27 @@ def mysql_put_rating(project_id, rating):
 def mysql_put_tg_users_to_project(project_id, num_id):
     global db
     global cursor
-    sql = f"SELECT num_tg_users FROM projects WHERE id={project_id}"
+    sql = f"SELECT num_tg_users FROM products WHERE id={project_id}"
     cursor.execute(sql)
     data = cursor.fetchall()
     for row in data:
         num_past = row[0]
-    sql = f"UPDATE projects SET num_tg_users_past={num_past} WHERE id={project_id}"
+    sql = f"UPDATE products SET num_tg_users_past={num_past} WHERE id={project_id}"
     cursor.execute(sql)
-    sql = f"UPDATE projects SET num_tg_users={num_id} WHERE id={project_id}"
+    sql = f"UPDATE products SET num_tg_users={num_id} WHERE id={project_id}"
     cursor.execute(sql)
     db.commit()
+
+
+def mysql_get_last_date():
+    global cursor
+    sql = f"SELECT date FROM day_tg_metrics ORDER BY date DESC LIMIT 1"
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    for row in data:
+        date = row[0]
+    return date
+
 
 
 def change_day(day_str):
@@ -335,8 +352,8 @@ def collect_rating(metric):
 
 def check_for_scam(messages):
     out_messages = []
-    scam_pattern = "\Wscam(|er)(\W.*|)$"
-    no_scam_pattern = "\Wno(t|) scam(\W.*|)$"
+    scam_pattern = '\Wscam(|mer|er)(\W.*|)$'
+    no_scam_pattern = '\Wno(t|) scam(\W.*|)$'
     for message in messages:
         if message.message and re.search(scam_pattern, message.message, re.IGNORECASE) and not re.search(no_scam_pattern, message.message, re.IGNORECASE):
             message.is_scam = True
@@ -350,28 +367,40 @@ if __name__ == '__main__':
     mysql_init()
     print('start')
     if 1:
-        if is_first:
+        if 1: #запуск обработки новых проектов
             no_index_projects = mysql_get_no_index_projects()
+            #print(no_index_projects)
             for project in no_index_projects:
                 indexes = mysql_get_indexes(project.id)
+                #print(indexes)
                 if indexes:
                     print(len(indexes), 'ключей')
                     messages = mysql_get_messages_by_indexes(indexes)
-                    messages = check_for_scam(messages)
+                    #messages = check_for_scam(messages)
                     print(len(messages), 'сообщений')
                     mysql_detach(project.id)
                     mysql_attach(messages, project.id)
-                    mysql_set_project_indexed(project.id, 1)
 
 #            date_begin = tz.localize(mysql_get_first_message().date)
-            date_begin = mysql_get_first_message().date
-            print("date_begin:", date_begin)
+        date_root_begin = mysql_get_first_message().date
+        date_yesterday = datetime.now()# - timedelta(days=1)
+        if 1:
+#            date_begin = date_root_begin
+#            print("date_begin:", date_begin)
 #            date_now = tz.localize(datetime.now())
-            date_yesterday = datetime.now() - timedelta(days=1)
-            print("date_now:", date_yesterday)
+#            date_yesterday = datetime.now() - timedelta(days=1)
+#            print("date_now:", date_yesterday)
 
             all_projects = mysql_get_all_projects()
+            #print(all_projects)
+            #sys.exit()
             for project in all_projects:
+                if not project.is_indexed or is_first:
+                    date_begin = date_root_begin
+                else:
+                    date_begin = mysql_get_last_date()
+                    #print(date_root_begin, date_begin)
+                    #sys.exit
                 date_item = date_begin
                 while date_item <= date_yesterday:
                     metric_day = create_metrics(project.id, date_item, 'day')
@@ -391,6 +420,8 @@ if __name__ == '__main__':
                     metric_month = create_metrics(project.id, date_item, 'month')
                     put_metric(project.id, metric_month, 'month')
                     date_item = datetime.strptime(change_day((date_item + timedelta(days=31)).strftime('%m/%d/%y') + ' 00:00:00'), '%m/%d/%y %H:%M:%S')
+
+                mysql_set_project_indexed(project.id, 1)
 
 
 
