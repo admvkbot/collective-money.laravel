@@ -178,9 +178,7 @@
     </div>
     <div class="mt-2 row">
       <div class="col-lg-7 mt-3 mt-lg-3">
-        <profile-info-card
-          title="Информация о проекте"
-          description="Для изменения перечисленных ниже параметров свяжитесь с вашим менедженом"
+        <!--<profile-info-card
           :info="{
             nickname: 'Олег',
             mobile: '(7) 123 1234 123',
@@ -208,7 +206,89 @@
             route: 'javascript:;',
             tooltip: 'Edit Profile',
           }"
-        />
+        />-->
+        <div class="card h-100">
+          <div class="p-3 pb-0 card-header">
+            <div class="row">
+              <div class="col-md-12 d-flex align-items-center">
+                <h6 class="mb-0">Информация о проекте</h6>
+              </div>
+              <!--<div class="col-md-4 text-end">
+          <a :href="action.route">
+            <i
+              class="text-sm fas fa-user-edit text-secondary"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              :title="action.tooltip"
+            ></i>
+          </a>
+        </div>-->
+            </div>
+          </div>
+          <div class="p-3 card-body">
+            <p class="text-sm">
+              Для изменения перечисленных ниже параметров свяжитесь с вашим
+              менедженом
+            </p>
+            <hr class="my-4 horizontal gray-light" />
+            <ul class="list-group">
+              <li
+                class="pt-0 text-sm border-0 list-group-item ps-0"
+                v-if="product.description"
+              >
+                <font-awesome-icon :icon="faHandPointRight" /> &nbsp;
+                {{ product.description }}
+              </li>
+              <li
+                class="pt-0 text-sm border-0 list-group-item ps-0"
+                v-if="product.website_url"
+              >
+                <strong class="text-dark">Официальный сайт:</strong> &nbsp;
+                <a target="_blank" :href="product.website_url">
+                  {{ product.website_url }}
+                </a>
+              </li>
+              <li class="pb-0 border-0 list-group-item ps-0">
+                <strong class="text-sm text-dark">Контакты:</strong> &nbsp;
+                <a
+                  v-if="product.discord"
+                  :href="product.discord"
+                  class="py-0 mb-0 btn-simple ps-1 pe-2"
+                >
+                  <font-awesome-icon :icon="faDiscord" />
+                </a>
+                <a
+                  v-if="product.twitter"
+                  :href="product.twitter"
+                  class="py-0 mb-0 btn-simple ps-1 pe-2"
+                >
+                  <font-awesome-icon :icon="faTwitter" />
+                </a>
+                <a
+                  v-if="product.medium"
+                  :href="product.medium"
+                  class="py-0 mb-0 btn-simple ps-1 pe-2"
+                >
+                  <font-awesome-icon :icon="faMediumM" />
+                </a>
+                <a
+                  v-if="product.youtube"
+                  :href="product.youtube"
+                  class="py-0 mb-0 btn-simple ps-1 pe-2"
+                >
+                  <font-awesome-icon :icon="faYoutube" />
+                </a>
+                <a
+                  v-if="product.telegram"
+                  :href="product.telegram"
+                  class="py-0 mb-0 btn-simple ps-1 pe-2"
+                >
+                  <font-awesome-icon :icon="faTelegramPlane" />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <div class="col-lg-5 mt-3 mt-lg-3">
@@ -317,7 +397,6 @@
 
 <script>
 import VsudSwitch from "@/components/VsudSwitch.vue";
-import ProfileInfoCard from "@/views/components/ProfileInfoCard.vue";
 import VsudAvatar from "@/components/VsudAvatar.vue";
 import sophie from "@/assets/img/kal-visuals-square.jpg";
 import marie from "@/assets/img/marie.jpg";
@@ -332,10 +411,13 @@ import team2 from "@/assets/img/team-2.jpg";
 import team3 from "@/assets/img/team-3.jpg";
 import team4 from "@/assets/img/team-4.jpg";
 import {
-  faFacebook,
   faTwitter,
-  faInstagram,
+  faMediumM,
+  faDiscord,
+  faTelegramPlane,
+  faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import { faHandPointRight } from "@fortawesome/free-solid-svg-icons";
 import DefaultProjectCard from "@/views/components/DefaultProjectCard.vue";
 import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
@@ -346,6 +428,7 @@ import getProductBlocks from "@/assets/js/getProductBlocks.js";
 import { ref } from "vue";
 import Gradient1LineChart from "@/Charts/Gradient1LineChart.vue";
 import Gradient2LineChart from "@/Charts/Gradient2LineChart.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const { getProductData } = Product();
 //const { getDayWTChartData } = Chart();
@@ -380,7 +463,6 @@ export default {
   },
   components: {
     VsudSwitch,
-    ProfileInfoCard,
     VsudAvatar,
     DefaultProjectCard,
     PlaceHolderCard,
@@ -388,6 +470,7 @@ export default {
     Gradient1LineChart,
     Gradient2LineChart,
     getProductBlocks,
+    FontAwesomeIcon,
   },
   data() {
     return {
@@ -404,10 +487,27 @@ export default {
       team4,
       img2,
       img3,
-      faFacebook,
+      faDiscord,
       faTwitter,
-      faInstagram,
+      faMediumM,
+      faYoutube,
+      faTelegramPlane,
+      faHandPointRight,
       blockTypes: globalBlockTypes,
+      social: [
+        {
+          link: "https://www.facebook.com/",
+          icon: faMediumM,
+        },
+        {
+          link: this.product.twitter,
+          icon: faTwitter,
+        },
+        {
+          link: "https://www.instagram.com/",
+          icon: faTelegramPlane,
+        },
+      ],
     };
   },
 
