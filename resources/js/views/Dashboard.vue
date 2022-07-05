@@ -225,15 +225,17 @@
       <div class="col-lg-7">
         <!-- line chart -->
         <div class="card z-index-2">
-          <gradient-line-chart
+          <gradient2-line-chart
             id="chart-line"
             title="Тестовый график"
-            description="<i class='fa fa-arrow-up text-success'></i>
-      <span class='font-weight-bold'>4% more</span> in 2022"
+            :arrow="chartTg.arrow"
+            :color="chartTg.color"
+            :proc="chartTg.value"
+            description="за последний месяц"
             :chart="chartTg"
             v-if="chartTg.datasets"
           />
-          
+
           <!--<gradient-line-chart
             id="chart-line"
             title="Тестовый график"
@@ -322,7 +324,7 @@
 <script>
 import MiniStatisticsCard from "../examples/Cards/MiniStatisticsCard.vue";
 import ReportsBarChart from "../Charts/ReportsBarChart.vue";
-import GradientLineChart from "../Charts/GradientLineChart.vue";
+import Gradient2LineChart from "../Charts/Gradient2LineChart.vue";
 import TimelineList from "./components/TimelineList.vue";
 import TimelineItem from "./components/TimelineItem.vue";
 import ProjectsCard from "./components/ProjectsCard.vue";
@@ -336,8 +338,10 @@ import {
   faCreditCard,
   faScrewdriverWrench,
 } from "@fortawesome/free-solid-svg-icons";
-import getChartData from "@/assets/js/charts/getProductTgChart";
+import Chart from "@/composables/Chart";
 import { ref } from "vue";
+
+const { getDayWTChartData } = Chart();
 
 export default {
   name: "dashboard-default",
@@ -376,7 +380,7 @@ export default {
           value: "$143,960",
           bounce: "32.14%",
           flag: BR,
-        },      
+        },
       },
       chartTg: {},
     };
@@ -384,14 +388,34 @@ export default {
   components: {
     MiniStatisticsCard,
     ReportsBarChart,
-    GradientLineChart,
+    Gradient2LineChart,
     ProjectsCard,
     TimelineList,
     TimelineItem,
-    getChartData,
+    Chart,
   },
   created() {
-    this.chartTg = getChartData(1, "day");
+    this.chartTg = getDayWTChartData(2);
+  },
+  computed: {
+    chartTgGradient() {
+      let color;
+      let arrow;
+      if (this.chartTg.last > this.chartTg.first) {
+        (color = "success"), (arrow = "up");
+      } else if (this.chartTg.last < this.chartTg.first) {
+        (color = "danger"), (arrow = "down");
+      } else {
+        (color = "secondary"), (arrow = "right");
+      }
+      value =
+        ((this.chartTg.last - this.chartTg.first) / this.chartTg.first) * 100;
+      return {
+        value: value.toFixed(1),
+        color: color,
+        arrow: arrow,
+      };
+    },
   },
 };
 </script>

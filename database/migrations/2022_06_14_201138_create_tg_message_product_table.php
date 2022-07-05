@@ -16,7 +16,7 @@ class CreateTgMessageProductTable extends Migration
       Schema::create('tg_message_product', function (Blueprint $table) {
          $table->unsignedBigInteger('message_id');
          $table->unsignedBigInteger('product_id');
-         $table->boolean('is_scam')->default(false);
+         //$table->boolean('is_scam')->default(false);
 
          $table->index('message_id', 'tg_message_product_message_idx');
          $table->index('product_id', 'tg_message_product_product_idx');

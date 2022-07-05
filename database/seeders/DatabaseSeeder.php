@@ -68,6 +68,7 @@ class DatabaseSeeder extends Seeder
       [
          'name' => 'Mimi\'s Adventure',
          'uri' => 'mimis-adventure',
+         'product_type_id' => 1,
          'website_url' => 'https://google.com',
          'rating' => 1,
          'twitter' => 'https://twitter.com/',
@@ -77,6 +78,7 @@ class DatabaseSeeder extends Seeder
       [
          'name' => 'Pengsol',
          'uri' => 'pengsol',
+         'product_type_id' => 1,
          'website_url' => 'https://google.com',
          'rating' => 1,
          'twitter' => 'https://twitter.com/',

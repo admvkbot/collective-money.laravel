@@ -159,7 +159,7 @@ export default {
         return data.rows.length;
       }),
     });
-
+    let timeout = null;
     watch(
       () => searchTerm.value,
       (val) => {

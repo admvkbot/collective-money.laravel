@@ -3,6 +3,8 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Service
 {
@@ -11,6 +13,11 @@ class Service
       return Product::where('id', $product_id)
          ->update(['logo_url' => $path]);
    }
+
+   /*public function storeLogo($path, $resource): void
+   {
+      Storage::disk('public')->put($path, $resource);
+   }*/
 
    public function deleteProduct($product_id)
    {
@@ -35,5 +42,34 @@ class Service
    public function getUriByName($str)
    {
       return preg_replace('/_/', '-', preg_replace('/\W/', '', preg_replace('/\s/', '_', strtolower($str))));
+   }
+
+   public function getProductByUri($uri): object
+   {
+      return DB::table('products')
+         ->join('product_types', 'products.product_type_id', '=', 'product_types.id')
+         ->where('uri', $uri)
+         ->select(
+            'products.id',
+            'products.name',
+            'products.status',
+            'products.rating',
+            'products.rating_past',
+            'products.num_tg_users',
+            'products.num_tg_users_past',
+            'products.website_url',
+            'products.discord',
+            'products.twitter',
+            'products.medium',
+            'products.youtube',
+            'products.telegram',
+            'products.logo_url',
+            'products.is_locked',
+            'products.is_indexed',
+            'products.description',
+            'products.product_status_id',
+            'product_types.name as type',
+            )
+         ->first();
    }
 }

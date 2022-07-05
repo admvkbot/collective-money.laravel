@@ -5,6 +5,7 @@ use App\Http\Controllers\API\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,18 +40,22 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::post('/add-account', 'Account\CreateController');
    Route::post('/add-social', 'Social\CreateController');
    Route::post('/edit-social', 'Social\EditController');
+   // Products
    Route::post('/get-products/{id}', 'Product\IndexController');
-   Route::get('/get-product/{id}', 'Product\ProductController');
+   Route::get('/product-moderator/{id}', 'Product\ProductModeratorController');
    Route::post('/edit-product/{product_id}', 'Product\EditController');
    Route::get('/delete-product/{product_id}', 'Product\DeleteController');
    Route::post('/add-product', 'Product\CreateController');
+   Route::get('/product-data/{product_uri}', 'Product\ProductController');
+
    Route::get('/get-indexes/{product_id}', 'Index\IndexController');
    Route::post('/edit-product-key', 'Index\EditController');
    Route::post('/upload-product-logo/{product_id}', 'Product\UploadController');
 
    Route::post('/scam-messages', 'Scam\IndexController');
-
-   Route::post('/get-product-tg-chart/{top}', 'API\Chart\TgChartController');
+   //Chart
+   Route::get('/product-tg-day-wt-chart/{product_id}', 'Chart\TgDayWTChartController');
+   Route::get('/product-day-rating-chart/{product_id}', 'Chart\DayRatingChartController');
    
    Route::post('/search-tg-username', 'Scam\SearchTgUserController'); //searchTgUsername.js
    Route::post('/search-product', 'Scam\SearchProductController'); //searchProduct.js

@@ -1061,10 +1061,6 @@ select{
   margin-left: auto;
   margin-right: auto;
 }
-.my-2{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
 .mx-0{
   margin-left: 0px;
   margin-right: 0px;
@@ -1076,6 +1072,10 @@ select{
 .my-1{
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+}
+.my-2{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .my-3{
   margin-top: 0.75rem;
@@ -1178,9 +1178,6 @@ select{
 }
 .mb-0{
   margin-bottom: 0px;
-}
-.ml-auto{
-  margin-left: auto;
 }
 .mb-2{
   margin-bottom: 0.5rem;
@@ -1897,11 +1894,11 @@ select{
 .opacity-50{
   opacity: 0.5;
 }
-.opacity-5{
-  opacity: 0.05;
-}
 .opacity-10{
   opacity: 0.1;
+}
+.opacity-5{
+  opacity: 0.05;
 }
 .opacity-25{
   opacity: 0.25;
@@ -7112,10 +7109,6 @@ readers do not read off random characters that represent icons */
     --tw-bg-opacity: 1;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity));
   }
-  .dark\:text-gray-500{
-    --tw-text-opacity: 1;
-    color: rgb(107 114 128 / var(--tw-text-opacity));
-  }
   .dark\:text-white{
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -8435,10 +8428,6 @@ select {
   margin-left: auto;
   margin-right: auto;
 }
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
 .mx-0 {
   margin-left: 0px;
   margin-right: 0px;
@@ -8450,6 +8439,10 @@ select {
 .my-1 {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .my-3 {
   margin-top: 0.75rem;
@@ -8552,9 +8545,6 @@ select {
 }
 .mb-0 {
   margin-bottom: 0px;
-}
-.ml-auto {
-  margin-left: auto;
 }
 .mb-2 {
   margin-bottom: 0.5rem;
@@ -9271,11 +9261,11 @@ select {
 .opacity-50 {
   opacity: 0.5;
 }
-.opacity-5 {
-  opacity: 0.05;
-}
 .opacity-10 {
   opacity: 0.1;
+}
+.opacity-5 {
+  opacity: 0.05;
 }
 .opacity-25 {
   opacity: 0.25;
@@ -9557,11 +9547,6 @@ select {
   .dark\:bg-gray-800 {
     --tw-bg-opacity: 1;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-  }
-
-  .dark\:text-gray-500 {
-    --tw-text-opacity: 1;
-    color: rgb(107 114 128 / var(--tw-text-opacity));
   }
 
   .dark\:text-white {

@@ -1730,46 +1730,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
-/***/ "./resources/js/assets/js/getProductBlocks.js":
-/*!****************************************************!*\
-  !*** ./resources/js/assets/js/getProductBlocks.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ getProductBlocks)
-/* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-//import { ref, onMounted, watch } from 'vue'
-
-function getProductBlocks(productId) {
-  var blocks = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); //  const getUserRepositories = async () => {
-  //    repositories.value = await fetchUserRepositories(user.value)
-  //  }
-  //console.log(1);
-  //const connectGetProductBlocks = () => axios.get("/sanctum/csrf-cookie").then((response) => {
-
-  var connectGetProductBlocks = function connectGetProductBlocks() {
-    return axios.get("/api/get-blocks/".concat(productId), {}).then(function (r) {
-      blocks.value = r.data;
-    })["catch"](function (err) {
-      console.log(err);
-      var registerError = "Ошибка получеения блоков timeline";
-      alert(registerError);
-    });
-  }; //});
-  //onMounted(connectGetAllAccounts)
-
-
-  connectGetProductBlocks(); //watch(user, getUserRepositories)
-
-  return blocks;
-}
-
-/***/ }),
-
 /***/ "./resources/js/assets/js/getProductData.js":
 /*!**************************************************!*\
   !*** ./resources/js/assets/js/getProductData.js ***!
@@ -1792,7 +1752,7 @@ function getProductData(productId) {
   //const connectGetProduct = () => axios.get("/sanctum/csrf-cookie").then((response) => {
 
   var connectGetProduct = function connectGetProduct() {
-    return axios.get("/api/get-product/".concat(productId), {}).then(function (r) {
+    return axios.get("/api/product-moderator/".concat(productId), {}).then(function (r) {
       product.value = r.data;
     })["catch"](function (err) {
       console.log(err);

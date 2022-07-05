@@ -14,7 +14,7 @@
         <div class="col-auto">
           <div class="avatar avatar-xl position-relative">
             <img
-              src="@/assets/img/bruce-mars.jpg"
+              :src="product.logo_url"
               alt="profile_image"
               class="shadow-sm w-100 border-radius-lg"
             />
@@ -22,11 +22,11 @@
         </div>
         <div class="col-auto my-auto">
           <div class="h-100">
-            <h5 class="mb-1">Alec Thompson</h5>
-            <p class="mb-0 text-sm font-weight-bold">CEO / Co-Founder</p>
+            <h5 class="mb-1">{{ product.name }}</h5>
+            <p class="mb-0 text-sm font-weight-bold">{{ product.type }}</p>
           </div>
         </div>
-        <div
+        <!--<div
           class="mx-auto mt-3 col-lg-6 col-md-6 my-sm-auto ms-sm-auto me-sm-0"
         >
           <div class="nav-wrapper position-relative end-0">
@@ -84,7 +84,9 @@
                       </g>
                     </g>
                   </svg>
-                  <span class="ms-1" @click="showSettings">Настройки профиля</span>
+                  <span class="ms-1" @click="showSettings"
+                    >Настройки профиля</span
+                  >
                 </a>
               </li>
               <li class="nav-item">
@@ -137,94 +139,47 @@
               </li>
             </ul>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
   <div class="py-4 container-fluid">
     <div class="mt-2 row">
-      <div class="col-12 col-md-6 col-xl-6">
-        <div class="card h-100">
-          <div class="p-3 pb-0 card-header">
-            <h6 class="mb-0">Настройки</h6>
-          </div>
-          <div class="p-3 card-body">
-            <h6 class="text-xs text-uppercase text-body font-weight-bolder">
-              Оповещения
-            </h6>
-            <ul class="list-group">
-              <li class="px-0 border-0 list-group-item">
-                <vsud-switch
-                  id="flexSwitchCheckDefault"
-                  name="email"
-                  class="ps-0 ms-auto"
-                  label-class="mb-0 text-body ms-3 text-truncate w-80"
-                  checked
-                  >Email</vsud-switch
-                >
-              </li>
-              <li class="px-0 border-0 list-group-item">
-                <vsud-switch
-                  id="flexSwitchCheckDefault1"
-                  name="telegram"
-                  label-class="mb-0 text-body ms-3 text-truncate w-80"
-                  class="ps-0 ms-auto"
-                  >Telegram</vsud-switch
-                >
-              </li>
-
-              <li class="px-0 border-0 list-group-item">
-                <vsud-switch
-                  id="flexSwitchCheckDefault2"
-                  name="push"
-                  label-class="mb-0 text-body ms-3 text-truncate w-80"
-                  class="ps-0 ms-auto"
-                  checked
-                  >Пуш уведомления</vsud-switch
-                >
-              </li>
-            </ul>
-            <h6
-              class="mt-4 text-xs text-uppercase text-body font-weight-bolder"
-            >
-              Взаимодействие с пользователями
-            </h6>
-            <ul class="list-group">
-              <li class="px-0 border-0 list-group-item">
-                <vsud-switch
-                  id="flexSwitchCheckDefault3"
-                  name="Incoming Actions"
-                  class="ps-0 ms-auto"
-                  label-class="mb-0 text-body ms-3 text-truncate w-80"
-                  >Разрешать взаимоподписки</vsud-switch
-                >
-              </li>
-              <li class="px-0 border-0 list-group-item">
-                <vsud-switch
-                  id="flexSwitchCheckDefault4"
-                  name="Group Tasks"
-                  class="ps-0 ms-auto"
-                  label-class="mb-0 text-body ms-3 text-truncate w-80"
-                  checked
-                  >Участвовать в групповых заданиях</vsud-switch
-                >
-              </li>
-              <li class="px-0 pb-0 border-0 list-group-item">
-                <vsud-switch
-                  id="flexSwitchCheckDefault5"
-                  name="Newsletter"
-                  class="ps-0 ms-auto"
-                  label-class="mb-0 text-body ms-3 text-truncate w-80"
-                  >Скрывать личные данные</vsud-switch
-                >
-              </li>
-            </ul>
-          </div>
+      <div class="col-lg-6">
+        <!-- line chart -->
+        <div class="card z-index-2">
+          <gradient2-line-chart
+            id="chart-line-WT"
+            :title="'Спрос и предложение ' + product.name"
+            :arrow="product.chartTg.arrow"
+            :color="product.chartTg.color"
+            :proc="product.chartTg.value"
+            description="за последний месяц"
+            :chart="product.chartTg"
+            v-if="'chartTg' in product && 'datasets' in product.chartTg"
+          />
         </div>
       </div>
-      <div class="mt-4 col-12 col-md-6 col-xl-6 mt-md-0">
+      <div class="col-lg-6">
+        <!-- line chart -->
+        <div class="card z-index-2">
+          <gradient1-line-chart
+            id="chart-line-rating"
+            title="Рейтинг Collective Money"
+            :arrow="product.chartRating.arrow"
+            :color="product.chartRating.color"
+            :proc="product.chartRating.value"
+            description="за последний месяц"
+            :chart="product.chartRating"
+            v-if="'chartRating' in product && 'datasets' in product.chartRating"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="mt-2 row">
+      <div class="col-lg-7 mt-3 mt-lg-3">
         <profile-info-card
-          title="Информация о пользователе"
+          title="Информация о проекте"
           description="Для изменения перечисленных ниже параметров свяжитесь с вашим менедженом"
           :info="{
             nickname: 'Олег',
@@ -255,227 +210,102 @@
           }"
         />
       </div>
-      <div class="mt-4 col-12 col-xl-4 mt-xl-0">
-        <div class="card h-100">
-          <div class="p-3 pb-0 card-header">
-            <h6 class="mb-0">Conversations</h6>
-          </div>
-          <div class="p-3 card-body">
-            <ul class="list-group">
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <vsud-avatar
-                  class="me-3"
-                  :img="sophie"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Sophie B.</h6>
-                  <p class="mb-0 text-xs">Hi! I need more information..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <vsud-avatar
-                  class="me-3"
-                  :img="marie"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Anne Marie</h6>
-                  <p class="mb-0 text-xs">Awesome work, can you..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <vsud-avatar
-                  class="me-3"
-                  :img="ivana"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Ivanna</h6>
-                  <p class="mb-0 text-xs">About files I can..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 mb-2 border-0 list-group-item d-flex align-items-center"
-              >
-                <vsud-avatar
-                  class="me-3"
-                  :img="peterson"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Peterson</h6>
-                  <p class="mb-0 text-xs">Have a great afternoon..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-              <li
-                class="px-0 border-0 list-group-item d-flex align-items-center"
-              >
-                <vsud-avatar
-                  class="me-3"
-                  :img="nick"
-                  alt="kal"
-                  border-radius="lg"
-                  shadow="regular"
-                />
-                <div
-                  class="d-flex align-items-start flex-column justify-content-center"
-                >
-                  <h6 class="mb-0 text-sm">Nick Daniel</h6>
-                  <p class="mb-0 text-xs">Hi! I need more information..</p>
-                </div>
-                <a
-                  class="mb-0 btn btn-link pe-3 ps-0 ms-auto"
-                  href="javascript:;"
-                  >Reply</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4 row">
-      <div class="col-12">
-        <div class="mb-4 card">
-          <div class="p-3 pb-0 card-header">
-            <h6 class="mb-1">Последние задания, ожидающие проверки</h6>
-          </div>
-          <div class="p-3 card-body">
-            <div class="row">
-              <default-project-card
-                title="YouTube"
-                :image="img1"
-                label="Задание №1"
-                description="Подписаться, опубликовать комметарий из 10-15 слов и поставить лайк"
-                :authors="[
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Product',
-                }"
-              />
 
-              <default-project-card
-                title="Telegram"
-                :image="img2"
-                label="Задание №2"
-                description="Подписаться в группе"
-                :authors="[
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Product',
-                }"
-              />
+      <div class="col-lg-5 mt-3 mt-lg-3">
+        <div class="card bg-gradient-dark">
+          <div class="card-header bg-transparent pb-0">
+            <h6 class="text-white">Стадии развития проекта</h6>
+          </div>
+          <div class="card-body p-3">
+            <div
+              class="timeline timeline-one-side"
+              data-timeline-axis-style="dashed"
+            >
+              <div v-if="'value' in blocks && blocks.value.length">
+                <div
+                  class="timeline-block mb-3"
+                  v-for="block in blocks.value"
+                  :key="block.id"
+                >
+                  <span class="timeline-step bg-dark">
+                    <i
+                      :class="
+                        getBlockIcon(block.stage) +
+                        ' text-' +
+                        getBlockColor(block.stage)
+                      "
+                    ></i>
+                  </span>
+                  <div class="timeline-content">
+                    <h6 class="text-white text-sm font-weight-bold mb-0">
+                      {{ block.name }}
+                    </h6>
 
-              <default-project-card
-                title="UltaSystem"
-                :image="img3"
-                label="Задание 3"
-                description="Зарегистрироваться и прислать скриншот"
-                :authors="[
-                  {
-                    image: team4,
-                    name: 'Peterson',
-                  },
-                  {
-                    image: team3,
-                    name: 'Nick Daniel',
-                  },
-                  {
-                    image: team1,
-                    name: 'Elena Morison',
-                  },
-                  {
-                    image: team2,
-                    name: 'Ryan Milly',
-                  },
-                ]"
-                :action="{
-                  color: 'success',
-                  label: 'View Product',
-                }"
-              />
-
-              <div class="mb-4 col-xl-3 col-md-6 mb-xl-0">
-                <place-holder-card
-                  :title="{ text: 'Новое задание', variant: 'h5' }"
-                />
+                    <p class="text-white text-xs mt-1 mb-0">
+                      {{ getPrintDate(block.date) }}
+                    </p>
+                    <p class="text-secondary text-sm mt-3 mb-2">
+                      {{ block.description }}
+                    </p>
+                    <span
+                      class="badge badge-sm"
+                      :class="
+                        'bg-gradient-' + blockTypes[block.stage - 1].color
+                      "
+                      v-if="block.button1"
+                      >{{ block.button1 }}</span
+                    >
+                    <span
+                      class="badge badge-sm ml-1"
+                      :class="
+                        'bg-gradient-' + blockTypes[block.stage - 1].color
+                      "
+                      v-if="block.button2"
+                      >{{ block.button2 }}</span
+                    >
+                    <span
+                      class="badge badge-sm ml-1"
+                      :class="
+                        'bg-gradient-' + blockTypes[block.stage - 1].color
+                      "
+                      v-if="block.button3"
+                      >{{ block.button3 }}</span
+                    >
+                    <span
+                      class="badge badge-sm ml-1"
+                      :class="
+                        'bg-gradient-' + blockTypes[block.stage - 1].color
+                      "
+                      v-if="block.button4"
+                      >{{ block.button4 }}</span
+                    >
+                    <span
+                      class="badge badge-sm ml-1"
+                      :class="
+                        'bg-gradient-' + blockTypes[block.stage - 1].color
+                      "
+                      v-if="block.button5"
+                      >{{ block.button5 }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- far fa-baby-carriage -->
+              <div v-else class="timeline-block mb-3">
+                <span class="timeline-step bg-dark">
+                  <i class="fas fa-question text-secondary"></i>
+                </span>
+                <div class="timeline-content">
+                  <h6 class="text-white text-sm font-weight-bold mb-0">
+                    Стадии проекта не описаны
+                  </h6>
+                  <p
+                    class="text-secondary font-weight-bold text-xs mt-1 mb-0"
+                  ></p>
+                  <p class="text-secondary text-sm mt-3 mb-2">
+                    Отсутствует описание стадий развития проекта.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -486,7 +316,6 @@
 </template>
 
 <script>
-import { getProductData } from "@/composables/Product";
 import VsudSwitch from "@/components/VsudSwitch.vue";
 import ProfileInfoCard from "@/views/components/ProfileInfoCard.vue";
 import VsudAvatar from "@/components/VsudAvatar.vue";
@@ -511,11 +340,43 @@ import DefaultProjectCard from "@/views/components/DefaultProjectCard.vue";
 import PlaceHolderCard from "@/examples/Cards/PlaceHolderCard.vue";
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
+import Product from "@/composables/Product";
+import getProductBlocks from "@/assets/js/getProductBlocks.js";
+
+import { ref } from "vue";
+import Gradient1LineChart from "@/Charts/Gradient1LineChart.vue";
+import Gradient2LineChart from "@/Charts/Gradient2LineChart.vue";
+
+const { getProductData } = Product();
+//const { getDayWTChartData } = Chart();
+/*const init = async (props) => {
+  return getProductData(props.productNameUri);
+};*/
 
 export default {
   name: "product",
-  setup() {
-   return {}
+  props: {
+    productNameUri: {
+      Type: String,
+      required: true,
+    },
+  },
+  setup(props) {
+    let product;
+    const blocks = ref([]);
+    const promise = new Promise(function (resolve, reject) {
+      product = getProductData(props.productNameUri);
+      const interval = setInterval(() => {
+        if ("id" in product.value) {
+          clearInterval(interval);
+          resolve(product);
+        }
+      }, 300);
+    });
+    promise.then((r) => {
+      blocks.value = getProductBlocks(product.value.id);
+    });
+    return { product, blocks };
   },
   components: {
     VsudSwitch,
@@ -523,6 +384,10 @@ export default {
     VsudAvatar,
     DefaultProjectCard,
     PlaceHolderCard,
+    Product,
+    Gradient1LineChart,
+    Gradient2LineChart,
+    getProductBlocks,
   },
   data() {
     return {
@@ -542,6 +407,7 @@ export default {
       faFacebook,
       faTwitter,
       faInstagram,
+      blockTypes: globalBlockTypes,
     };
   },
 
@@ -550,21 +416,34 @@ export default {
     setNavPills();
     setTooltip(this.$store.state.bootstrap);
   },
-  //beforeUnmount() {
-  //  this.$store.state.isAbsolute = false;
-  //},
   methods: {
-     actionApp() {
-        alert('Profile.vue');
-     }
+    actionApp() {
+      alert("Profile.vue");
+    },
+    getBlockIcon(id) {
+      return this.blockTypes[id - 1].icon;
+    },
+    getBlockColor(id) {
+      return this.blockTypes[id - 1].color;
+    },
+    setFullDateElement(dig) {
+      return dig < 10 ? `0${dig}` : dig;
+    },
+    getPrintDate(date) {
+      let tmpDate = new Date(date);
+      let day = this.setFullDateElement(tmpDate.getDate());
+      let month = this.setFullDateElement(tmpDate.getMonth() + 1);
+      let year = tmpDate.getFullYear();
+      return `${day}.${month}.${year}`;
+    },
   },
 };
 </script>
 <style scoped>
 svg {
-   display: inline !important;
+  display: inline !important;
 }
 .blur {
-   --tw-blur: none !important;
+  --tw-blur: none !important;
 }
 </style>

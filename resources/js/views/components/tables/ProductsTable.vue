@@ -84,7 +84,7 @@
                       <img
                         :src="item.logo_url"
                         class="avatar avatar-sm rounded-circle me-2"
-                        alt="spotify"
+                        :alt="item.name"
                         v-if="item.logo_url"
                       />
                       <h6 class="mb-0 text-sm">
@@ -227,7 +227,9 @@ export default {
     const $loading = useLoading();
     let loader;
     const submit = () => {
-      loader = $loading.show({});
+      if (!loader) {
+        loader = $loading.show({});
+      }
     };
     /**
      * Get server data request
@@ -239,17 +241,19 @@ export default {
           filter: keyword,
         })
         .then((r) => {
-          loader.hide();
           console.log(r.data);
           data.rows = r.data;
           //this.$emit("accountsReload");
         })
         .catch((err) => {
-          loader.hide();
           console.log("Fetch error", err.response);
           const registerError =
             "Неизвестная ошибка при полученнии списка проектов";
           alert(registerError);
+        })
+        .finally(() => {
+          loader.hide();
+          loader = null;
         });
     };
 
@@ -261,11 +265,17 @@ export default {
         return data.rows.length;
       }),
     });
+    let timeout = null;
     if (props.is_liveSearch) {
       watch(
         () => searchTerm.value,
         (val) => {
-          myRequest(val);
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          timeout = setTimeout(() => {
+            myRequest(val);
+          }, 500);
         }
       );
     }

@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { defineAsyncComponent } from "vue";
+import { createRouter, createWebHistory, RouterView } from "vue-router";
+import { defineAsyncComponent, h } from "vue";
 import Dashboard from "./views/Dashboard.vue";
 import TgParser from "./views/TgParser.vue";
 import Profile from "./views/Profile.vue";
@@ -23,9 +23,20 @@ const routes = [
       component: Dashboard,
    },
    {
-      path: "/products",
-      name: "Products",
-      component: Products,
+      path: '/products',
+      component: { render: () => h(RouterView) },
+      children: [
+         {
+            path: "",
+            name: "Products",
+            component: Products,
+         },
+         {
+            path: ":productNameUri",
+            name: "Product",
+            component: Product,
+            props: true,
+         },]
    },
    {
       path: "/tgparser",
@@ -57,12 +68,6 @@ const routes = [
       path: "/moderator/products",
       name: "ProductsModerator",
       component: defineAsyncComponent(() => import("@/views/products/ProductsModerator.vue")),
-   },
-   {
-      path: "/product/:productNameUri",
-      name: "Product",
-      component: Product,
-      props: true,
    },
    {
       path: "/moderator/products/add",

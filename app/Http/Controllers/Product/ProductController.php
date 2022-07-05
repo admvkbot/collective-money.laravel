@@ -7,16 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
-   public function __invoke($id)
+   public function __invoke($product_uri)
    {
-      $product = Product::where('id', $id)
-         ->first();
-      //$product = Product::find(1);
-         //dd($product);
-         //dd($product->tg_messages()->attach(array(296676, 296668))->toSql());
-         //dd($product->tg_messages()->detach());
+      $product = $this->service->getProductByUri($product_uri);
       return response()->json($product);
    }
 }

@@ -630,7 +630,7 @@ function getProductData(productId) {
   //const connectGetProduct = () => axios.get("/sanctum/csrf-cookie").then((response) => {
 
   var connectGetProduct = function connectGetProduct() {
-    return axios.get("/api/get-product/".concat(productId), {}).then(function (r) {
+    return axios.get("/api/product-moderator/".concat(productId), {}).then(function (r) {
       product.value = r.data;
     })["catch"](function (err) {
       console.log(err);

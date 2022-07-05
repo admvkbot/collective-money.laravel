@@ -11,7 +11,7 @@ export default function getProductData(productId) {
 
    //const connectGetProduct = () => axios.get("/sanctum/csrf-cookie").then((response) => {
    const connectGetProduct = () => axios
-      .get(`/api/get-product/${productId}`, {})
+      .get(`/api/product-moderator/${productId}`, {})
       .then((r) => {
          product.value = r.data;
       })

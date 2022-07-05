@@ -5,26 +5,18 @@
       :class="this.$store.state.isRTL ? '' : ' me-sm-6'"
     >
       <li class="text-sm breadcrumb-item" :class="textWhite">
-        <a
-          v-if="this.$store.state.isRTL"
-          :class="textWhite"
-          class="opacity-5 ps-2"
-          href="#"
-          >لوحات القيادة</a
-        >
-        <a v-else :class="textWhite" class="opacity-8" href="#">Home</a>
+        <router-link :class="textWhite" class="opacity-8" :to="{name: 'Dashboard'}">Dashboard</router-link>
       </li>
       <li
+        v-for="item in getPages"
+        :key="item"
         class="text-sm breadcrumb-item active"
         :class="textWhite ? 'text-white' : 'text-dark'"
         aria-current="page"
       >
-        {{ currentPage }}
+        {{ item }}
       </li>
     </ol>
-    <h6 class="mb-0 font-weight-bolder" :class="textWhite ? 'text-white' : ''">
-      {{ currentPage }}
-    </h6>
   </nav>
 </template>
 
@@ -37,6 +29,11 @@ export default {
     },
     textWhite: {
       type: String,
+    },
+  },
+  computed: {
+    getPages() {
+      return Array.isArray(this.currentPage) ? this.currentPage : [this.currentPage];
     },
   },
 };
