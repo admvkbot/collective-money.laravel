@@ -22,6 +22,10 @@ class CreateDayTgMetricsTable extends Migration
             $table->unsignedInteger('quantity_wts')->default(0);
             $table->unsignedInteger('quantity_wtb')->default(0);
             $table->unsignedInteger('quantity_scam')->default(0);
+            $table->unsignedInteger('cost_wts_max')->nullable();
+            $table->unsignedInteger('cost_wts_min')->nullable();
+            $table->unsignedInteger('cost_wtb_max')->nullable();
+            $table->unsignedInteger('cost_wtb_min')->nullable();
             $table->timestamps();
         });
     }
