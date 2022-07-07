@@ -1,7 +1,7 @@
 import logging
 import configparser
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent, InlineKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import filters, MessageHandler, ApplicationBuilder, CallbackContext, CommandHandler, InlineQueryHandler
+from telegram.ext import filters, MessageHandler, ApplicationBuilder, CallbackContext, CommandHandler, InlineQueryHandler, ContextTypes
 from sys import exit
 import mysql.connector as conn
 import re
@@ -9,9 +9,16 @@ import base64
 import urllib.parse
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
+import os
+from datetime import datetime
+import sys
 
 config = configparser.ConfigParser()
 config.read("config.ini")
+
+path = config['All']['path']
+stdout = path + '/bot_out.log'
+stderr = path + '/bot_err.log'
 token = config['Bot']['token']
 
 logging.basicConfig(
@@ -93,7 +100,7 @@ def extract_unique_code(text):
 
 
 invite = False
-async def start(update: Update, context: CallbackContext.DEFAULT_TYPE):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global user_id
     global user_username
     global invite
@@ -130,7 +137,7 @@ async def start(update: Update, context: CallbackContext.DEFAULT_TYPE):
         update.message.text = 'С возвращением, ' + name + '!'
         await echo(update, context)
 
-async def echo(update: Update, context: CallbackContext.DEFAULT_TYPE):
+async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
 
 
@@ -139,7 +146,7 @@ async def caps(update: Update, context: CallbackContext):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=text_caps)
 
 
-async def inline_caps(update: Update, context: CallbackContext.DEFAULT_TYPE):
+async def inline_caps(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.inline_query.query
     if not query:
         return
@@ -168,20 +175,60 @@ async def url(update: Update, context: CallbackContext) -> None:
     ]
     #await update.message.reply_text("Please choose:", reply_markup=markup)
     str = encrypt_aes(user_id, user_username, invite)
-    btn = InlineKeyboardButton(text='Перейти', url='http://127.0.0.1:8000/sign-up?q=' + str)
+    btn = InlineKeyboardButton(text='Перейти', url='https://collective.money/sign-up?q=' + str)
     markup = InlineKeyboardMarkup([[btn]])
     await context.bot.send_message(chat_id=update.effective_chat.id, text='Продолжите регистрацию на сайте Collective Money', reply_markup=markup)
 
 
-async def unknown(update: Update, context: CallbackContext.DEFAULT_TYPE):
+async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
+
+def set_pipe():
+    global path
+    f = open(path + '/pipe_bot', 'w+')
+    f.close()
+
+
+def check_pipe():
+    global path
+    return os.path.isfile(path + '/pipe_bot')
+
+
+def del_pipe():
+    global path
+    os.remove(path + '/pipe_bot')
+
+
+def log_time(string, file=""):
+    if file:
+        f = open(file, "a+")
+        f.write(str(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]) + ': ' + string + "\n")
+        f.close()
+    else:
+        print(str(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]) + ': ' + string)
+
+
+if 1:
+    #if check_pipe():
+    #    log_time("Terminated")
+    #    sys.exit()
+    #set_pipe()
+    mysql_init()
+    log_time('START BOT')
+    sys.stderr.flush()
+    with open(stderr, 'a+') as stderr:
+        os.dup2(stderr.fileno(), sys.stderr.fileno())
+
+    sys.stdout.flush()
+    with open(stdout, 'a+') as stdout:
+        os.dup2(stdout.fileno(), sys.stdout.fileno())
 
 
 
 if __name__ == '__main__':
-    mysql_init()
-    print('start')
+
+
     application = ApplicationBuilder().token(token).build()
 
     start_handler = CommandHandler('start', start)
