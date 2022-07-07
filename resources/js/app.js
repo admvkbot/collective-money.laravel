@@ -15,7 +15,8 @@ require('@/assets/js/plugins/init.js')
 
 window.axios = axios;
 window.axios.interceptors.response.use({}, err => {
-   if (err.response.status === 401 || err.response.status === 419) {
+   //console.log(router.currentRoute.value.name);
+   if ((err.response.status === 401 || err.response.status === 419) && router.currentRoute.value.name != 'Sign Up') {
       const token = localStorage.getItem('x_xsrf_token')
       if (token) {
          localStorage.removeItem('x_xsrf_token')

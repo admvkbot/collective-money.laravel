@@ -1,1 +1,6 @@
 mklink /D D:\projects\laravel\collective-money\public\storage D:\projects\laravel\collective-money\storage\app\public
+
+/root/go/bin/webhook -hooks /root/webhooks/hooks.json -ip "38.242.136.56" -verbose
+
+git fetch
+git checkout origin/main
