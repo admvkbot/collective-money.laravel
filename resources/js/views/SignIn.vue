@@ -123,6 +123,7 @@ export default {
                password: this.password, 
             })
             .then((r) => {
+               console.log(r.config.headers["X-XSRF-TOKEN"]);
               localStorage.setItem(
                 "x_xsrf_token",
                 r.config.headers["X-XSRF-TOKEN"]
