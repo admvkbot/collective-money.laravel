@@ -374,7 +374,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.post("/api/add-product", {
           name: _this.product.name,
           type: _this.product.type,
-          keys: _this.product.keys,
+          index: _this.product.keys,
           url: _this.product.url,
           twitter: _this.product.twitter,
           discord: _this.product.discord,

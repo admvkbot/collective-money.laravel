@@ -31,6 +31,8 @@ class CreateController extends BaseController
             'telegram' => $data['telegram'],
             'description' => $data['description'],
          ]);
+         $data['product_id'] = $out->id;
+         $out = $this->serviceIndex->insertIndex($data);         
          return response()->json($out);
       }
       return response()->json('[]');
