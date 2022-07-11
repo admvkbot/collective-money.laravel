@@ -267,7 +267,7 @@ export default {
             .post("/api/add-product", {
               name: this.product.name,
               type: this.product.type,
-              keys: this.product.keys,
+              index: this.product.keys,
               url: this.product.url,
               twitter: this.product.twitter,
               discord: this.product.discord,
