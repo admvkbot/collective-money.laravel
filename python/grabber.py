@@ -257,6 +257,12 @@ def check_for_scam(message):
         return True
     return False
 
+
+#def get_cost(message):
+#    cost_pattern = config['Grabber']['cost_pattern']
+
+
+
 def reconnect():
     global client
     client.disconnect()
@@ -355,9 +361,13 @@ async def dump_all_messages(channel):
                 break
 
             message_dict = message.to_dict()
+            # SCAM
             message_dict['is_scam'] = check_for_scam(message_dict['message'])
             if message_dict['is_scam']:
                 print(message_dict['is_scam'])
+
+            # Цены
+#            message_dict['cost'] = get_cost(message_dict['message'])
 
             try:
                 user_id = message_dict['from_id']['user_id']

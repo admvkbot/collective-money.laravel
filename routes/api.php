@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::post('/scam-messages', 'Scam\IndexController');
    //Chart
    Route::get('/product-tg-day-wt-chart/{product_id}', 'Chart\TgDayWTChartController');
+   Route::get('/product-tg-day-cost-chart/{product_id}', 'Chart\TgDayCostChartController');
    Route::get('/product-day-rating-chart/{product_id}', 'Chart\DayRatingChartController');
    
    Route::post('/search-tg-username', 'Scam\SearchTgUserController'); //searchTgUsername.js
