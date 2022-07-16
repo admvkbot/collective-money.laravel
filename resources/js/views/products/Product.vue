@@ -177,6 +177,23 @@
       </div>
     </div>
     <div class="mt-2 row">
+      <div class="col-lg-12">
+        <!-- line chart -->
+        <div class="card z-index-2">
+          <gradient2-line-chart
+            id="chart-line-cost"
+            title="Максимальная цена спроса и минимальная цена предложения"
+            :arrow="product.chartTgCost.arrow"
+            :color="product.chartTgCost.color"
+            :proc="product.chartTgCost.value"
+            description="за последний месяц"
+            :chart="product.chartTgCost"
+            v-if="'chartTgCost' in product && 'datasets' in product.chartTgCost"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="mt-2 row">
       <div class="col-lg-7 mt-3 mt-lg-3">
         <!--<profile-info-card
           :info="{

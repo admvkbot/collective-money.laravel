@@ -6,7 +6,7 @@ import router from '../router';
 import { useLoading } from "vue-loading-overlay";
 import Chart from "@/composables/Chart";
 
-const { getDayWTChartData, getDayRatingChartData } = Chart();
+const { getDayWTChartData, getDayRatingChartData, getDayCostChartData } = Chart();
 
 export default function (options = {}, callbacks = {}) {
    const getProductData = (productNameUri) => {
@@ -28,6 +28,7 @@ export default function (options = {}, callbacks = {}) {
                product.value = r.data;
                product.value.chartTg = getDayWTChartData(productId)
                product.value.chartRating = getDayRatingChartData(productId)
+               product.value.chartTgCost = getDayCostChartData(productId)
             })
             .catch((err) => {
                console.log(err);

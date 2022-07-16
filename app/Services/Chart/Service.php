@@ -51,6 +51,35 @@ class Service
       return $chart;
    }
 
+   public function collectDayCostChartData($collection): object
+   {
+      $chart = (object) [
+         'labels' => [],
+         'datasets' => [(object)['label' => "Цена предложения", 'data' => [],], (object)['label' => "Цена спроса", 'data' => [],]],
+         'first' => [0, 0],
+         'last' => [0, 0],
+      ];
+      //dd($collection);
+      $i = 0;
+      $max = count($collection) - 1;
+      //$collection = [];
+      foreach ($collection as $row) {
+         $month_begin = Carbon::parse($row->date)->format('F');
+         $month_end = Carbon::today()->format('F');
+         $label = Carbon::parse($row->date)->format('d');
+         if ($i == 0)
+            $label = "{$month_begin}, {$label}";
+         if ($i == $max)
+            $label = "{$month_end}, {$label}";
+         array_push($chart->labels, $label);
+         array_push($chart->datasets[0]->data, $row->cost_wts_min);
+         array_push($chart->datasets[1]->data, $row->cost_wtb_max);
+         $i++;
+      }
+      //dd($chart);
+      return $chart;
+   }
+
    public function collectDayRatingChartData($collection): object
    {
       $chart = (object) [

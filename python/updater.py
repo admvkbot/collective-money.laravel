@@ -35,7 +35,7 @@ class Id(object):
 
 
 class TgMessage(object):
-    def __init__(self, id, tg_message_id, channel_id, date, user_id, message, is_scam):
+    def __init__(self, id, tg_message_id, channel_id, date, user_id, message, is_scam, cost):
         self.id = id
         self.tg_message_id = tg_message_id
         self.channel_id = channel_id
@@ -43,10 +43,11 @@ class TgMessage(object):
         self.user_id = user_id
         self.message = message
         self.is_scam = is_scam
+        self.cost = cost
 
 
 class TgMetric(object):
-    def __init__(self, id, num_all, num_id, num_wts, num_wtb, num_scam, date):
+    def __init__(self, id, num_all, num_id, num_wts, num_wtb, num_scam, date, cost_wts_max, cost_wts_min, cost_wtb_max, cost_wtb_min):
         self.id = id
         self.num_all = num_all
         self.num_id = num_id
@@ -54,6 +55,10 @@ class TgMetric(object):
         self.num_wtb = num_wtb
         self.num_scam = num_scam
         self.date = date
+        self.cost_wts_max = cost_wts_max
+        self.cost_wts_min = cost_wts_min
+        self.cost_wtb_max = cost_wtb_max
+        self.cost_wtb_min = cost_wtb_min
 
 
 def mysql_init():
@@ -133,6 +138,7 @@ def mysql_get_messages_by_indexes(indexes):
             None,
             row[1],
             False,
+            None
         )
         out.insert(0, message)
     return out
@@ -144,7 +150,7 @@ def mysql_count_tg_users_by_dates(date_start, date_end, project_id=None, whereto
     if not project_id:
         sql = "SELECT COUNT(DISTINCT(user_id)) FROM tg_messages" \
               " WHERE date > '" + str(date_start) + "'" \
-              " AND date < '" + str(date_end) + "'"
+              " AND date <= '" + str(date_end) + "'"
     else:
         str_whereto = ""
         if whereto:
@@ -153,7 +159,7 @@ def mysql_count_tg_users_by_dates(date_start, date_end, project_id=None, whereto
               " INNER JOIN tg_user_tg_channel ON tg_messages.user_id = tg_user_tg_channel.user_id" \
               " WHERE tg_message_product.product_id=" + str(project_id) + \
               " AND tg_messages.date > '" + str(date_start) + "'" \
-              " AND tg_messages.date < '" + str(date_end) + "'" \
+              " AND tg_messages.date <= '" + str(date_end) + "'" \
               + str_whereto
     cursor.execute(sql)
     data = cursor.fetchall()
@@ -183,17 +189,17 @@ def mysql_attach(messages, project_id):
     global db
     global cursor
     for message in messages:
-        #sql = "INSERT INTO tg_message_product (message_id, product_id, is_scam) VALUES (%s, %s, %s)"
-        sql = "INSERT INTO tg_message_product (message_id, product_id) VALUES (%s, %s)"
-#        val = (
-#            message.id,
-#            project_id,
-#            message.is_scam
-#        )
+        sql = "INSERT INTO tg_message_product (message_id, product_id, cost) VALUES (%s, %s, %s)"
+        #sql = "INSERT INTO tg_message_product (message_id, product_id) VALUES (%s, %s)"
         val = (
             message.id,
             project_id,
+            message.cost
         )
+#        val = (
+#            message.id,
+#            project_id,
+#        )
         cursor.execute(sql, val)
     db.commit()
 
@@ -219,7 +225,8 @@ def mysql_get_first_message():
             row[3],
             row[4],
             row[5],
-            False
+            False,
+            row[9],
         )
         return message
     return None
@@ -237,7 +244,8 @@ def mysql_put_metric(project_id, metric, table):
     global db
     global cursor
     if 1:
-        sql = f"INSERT INTO {table} (product_id, date, quantity_all, quantity_id, quantity_wts, quantity_wtb, quantity_scam) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        sql = f"INSERT INTO {table} (product_id, date, quantity_all, quantity_id, quantity_wts, quantity_wtb," \
+              f" quantity_scam, cost_wts_max, cost_wts_min, cost_wtb_max, cost_wtb_min) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (
             project_id,
             metric.date,
@@ -246,6 +254,10 @@ def mysql_put_metric(project_id, metric, table):
             metric.num_wts,
             metric.num_wtb,
             metric.num_scam,
+            metric.cost_wts_max,
+            metric.cost_wts_min,
+            metric.cost_wtb_max,
+            metric.cost_wtb_min,
         )
         cursor.execute(sql, val)
     db.commit()
@@ -299,6 +311,34 @@ def mysql_get_last_date():
     return date
 
 
+def mysql_get_min_cost_by_date_range(project_id, date_start, date_end, wt, max=False):
+    global cursor
+    desc = ''
+    if max:
+        desc = ' DESC'
+    sql = f"SELECT tg_message_product.cost FROM tg_message_product INNER JOIN tg_messages " \
+          f"ON tg_message_product.message_id = tg_messages.id WHERE tg_message_product.product_id={project_id} AND tg_message_product.cost AND " \
+          f"tg_messages.message LIKE '%{wt}%' AND tg_messages.date > '{date_start}' AND tg_messages.date <= '{date_end}' " \
+          f"ORDER BY tg_message_product.cost{desc} LIMIT 1"
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    cost = None
+    for row in data:
+        cost = row[0]
+        break
+        #print('---')
+        #print(cost)
+        #sys.exit()
+    return cost
+
+
+def collect_costs(date_start, date_end, project_id):
+    cost_wts_max = mysql_get_min_cost_by_date_range(project_id, date_start, date_end, 'WTS', max=True)
+    cost_wts_min = mysql_get_min_cost_by_date_range(project_id, date_start, date_end, 'WTS', max=False)
+    cost_wtb_max = mysql_get_min_cost_by_date_range(project_id, date_start, date_end, 'WTB', max=True)
+    cost_wtb_min = mysql_get_min_cost_by_date_range(project_id, date_start, date_end, 'WTB', max=False)
+    return [cost_wts_max, cost_wts_min, cost_wtb_max, cost_wtb_min]
+
 
 def change_day(day_str):
     tmp = list(day_str)
@@ -313,6 +353,7 @@ def create_metrics(project_id, date, type='day'):
             case 'day':
                 date_start = datetime.strptime(date.strftime('%m/%d/%y') + ' 00:00:00', '%m/%d/%y %H:%M:%S')
                 date_end = datetime.strptime(date.strftime('%m/%d/%y') + ' 23:59:59', '%m/%d/%y %H:%M:%S')
+                #mark_costs(date_start, date_end, project_id)
             case 'week':
                 date_start = datetime.strptime(date.strftime('%m/%d/%y') + ' 00:00:00', '%m/%d/%y %H:%M:%S')
                 date_end = datetime.strptime((date + timedelta(days=6)).strftime('%m/%d/%y') + ' 23:59:59', '%m/%d/%y %H:%M:%S')
@@ -324,6 +365,9 @@ def create_metrics(project_id, date, type='day'):
         num_id_messages = mysql_count_tg_users_by_dates(date_start, date_end, project_id=project_id, whereto='')
         num_wts_messages = mysql_count_tg_users_by_dates(date_start, date_end, project_id=project_id, whereto='WTS')
         num_wtb_messages = mysql_count_tg_users_by_dates(date_start, date_end, project_id=project_id, whereto='WTB')
+        [cost_wts_max, cost_wts_min, cost_wtb_max, cost_wtb_min] = collect_costs(date_start, date_end, project_id)
+        print(cost_wts_max, cost_wts_min, cost_wtb_max, cost_wtb_min)
+        #sys.exit()
         metric = TgMetric(
             None,
             num_all_messages,
@@ -331,7 +375,11 @@ def create_metrics(project_id, date, type='day'):
             num_wts_messages,
             num_wtb_messages,
             0,
-            date_end
+            date_end,
+            cost_wts_max,
+            cost_wts_min,
+            cost_wtb_max,
+            cost_wtb_min
         )
         return metric
 
@@ -344,7 +392,7 @@ def collect_rating(metric):
     if not metric.num_all or not metric.num_id or not metric.num_wtb or not metric.num_wts:
         return 0
 
-    rating = (metric.num_id / metric.num_all + metric.num_wtb / metric.num_wts) * 100
+    rating = (metric.num_id / metric.num_all * 10 + metric.num_wtb / metric.num_wts) * 50
     if metric.num_scam:
         rating = rating / (10 * metric.num_scam)
     return int(round(rating))
@@ -361,6 +409,35 @@ def check_for_scam(messages):
     return out_messages
 
 
+def add_cost(messages, indexes):
+    if not len(indexes):
+        return messages
+    indexes_pattern = ""
+    for index in indexes:
+        indexes_pattern = indexes_pattern + f"{index.field}|"
+    indexes_pattern = indexes_pattern[:-1]
+    cost_pattern = config['Updater']['cost_pattern']
+    pattern = f"({indexes_pattern}){cost_pattern}"
+    for message in messages:
+        message.cost = None
+        #print(message.message)
+        #print('---')
+        result = re.findall(pattern, message.message, re.IGNORECASE)
+        if result:
+            #print(result[0][1])
+            cost_int = int(re.findall(r"\d+", result[0][1])[0])
+            if cost_int:
+                message.cost = cost_int
+            #if cost_int > 100:
+            #    print(message.message)
+            #    sys.exit()
+            #print(cost_str)
+            #sys.exit()
+            #message.cost
+    #print(pattern)
+    #sys.exit()
+    return messages
+
 tz = pytz.timezone(config['Grabber']['timezone'])
 
 if __name__ == '__main__':
@@ -376,6 +453,7 @@ if __name__ == '__main__':
                 if indexes:
                     print(len(indexes), 'ключей')
                     messages = mysql_get_messages_by_indexes(indexes)
+                    messages = add_cost(messages, indexes)
                     #messages = check_for_scam(messages)
                     print(len(messages), 'сообщений')
                     mysql_detach(project.id)
@@ -407,6 +485,7 @@ if __name__ == '__main__':
                     put_metric(project.id, metric_day, 'day')
                     date_item = date_item + timedelta(days=1)
                     rating = collect_rating(metric_day)
+                    #print('Rating: ', rating)
                     mysql_put_rating(project.id, rating)
 
                 date_item = date_begin

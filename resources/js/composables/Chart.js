@@ -31,6 +31,33 @@ export default function (options = {}, callbacks = {}) {
       return chart
    }
 
+   const getDayCostChartData = (productId) => {
+      const chart = ref({})
+      //  const getUserRepositories = async () => {
+      //    repositories.value = await fetchUserRepositories(user.value)
+      //  }
+
+
+      const connectTgProductCostChartData = (productId) => axios
+         .get("/api/product-tg-day-cost-chart/" + productId, {})
+         .then((r) => {
+            chart.value = r.data;
+         })
+         .catch((err) => {
+            console.log(err);
+            const registerError = "Ошибка получеения данных графика " + accountId;
+            alert(registerError);
+         });
+
+
+      //onMounted(connectGetAllAccounts)
+      //console.log(accountId)
+      connectTgProductCostChartData(productId)
+      //watch(user, getUserRepositories)
+
+      return chart
+   }
+
    const getDayRatingChartData = (productId) => {
       const chart = ref({})
 
@@ -54,6 +81,7 @@ export default function (options = {}, callbacks = {}) {
 
    return {
       getDayWTChartData,
+      getDayCostChartData,
       getDayRatingChartData,
    }
 }
