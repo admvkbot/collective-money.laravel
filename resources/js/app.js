@@ -63,6 +63,20 @@ window.globalBlockTypes = [
    },
 ];
 
+window.globalMonths = [
+   { id: 1, title: "Январь" },
+   { id: 2, title: "Февраль" },
+   { id: 3, title: "Март" },
+   { id: 4, title: "Апрель" },
+   { id: 5, title: "Май" },
+   { id: 6, title: "Июнь" },
+   { id: 7, title: "Июль" },
+   { id: 8, title: "Август" },
+   { id: 9, title: "Сентябрь" },
+   { id: 10, title: "Октябрь" },
+   { id: 11, title: "Ноябрь" },
+   { id: 12, title: "Декабрь" },
+ ];
 
 const appInstance = createApp(App);
 document.querySelector('#app').classList = ['g-sidenav-show'];

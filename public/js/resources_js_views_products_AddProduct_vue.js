@@ -18,6 +18,14 @@ __webpack_require__.r(__webpack_exports__);
       type: String,
       required: true
     },
+    success: {
+      type: Boolean,
+      "default": false
+    },
+    error: {
+      type: Boolean,
+      "default": false
+    },
     value: {
       type: String,
       required: true,
@@ -32,7 +40,23 @@ __webpack_require__.r(__webpack_exports__);
       "default": 5
     }
   },
-  emits: ['textareaValue']
+  emits: ["textareaValue"],
+  methods: {
+    getClasses: function getClasses(size, success, error) {
+      var sizeValue, isValidValue;
+      sizeValue = size ? "form-control-".concat(size) : null;
+
+      if (error) {
+        isValidValue = "is-invalid";
+      } else if (success) {
+        isValidValue = "is-valid";
+      } else {
+        isValidValue = "";
+      }
+
+      return "".concat(sizeValue, " ").concat(isValidValue);
+    }
+  }
 });
 
 /***/ }),
@@ -315,7 +339,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/components/Icon/Discord */ "./resources/js/components/Icon/Discord.vue");
 /* harmony import */ var _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/components/Icon/Medium */ "./resources/js/components/Icon/Medium.vue");
 /* harmony import */ var _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/components/Icon/Youtube */ "./resources/js/components/Icon/Youtube.vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _Cards_PlaceHolderHorisontalCard_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/Cards/PlaceHolderHorisontalCard.vue */ "./resources/js/Cards/PlaceHolderHorisontalCard.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
 
 
 
@@ -341,7 +367,8 @@ __webpack_require__.r(__webpack_exports__);
     TelegramIcon: _components_Icon_Telegram__WEBPACK_IMPORTED_MODULE_7__["default"],
     DiscordIcon: _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_8__["default"],
     MediumIcon: _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_9__["default"],
-    YoutubeIcon: _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_10__["default"]
+    YoutubeIcon: _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_10__["default"],
+    PlaceHolderHorisontalCard: _Cards_PlaceHolderHorisontalCard_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   data: function data() {
     return {
@@ -360,7 +387,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   setup: function setup() {
-    var types = (0,vue__WEBPACK_IMPORTED_MODULE_11__.ref)([]);
+    var types = (0,vue__WEBPACK_IMPORTED_MODULE_12__.ref)([]);
     types.value = (0,_assets_js_getProductTypes_js__WEBPACK_IMPORTED_MODULE_5__["default"])();
     return {
       types: types
@@ -384,7 +411,7 @@ __webpack_require__.r(__webpack_exports__);
           description: _this.description
         }).then(function (r) {
           _this.$router.push({
-            name: 'ProductsModerator'
+            name: "ProductsModerator"
           }); //this.$router.go()
           //this.$emit("socialsReload");
 
@@ -427,15 +454,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_2), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     id: $props.id,
-    "class": "form-control",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", $options.getClasses(_ctx.size, $props.success, $props.error)]),
     rows: $props.rows,
     value: $props.value,
     placeholder: $props.placeholder,
     onBlur: _cache[0] || (_cache[0] = function ($event) {
       return _this.$emit('textareaValue', $event.target.value);
     })
-  }, null, 40
-  /* PROPS, HYDRATE_EVENTS */
+  }, null, 42
+  /* CLASS, PROPS, HYDRATE_EVENTS */
   , _hoisted_3)]);
 }
 

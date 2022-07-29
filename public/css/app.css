@@ -1728,6 +1728,9 @@ select{
 .pt-10{
   padding-top: 2.5rem;
 }
+.pr-1{
+  padding-right: 0.25rem;
+}
 .text-left{
   text-align: left;
 }
@@ -9094,6 +9097,9 @@ select {
 }
 .pt-10 {
   padding-top: 2.5rem;
+}
+.pr-1 {
+  padding-right: 0.25rem;
 }
 .text-left {
   text-align: left;

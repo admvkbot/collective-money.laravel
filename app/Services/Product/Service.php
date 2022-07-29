@@ -3,6 +3,7 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
+use App\Models\ProductActivity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -38,6 +39,19 @@ class Service
       //return  Product::first();
       return Product::firstWhere('name', $filter['query']);
    }
+
+   public function getProductsByString($filter)
+   {
+      $products = Product::where(function ($query) use ($filter) {
+         $query->where('name', 'LIKE', '%' . $filter . '%')
+            ->orWhere('website_url', 'LIKE', '%' . $filter . '%');
+      });
+
+
+      return $products;
+      //return Product::firstWhere('name', $filter['query']);
+   }
+
 
    public function getUriByName($str)
    {

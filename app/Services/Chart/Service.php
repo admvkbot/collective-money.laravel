@@ -72,8 +72,8 @@ class Service
          if ($i == $max)
             $label = "{$month_end}, {$label}";
          array_push($chart->labels, $label);
-         array_push($chart->datasets[0]->data, $row->cost_wts_min);
-         array_push($chart->datasets[1]->data, $row->cost_wtb_max);
+         array_push($chart->datasets[0]->data, $row->cost_wts_min ? $row->cost_wts_min : 0);
+         array_push($chart->datasets[1]->data, $row->cost_wtb_max ? $row->cost_wtb_max : 0);
          $i++;
       }
       //dd($chart);
