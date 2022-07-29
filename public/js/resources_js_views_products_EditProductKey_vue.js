@@ -18,6 +18,14 @@ __webpack_require__.r(__webpack_exports__);
       type: String,
       required: true
     },
+    success: {
+      type: Boolean,
+      "default": false
+    },
+    error: {
+      type: Boolean,
+      "default": false
+    },
     value: {
       type: String,
       required: true,
@@ -32,7 +40,23 @@ __webpack_require__.r(__webpack_exports__);
       "default": 5
     }
   },
-  emits: ['textareaValue']
+  emits: ["textareaValue"],
+  methods: {
+    getClasses: function getClasses(size, success, error) {
+      var sizeValue, isValidValue;
+      sizeValue = size ? "form-control-".concat(size) : null;
+
+      if (error) {
+        isValidValue = "is-invalid";
+      } else if (success) {
+        isValidValue = "is-valid";
+      } else {
+        isValidValue = "";
+      }
+
+      return "".concat(sizeValue, " ").concat(isValidValue);
+    }
+  }
 });
 
 /***/ }),
@@ -276,15 +300,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_2), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     id: $props.id,
-    "class": "form-control",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", $options.getClasses(_ctx.size, $props.success, $props.error)]),
     rows: $props.rows,
     value: $props.value,
     placeholder: $props.placeholder,
     onBlur: _cache[0] || (_cache[0] = function ($event) {
       return _this.$emit('textareaValue', $event.target.value);
     })
-  }, null, 40
-  /* PROPS, HYDRATE_EVENTS */
+  }, null, 42
+  /* CLASS, PROPS, HYDRATE_EVENTS */
   , _hoisted_3)]);
 }
 

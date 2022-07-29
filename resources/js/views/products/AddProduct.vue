@@ -21,7 +21,7 @@
                       :active="true"
                       value=""
                       :disabled="false"
-                      @input-value="(v) => this.product.name = v"
+                      @input-value="(v) => (this.product.name = v)"
                     />
                   </div>
                 </div>
@@ -29,7 +29,7 @@
                   <div class="col-12">
                     <vsud-textarea
                       id="product-keys"
-                      @textarea-value="(v) => this.product.keys = v"
+                      @textarea-value="(v) => (this.product.keys = v)"
                       placeholder="key1
 key2"
                       >Ключевые фразы</vsud-textarea
@@ -41,12 +41,13 @@ key2"
                     <vsud-textarea
                       id="product-description"
                       placeholder="Любой текст"
-                      @input-value="(v) => this.product.description = v"
+                      @input-value="(v) => (this.product.description = v)"
                       rows="7"
                       >Комментарий к проекту</vsud-textarea
                     >
                   </div>
                 </div>
+
                 <div class="row mt-auto position-sticky top-100 pb-2">
                   <div class="col-12 d-flex">
                     <vsud-button
@@ -77,7 +78,7 @@ key2"
                       name="choices-type-button"
                       id="choices-type"
                       placeholder="Выберите тип проекта"
-                      v-model="product.type"                  
+                      v-model="product.type"
                     >
                       <option
                         v-for="item in types.value"
@@ -100,7 +101,7 @@ key2"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.product.url = v"
+                      @input-value="(v) => (this.product.url = v)"
                       :disabled="false"
                     />
                   </div>
@@ -118,7 +119,7 @@ key2"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.product.twitter = v"
+                      @input-value="(v) => (this.product.twitter = v)"
                       :disabled="false"
                     />
                   </div>
@@ -136,7 +137,7 @@ key2"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.product.discord = v"
+                      @input-value="(v) => (this.product.discord = v)"
                       :disabled="false"
                     />
                   </div>
@@ -154,7 +155,7 @@ key2"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.product.youtube = v"
+                      @input-value="(v) => (this.product.youtube = v)"
                       :disabled="false"
                     />
                   </div>
@@ -172,7 +173,7 @@ key2"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.product.telegram = v"
+                      @input-value="(v) => (this.product.telegram = v)"
                       :disabled="false"
                     />
                   </div>
@@ -190,7 +191,7 @@ key2"
                       :isRequired="false"
                       :active="true"
                       value=""
-                      @input-value="(v) => this.product.medium = v"
+                      @input-value="(v) => (this.product.medium = v)"
                       :disabled="false"
                     />
                   </div>
@@ -215,12 +216,15 @@ import ModerateMessagesTable from "@/views/components/tables/MessagesTableModera
 import VsudInput from "@/components/VsudInput.vue";
 import VsudTextarea from "@/components/VsudTextarea.vue";
 import VsudButton from "@/components/VsudButton.vue";
+
 import getProductTypes from "@/assets/js/getProductTypes.js";
+
 import TwitterIcon from "@/components/Icon/Twitter";
 import TelegramIcon from "@/components/Icon/Telegram";
 import DiscordIcon from "@/components/Icon/Discord";
 import MediumIcon from "@/components/Icon/Medium";
 import YoutubeIcon from "@/components/Icon/Youtube";
+import PlaceHolderHorisontalCard from "@/Cards/PlaceHolderHorisontalCard.vue";
 
 import { ref } from "vue";
 
@@ -238,56 +242,58 @@ export default {
     DiscordIcon,
     MediumIcon,
     YoutubeIcon,
+    PlaceHolderHorisontalCard,
   },
   data() {
     return {
       product: {
-         name: "",
-         type: 1,
-         keys: "",
-         url: "",
-         twitter: "",
-         discord: "",
-         youtube: "",
-         telegram: "",
-         medium: "",
-         description: ""
-      }
+        name: "",
+        type: 1,
+        keys: "",
+        url: "",
+        twitter: "",
+        discord: "",
+        youtube: "",
+        telegram: "",
+        medium: "",
+        description: "",
+      },
     };
   },
   setup() {
     const types = ref([]);
     types.value = getProductTypes();
-    return { types };
+    return { types};
   },
+
   methods: {
-     sendData() {
-        axios.get("/sanctum/csrf-cookie").then((response) => {
-          axios
-            .post("/api/add-product", {
-              name: this.product.name,
-              type: this.product.type,
-              index: this.product.keys,
-              url: this.product.url,
-              twitter: this.product.twitter,
-              discord: this.product.discord,
-              youtube: this.product.youtube,
-              telegram: this.product.telegram,
-              medium: this.product.medium,
-              description: this.description,
-            })
-            .then((r) => {
-              this.$router.push({name: 'ProductsModerator'});
-              //this.$router.go()
-              //this.$emit("socialsReload");
-            })
-            .catch((err) => {
-              console.log(err.response);
-              this.registerError = "Ошибка сохранений проекта";
-              alert(this.registerError);
-            });
-        });
-     }
-  }
+    sendData() {
+      axios.get("/sanctum/csrf-cookie").then((response) => {
+        axios
+          .post("/api/add-product", {
+            name: this.product.name,
+            type: this.product.type,
+            index: this.product.keys,
+            url: this.product.url,
+            twitter: this.product.twitter,
+            discord: this.product.discord,
+            youtube: this.product.youtube,
+            telegram: this.product.telegram,
+            medium: this.product.medium,
+            description: this.description,
+          })
+          .then((r) => {
+            this.$router.push({ name: "ProductsModerator" });
+            //this.$router.go()
+            //this.$emit("socialsReload");
+          })
+          .catch((err) => {
+            console.log(err.response);
+            this.registerError = "Ошибка сохранений проекта";
+            alert(this.registerError);
+          });
+      });
+    },
+  },
 };
 </script>

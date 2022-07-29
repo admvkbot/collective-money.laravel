@@ -4,8 +4,10 @@
       :id="id"
       class="form-check-input"
       type="radio"
-      :name="name"
+      name="radio-input"
       :checked="checked"
+      :value="id"
+      @change="sendID"
     />
     <label class="custom-control-label" :for="id">
       <slot />
@@ -17,12 +19,8 @@
 export default {
   name: "VsudRadio",
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
     id: {
-      type: String,
+      type: Number,
       required: true,
     },
     checked: {
@@ -30,5 +28,22 @@ export default {
       default: false,
     },
   },
+  data() {
+   return {
+      modelValue: null,
+   }
+  },
+  methods: {
+    sendID(w) {
+      this.$emit("update:modelValue", w.target.value);
+    },
+  },
+  emits: ['update:modelValue']
 };
 </script>
+<style scoped>
+label {
+  cursor: pointer;
+}
+</style>
+

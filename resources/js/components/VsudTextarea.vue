@@ -6,10 +6,11 @@
     <textarea
       :id="id"
       class="form-control"
+      :class="getClasses(size, success, error)"
       :rows="rows"
       :value="value"
       :placeholder="placeholder"
-      v-on:blur="this.$emit('textareaValue', $event.target.value)" 
+      v-on:blur="this.$emit('textareaValue', $event.target.value)"
     ></textarea>
   </div>
 </template>
@@ -22,6 +23,15 @@ export default {
       type: String,
       required: true,
     },
+    success: {
+      type: Boolean,
+      default: false,
+    },
+    error: {
+      type: Boolean,
+      default: false,
+    },
+
     value: {
       type: String,
       required: true,
@@ -32,12 +42,27 @@ export default {
       default: "Your text here...",
     },
     rows: {
-       type: Number,
-       default: 5,
-    }
+      type: Number,
+      default: 5,
+    },
   },
-  emits: [
-     'textareaValue',
-  ],  
+  emits: ["textareaValue"],
+  methods: {
+    getClasses: (size, success, error) => {
+      let sizeValue, isValidValue;
+
+      sizeValue = size ? `form-control-${size}` : null;
+
+      if (error) {
+        isValidValue = "is-invalid";
+      } else if (success) {
+        isValidValue = "is-valid";
+      } else {
+        isValidValue = "";
+      }
+
+      return `${sizeValue} ${isValidValue}`;
+    },
+  },
 };
 </script>
