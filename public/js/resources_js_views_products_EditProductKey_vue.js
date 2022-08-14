@@ -38,6 +38,10 @@ __webpack_require__.r(__webpack_exports__);
     rows: {
       type: Number,
       "default": 5
+    },
+    size: {
+      type: Number,
+      "default": null
     }
   },
   emits: ["textareaValue"],
@@ -300,7 +304,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_2), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     id: $props.id,
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", $options.getClasses(_ctx.size, $props.success, $props.error)]),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", $options.getClasses($props.size, $props.success, $props.error)]),
     rows: $props.rows,
     value: $props.value,
     placeholder: $props.placeholder,

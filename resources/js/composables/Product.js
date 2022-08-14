@@ -48,12 +48,13 @@ export default function (options = {}, callbacks = {}) {
 
 
    const getProductActivityTypes = () => {
-      const type = ref({})
+      const type = ref([])
       const connectGetProductTypesData = () => {
          axios
             .get("/api/product-activity-types", {})
             .then((r) => {
                type.value = r.data;
+               //console.log('type1: ', type.value)
             })
             .catch((err) => {
                console.log(err);
@@ -63,7 +64,7 @@ export default function (options = {}, callbacks = {}) {
             })
       }
       connectGetProductTypesData()
-
+      //setTimeout(()=>{console.log('type2: ', type.value)}, 3000);
       return type
    }
 

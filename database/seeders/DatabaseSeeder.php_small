@@ -1,0 +1,70 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class DatabaseSeeder extends Seeder
+{
+   /**
+    * Seed the application's database.
+    *
+    * @return roduct
+    */
+   public function run()
+   {
+
+      $data = [
+         [
+            'name' => 'DEX Биржа',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Лаунчпад',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'НФТ маркетплейс',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Крипто-кошелёк',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Виртуальный майнинг',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Кросс-чейн Мост',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'НФТ коллекция',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Агрегатор ликвидности',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Сервис',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Кросс-чейн Обменник',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'MtE - ходи и зарабатывай',
+            'description' => 'Описание'
+         ],
+      ];
+      DB::table('product_types')->insert(
+         $data
+      );
+
+   }
+   //\App\Models\Social::factory(10)->create();
+}

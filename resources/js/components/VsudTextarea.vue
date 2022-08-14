@@ -45,6 +45,10 @@ export default {
       type: Number,
       default: 5,
     },
+    size: {
+      type: Number,
+      default: null
+    },
   },
   emits: ["textareaValue"],
   methods: {

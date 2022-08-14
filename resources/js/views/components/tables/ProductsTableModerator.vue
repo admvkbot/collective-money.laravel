@@ -287,7 +287,7 @@ export default {
         })
         .then((r) => {
           loader.hide();
-          console.log(r.data);
+          //console.log(r.data);
           data.rows = r.data;
           //this.$emit("accountsReload");
         })
@@ -333,6 +333,7 @@ export default {
   methods: {
     confirm(id, title, text) {
       this.confirmDelete = confirmModal(id, title, text);
+
     },
     productsReload() {
       this.myRequest(this.searchTerm, this.top);
@@ -357,6 +358,7 @@ export default {
   watch: {
     confirmDelete(newQuestion, oldQuestion) {
       if (newQuestion) {
+         console.log('fff');
         this.deleteProduct(newQuestion);
       }
     },

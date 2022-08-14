@@ -6,6 +6,8 @@
       type="checkbox"
       :name="name"
       :checked="checked"
+      :value="id"
+      @change="sendID"
     />
     <label :for="id" class="custom-control-label" :class="$attrs.class">
       <slot />
@@ -30,5 +32,12 @@ export default {
       default: false,
     },
   },
+  methods: {
+    sendID(w) {
+      this.$emit("update:modelValue", w.target.value);
+    },
+  },
+  emits: ['update:modelValue']
+
 };
 </script>

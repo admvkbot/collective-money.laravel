@@ -49,6 +49,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    Route::get('/product-data/{product_uri}', 'Product\ProductController');
    Route::get('/product-activity-types', 'ProductActivity\ActivityTypesController');
    Route::post('/add-product-activity', 'ProductActivity\CreateController');
+   Route::post('/edit-product-activity/{activity_id}', 'ProductActivity\EditController');
+   Route::get('/delete-product-activity/{activity_id}', 'ProductActivity\DeleteController');
    Route::post('/product-activities/{product_id}', 'ProductActivity\IndexController');
 
    Route::get('/get-indexes/{product_id}', 'Index\IndexController');

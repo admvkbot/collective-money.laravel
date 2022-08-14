@@ -92,7 +92,51 @@ class DatabaseSeeder extends Seeder
 
       $data = [
          [
-            'name' => 'Криптопроекты',
+            'name' => 'CEX Биржа',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'DEX Биржа',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Лаунчпад',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'НФТ маркетплейс',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Крипто-кошелёк',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Виртуальный майнинг',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Кросс-чейн Мост',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'НФТ коллекция',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Агрегатор ликвидности',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Сервис',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'Кросс-чейн Обменник',
+            'description' => 'Описание'
+         ],
+         [
+            'name' => 'MtE - ходи и зарабатывай',
             'description' => 'Описание'
          ],
       ];
