@@ -72,7 +72,13 @@ key2"
               <div class="col-6">
                 <div class="row">
                   <div class="col-12 pb-3">
-                    <label class="form-label">Тип проекта</label>
+                      <label class="form-label">Типы, относящиеся к проекту {{selected}}</label>
+                    <div class="form-group">
+                      <vsud-select-group
+                        :options="types.value"
+                        v-model="selected"
+                      />
+                    </div>
                     <select
                       class="form-control"
                       name="choices-type-button"
@@ -213,6 +219,7 @@ key2"
 <script>
 import ModerateProductsTable from "@/views/components/tables/ProductsTableModerator";
 import ModerateMessagesTable from "@/views/components/tables/MessagesTableModerator";
+import VsudSelectGroup from "@/components/VsudSelectGroup.vue";
 import VsudInput from "@/components/VsudInput.vue";
 import VsudTextarea from "@/components/VsudTextarea.vue";
 import VsudButton from "@/components/VsudButton.vue";
@@ -243,9 +250,11 @@ export default {
     MediumIcon,
     YoutubeIcon,
     PlaceHolderHorisontalCard,
+    VsudSelectGroup,
   },
   data() {
     return {
+      selected: null,
       product: {
         name: "",
         type: 1,
@@ -263,10 +272,19 @@ export default {
   setup() {
     const types = ref([]);
     types.value = getProductTypes();
-    return { types};
+    return { types };
   },
 
   methods: {
+    getTypeName(selected) {
+      if (!this.types.value.length) {
+        return null;
+      }
+      const obj = this.types.value.find((data) => data.id == selected);
+      this.product.type = selected;
+      return obj ? obj.name : null;
+    },
+
     sendData() {
       axios.get("/sanctum/csrf-cookie").then((response) => {
         axios

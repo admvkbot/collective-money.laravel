@@ -23,6 +23,7 @@ class CreateController extends BaseController
          'product_activitie_type_id' => $data['activity_id'],
          'close_at' => $data['date'],
          'description' => $data['description'],
+         'source_url' => $data['url'],
          'is_moderated' => $is_moderator,
          'moderate_id' => 0,
       ]);

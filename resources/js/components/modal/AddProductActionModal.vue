@@ -33,13 +33,18 @@
                 aria-label="stage-name"
                 :error="this.selectedType.error"
                 :success="this.selectedType.success"
-                :value="getActionName(selected)"
+                :value="getActionName(selectedType.value)"
                 :disabled="true"
               />
             </div>
 
             <div class="form-group">
-              <vsud-radio-group :options="actions" v-model="selected" />
+              <vsud-radio-group
+                :options="activities"
+                v-model="selectedType.value"
+                :key="activities"
+                :selectedItem="selectedType.value ? selectedType.value : null"
+              />
             </div>
 
             <div class="row d-flex">
@@ -94,6 +99,20 @@
               </div>
             </div>
             <div class="form-group">
+              <label>Ссылка на источник информации</label>
+              <vsud-input
+                id="activity-source-url"
+                type="text"
+                placeholder="Вебсайт, твиитер, сообщение из искорда, Телеграма и т.д."
+                aria-label="activity-source-url"
+                :error="sourceUrl.error"
+                :success="sourceUrl.success"
+                :value="sourceUrl.value"
+                @input-value="(v) => (sourceUrl.value = v)"
+              />
+            </div>
+
+            <div class="form-group">
               <vsud-textarea
                 id="product-action-description"
                 placeholder="Основная информаия"
@@ -115,6 +134,15 @@
             Закрыть
           </button>
           <button
+            v-if="action == 'edit'"
+            type="button"
+            class="btn bg-gradient-primary"
+            @click.prevent="sendData(v$)"
+          >
+            Изменить
+          </button>
+          <button
+            v-else
             type="button"
             class="btn bg-gradient-primary"
             @click.prevent="sendData(v$)"
@@ -134,6 +162,7 @@ import VsudButton from "../VsudButton.vue";
 import VsudTextarea from "../VsudTextarea.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, maxLength } from "@vuelidate/validators";
+import { watch } from "vue";
 
 export default {
   setup() {
@@ -143,9 +172,9 @@ export default {
   },
   emits: ["activityReload"],
   props: {
-    actions: {
+    activities: {
       type: Array,
-      require: true,
+      default: [],
     },
     activityId: {
       type: Number,
@@ -154,6 +183,20 @@ export default {
     activityType: {
       type: Number,
       default: null,
+    },
+    activityDate: {
+      type: Object,
+    },
+    sourceUrl: {
+      type: Object,
+      required: true,
+    },
+    selectedType: {
+      type: Object,
+      required: true,
+    },
+    activityDescription: {
+      type: Object,
     },
     addModal: {
       type: Object,
@@ -171,14 +214,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    description: {
-      type: String,
-      default: "",
-    },
   },
   data() {
     return {
-      selected: null,
       days: [],
       months: globalMonths,
       nowDate: {
@@ -189,21 +227,11 @@ export default {
           year: null,
         },
       },
+      years: [],
       selectedDay: null,
       selectedMonth: null,
       selectedYear: null,
-      activityDate: null,
       registerError: "",
-      selectedType: {
-        value: null,
-        error: false,
-        success: false,
-      },
-      activityDescription: {
-        value: this.description,
-        error: false,
-        success: false,
-      },
     };
   },
   components: {
@@ -218,18 +246,17 @@ export default {
         value: { required },
       },
       activityDescription: {
-        value: { required, minLength: minLength(10)},
-      }
+        value: { required, minLength: minLength(10) },
+      },
     };
   },
   methods: {
     getActionName(selected) {
-      if (!this.actions.length) {
-        return null;
+      if (this.activities.length) {
+        const obj = this.activities.find((data) => data.id == selected);
+        //this.selectedType.value = selected;
+        return obj ? obj.name : null;
       }
-      const obj = this.actions.find((data) => data.id == selected);
-      this.selectedType.value = selected;
-      return obj ? obj.name : null;
     },
     getSelectClasses: (success, error) => {
       let isValidValue;
@@ -252,6 +279,7 @@ export default {
           .post(uri, {
             product_id: this.productId,
             activity_id: this.selectedType.value,
+            url: this.sourceUrl.value,
             description: this.activityDescription.value,
             date: this.getSendDate,
           })
@@ -285,7 +313,6 @@ export default {
         this.activityDescription.error = false;
         this.activityDescription.success = true;
       }
-
 
       return flagStatus;
     },
@@ -342,12 +369,18 @@ export default {
     if (this.openModal) {
       if (this.action === "edit") {
         this.tmpDate = this.getDateNow(this.blockDate);
-        this.selectedMonth = this.tmpDate.month;
-        this.selectedDay = this.tmpDate.day;
-        this.selectedYear = this.tmpDate.year;
+        this.selectedMonth = this.activityDate.month
+          ? this.activityDate.month
+          : this.tmpDate.month;
+        this.selectedDay = this.activityDate.day
+          ? this.activityDate.day
+          : this.tmpDate.day;
+        this.selectedYear = this.activityDate.year
+          ? this.activityDate.year
+          : this.tmpDate.year;
       } else {
         this.nowDate = this.getDateNow();
-        console.log(this.nowDate);
+        //console.log(this.nowDate);
         this.selectedMonth = this.nowDate.month;
         this.selectedDay = this.nowDate.day;
         this.selectedYear = this.nowDate.year;
@@ -360,6 +393,9 @@ export default {
   watch: {
     selectedMonth(newQuestion, oldQuestion) {
       this.days = this.getDays;
+    },
+    activityDate(newQuestion, oldQuestion) {
+      this.selectedDay = newQuestion.day;
     },
   },
 };

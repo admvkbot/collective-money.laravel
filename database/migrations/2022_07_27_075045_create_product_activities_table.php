@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->integer('product_activitie_type_id');
             $table->dateTime('close_at')->nullable();
+            $table->text('source_url')->nullable();
             $table->text('description');
             $table->boolean('is_moderated')->default(false);
             $table->unsignedBigInteger('moderate_id');

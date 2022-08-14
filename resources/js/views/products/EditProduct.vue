@@ -204,34 +204,11 @@
               </div>
               <!-- -->
               <div class="col-lg-6 mt-4 mt-lg-0">
-                <div class="card mb-5">
-                  <div class="card-header bg-transparent pb-0">
-                    <div class="row pb-3">
-                      <div class="col-12">
-                        <div class="mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4">
-                          <place-holder-horisontal-card
-                            :title="{
-                              text: 'Добавить активность',
-                              variant: 'h6',
-                            }"
-                            @click.prevent="showActivityModal()"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                     <h6>Активности проекта</h6>
-                    </div>
-                  </div>
-                  <div class="card-body p-3">
-                    <div class="col-12">
+ 
                       <product-activities-table-moderator
                         :productId="productId"
-                        :key="productActivitiesKey"
                       />
-                    </div>
-                  </div>
-                </div>
+
                 <div class="card bg-gradient-dark">
                   <div class="card-header bg-transparent pb-0">
                     <div class="mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4">
@@ -438,17 +415,6 @@
       />
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-4">
-      <add-product-action-modal
-        :addModal="theActivityModal"
-        :actions="productActivityTypes.value"
-        :openModal="openModalStatusActivity"
-        :productId="productId"
-        @activity-reload="activityReload"
-      />
-    </div>
-  </div>
 </template>
 
 <script>
@@ -461,7 +427,6 @@ import getProductData from "@/assets/js/getProductData.js";
 import getProductBlocks from "@/assets/js/getProductBlocks.js";
 import PlaceHolderHorisontalCard from "@/Cards/PlaceHolderHorisontalCard.vue";
 import AddProductBlockModal from "@/components/modal/AddProductBlockModal.vue";
-import AddProductActionModal from "@/components/modal/AddProductActionModal.vue";
 import ProductActivitiesTableModerator from "@/views/components/tables/ProductActivitiesTableModerator";
 
 import TwitterIcon from "@/components/Icon/Twitter";
@@ -470,8 +435,6 @@ import DiscordIcon from "@/components/Icon/Discord";
 import MediumIcon from "@/components/Icon/Medium";
 import YoutubeIcon from "@/components/Icon/Youtube";
 
-import Product from "@/composables/Product.js";
-const { getProductActivityTypes } = Product();
 
 import { Dropzone } from "dropzone";
 
@@ -483,7 +446,7 @@ import { useRoute } from "vue-router";
 export default {
   setup() {
     const route = useRoute();
-    const productId = route.params.productId;
+    const productId = parseInt(route.params.productId);   
     const types = ref([]);
     types.value = getProductTypes();
     const product = ref([]);
@@ -491,10 +454,8 @@ export default {
     const blocks = ref([]);
     blocks.value = getProductBlocks(productId);
 
-    const productActivityTypes = ref([]);
-    productActivityTypes.value = getProductActivityTypes();
 
-    return { productId, types, product, blocks, productActivityTypes };
+    return { productId, types, product, blocks };
   },
 
   components: {
@@ -513,16 +474,13 @@ export default {
     confirmModal,
     PlaceHolderHorisontalCard,
     AddProductBlockModal,
-    AddProductActionModal,
     ProductActivitiesTableModerator,
   },
   mounted() {
     this.addModal = new Modal(
       document.getElementById("addProductBlockModalMessage")
     );
-    this.theActivityModal = new Modal(
-      document.getElementById("addProductActionModalMessage")
-    );
+    
     //window.token = localStorage.getItem("x_xsrf_token");
     this.pathLogo = this.product.value.logo_url;
     const token = this.getCookie("XSRF-TOKEN");
@@ -576,8 +534,8 @@ export default {
   data() {
     return {
       openModalStatus: false,
-      openModalStatusActivity: true,
-      theActivityModal: null,
+      
+      
       addModal: null,
       blockTypes: globalBlockTypes,
       confirmBlockDelete: false,
@@ -591,7 +549,6 @@ export default {
         buttons: "",
       },
       token: null,
-      productActivitiesKey: 0,
     };
   },
 
@@ -715,16 +672,7 @@ export default {
     getActions() {
       //this.actions = getAllActions();
     },
-    activityReload() {
-      this.productActivitiesKey += 1;
-    },
-    showActivityModal() {
-      this.openModalStatusActivity = true;
-      this.theActivityModal.show();
-      setTimeout(() => {
-        this.openModalStatusActivity = false;
-      }, 500);
-    },
+
   },
   computed: {
     tokenC() {

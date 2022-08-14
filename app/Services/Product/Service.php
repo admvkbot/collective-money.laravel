@@ -27,7 +27,7 @@ class Service
 
    public function detachTgMessageProduct($product_id)
    {
-      $product = Product::where('id', $product_id)->find(1);
+      $product = Product::find($product_id);
       $product->tg_messages()->detach();
    }
 

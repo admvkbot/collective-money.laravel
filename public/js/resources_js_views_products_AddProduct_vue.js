@@ -1,5 +1,55 @@
 (self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_views_products_AddProduct_vue"],{
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudSelectGroup.vue?vue&type=script&lang=js":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudSelectGroup.vue?vue&type=script&lang=js ***!
+  \*********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_demi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-demi */ "./node_modules/vue-demi/lib/index.mjs");
+/* harmony import */ var _VsudCheckbox_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VsudCheckbox.vue */ "./resources/js/components/VsudCheckbox.vue");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    VsudCheckbox: _VsudCheckbox_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: {
+    options: {
+      required: true,
+      type: Object
+    },
+    selectedItems: {
+      type: Array,
+      "default": []
+    }
+  },
+  emits: ['update:modelValue'],
+  methods: {
+    sendID: function sendID(r) {
+      this.$emit('update:modelValue', r.target.value);
+    },
+    checkSelected: function checkSelected(item) {
+      if (this.selectedItems.length > 0) {
+        if (this.selectedItems.find(function (data) {
+          return data === item.id;
+        })) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudTextarea.vue?vue&type=script&lang=js":
 /*!******************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudTextarea.vue?vue&type=script&lang=js ***!
@@ -38,6 +88,10 @@ __webpack_require__.r(__webpack_exports__);
     rows: {
       type: Number,
       "default": 5
+    },
+    size: {
+      type: Number,
+      "default": null
     }
   },
   emits: ["textareaValue"],
@@ -241,8 +295,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/api/get-products/" + top, {
         filter: keyword
       }).then(function (r) {
-        loader.hide();
-        console.log(r.data);
+        loader.hide(); //console.log(r.data);
+
         data.rows = r.data; //this.$emit("accountsReload");
       })["catch"](function (err) {
         loader.hide();
@@ -309,6 +363,7 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     confirmDelete: function confirmDelete(newQuestion, oldQuestion) {
       if (newQuestion) {
+        console.log('fff');
         this.deleteProduct(newQuestion);
       }
     }
@@ -330,17 +385,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _views_components_tables_ProductsTableModerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/views/components/tables/ProductsTableModerator */ "./resources/js/views/components/tables/ProductsTableModerator.vue");
 /* harmony import */ var _views_components_tables_MessagesTableModerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/views/components/tables/MessagesTableModerator */ "./resources/js/views/components/tables/MessagesTableModerator.vue");
-/* harmony import */ var _components_VsudInput_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/VsudInput.vue */ "./resources/js/components/VsudInput.vue");
-/* harmony import */ var _components_VsudTextarea_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/VsudTextarea.vue */ "./resources/js/components/VsudTextarea.vue");
-/* harmony import */ var _components_VsudButton_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/components/VsudButton.vue */ "./resources/js/components/VsudButton.vue");
-/* harmony import */ var _assets_js_getProductTypes_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/assets/js/getProductTypes.js */ "./resources/js/assets/js/getProductTypes.js");
-/* harmony import */ var _components_Icon_Twitter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/components/Icon/Twitter */ "./resources/js/components/Icon/Twitter.vue");
-/* harmony import */ var _components_Icon_Telegram__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/components/Icon/Telegram */ "./resources/js/components/Icon/Telegram.vue");
-/* harmony import */ var _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/components/Icon/Discord */ "./resources/js/components/Icon/Discord.vue");
-/* harmony import */ var _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/components/Icon/Medium */ "./resources/js/components/Icon/Medium.vue");
-/* harmony import */ var _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/components/Icon/Youtube */ "./resources/js/components/Icon/Youtube.vue");
-/* harmony import */ var _Cards_PlaceHolderHorisontalCard_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/Cards/PlaceHolderHorisontalCard.vue */ "./resources/js/Cards/PlaceHolderHorisontalCard.vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _components_VsudSelectGroup_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/VsudSelectGroup.vue */ "./resources/js/components/VsudSelectGroup.vue");
+/* harmony import */ var _components_VsudInput_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/VsudInput.vue */ "./resources/js/components/VsudInput.vue");
+/* harmony import */ var _components_VsudTextarea_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/components/VsudTextarea.vue */ "./resources/js/components/VsudTextarea.vue");
+/* harmony import */ var _components_VsudButton_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/components/VsudButton.vue */ "./resources/js/components/VsudButton.vue");
+/* harmony import */ var _assets_js_getProductTypes_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/assets/js/getProductTypes.js */ "./resources/js/assets/js/getProductTypes.js");
+/* harmony import */ var _components_Icon_Twitter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/components/Icon/Twitter */ "./resources/js/components/Icon/Twitter.vue");
+/* harmony import */ var _components_Icon_Telegram__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/components/Icon/Telegram */ "./resources/js/components/Icon/Telegram.vue");
+/* harmony import */ var _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/components/Icon/Discord */ "./resources/js/components/Icon/Discord.vue");
+/* harmony import */ var _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/components/Icon/Medium */ "./resources/js/components/Icon/Medium.vue");
+/* harmony import */ var _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/components/Icon/Youtube */ "./resources/js/components/Icon/Youtube.vue");
+/* harmony import */ var _Cards_PlaceHolderHorisontalCard_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @/Cards/PlaceHolderHorisontalCard.vue */ "./resources/js/Cards/PlaceHolderHorisontalCard.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
 
 
 
@@ -359,19 +416,21 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     ModerateProductsTable: _views_components_tables_ProductsTableModerator__WEBPACK_IMPORTED_MODULE_0__["default"],
     ModerateMessagesTable: _views_components_tables_MessagesTableModerator__WEBPACK_IMPORTED_MODULE_1__["default"],
-    VsudInput: _components_VsudInput_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    VsudButton: _components_VsudButton_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    VsudTextarea: _components_VsudTextarea_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    getProductTypes: _assets_js_getProductTypes_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-    TwitterIcon: _components_Icon_Twitter__WEBPACK_IMPORTED_MODULE_6__["default"],
-    TelegramIcon: _components_Icon_Telegram__WEBPACK_IMPORTED_MODULE_7__["default"],
-    DiscordIcon: _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_8__["default"],
-    MediumIcon: _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_9__["default"],
-    YoutubeIcon: _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_10__["default"],
-    PlaceHolderHorisontalCard: _Cards_PlaceHolderHorisontalCard_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+    VsudInput: _components_VsudInput_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    VsudButton: _components_VsudButton_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+    VsudTextarea: _components_VsudTextarea_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    getProductTypes: _assets_js_getProductTypes_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    TwitterIcon: _components_Icon_Twitter__WEBPACK_IMPORTED_MODULE_7__["default"],
+    TelegramIcon: _components_Icon_Telegram__WEBPACK_IMPORTED_MODULE_8__["default"],
+    DiscordIcon: _components_Icon_Discord__WEBPACK_IMPORTED_MODULE_9__["default"],
+    MediumIcon: _components_Icon_Medium__WEBPACK_IMPORTED_MODULE_10__["default"],
+    YoutubeIcon: _components_Icon_Youtube__WEBPACK_IMPORTED_MODULE_11__["default"],
+    PlaceHolderHorisontalCard: _Cards_PlaceHolderHorisontalCard_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
+    VsudSelectGroup: _components_VsudSelectGroup_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
+      selected: null,
       product: {
         name: "",
         type: 1,
@@ -387,13 +446,24 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   setup: function setup() {
-    var types = (0,vue__WEBPACK_IMPORTED_MODULE_12__.ref)([]);
-    types.value = (0,_assets_js_getProductTypes_js__WEBPACK_IMPORTED_MODULE_5__["default"])();
+    var types = (0,vue__WEBPACK_IMPORTED_MODULE_13__.ref)([]);
+    types.value = (0,_assets_js_getProductTypes_js__WEBPACK_IMPORTED_MODULE_6__["default"])();
     return {
       types: types
     };
   },
   methods: {
+    getTypeName: function getTypeName(selected) {
+      if (!this.types.value.length) {
+        return null;
+      }
+
+      var obj = this.types.value.find(function (data) {
+        return data.id == selected;
+      });
+      this.product.type = selected;
+      return obj ? obj.name : null;
+    },
     sendData: function sendData() {
       var _this = this;
 
@@ -427,6 +497,47 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_VsudCheckbox = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("VsudCheckbox");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.options, function (option) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_VsudCheckbox, {
+      key: option.id,
+      id: option.id,
+      checked: $options.checkSelected(option),
+      onInput: $options.sendID
+    }, {
+      "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(option.name), 1
+        /* TEXT */
+        )];
+      }),
+      _: 2
+      /* DYNAMIC */
+
+    }, 1032
+    /* PROPS, DYNAMIC_SLOTS */
+    , ["id", "checked", "onInput"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))]);
+}
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudTextarea.vue?vue&type=template&id=8c6dfb5e":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudTextarea.vue?vue&type=template&id=8c6dfb5e ***!
@@ -454,7 +565,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_2), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     id: $props.id,
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", $options.getClasses(_ctx.size, $props.success, $props.error)]),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", $options.getClasses($props.size, $props.success, $props.error)]),
     rows: $props.rows,
     value: $props.value,
     placeholder: $props.placeholder,
@@ -1047,91 +1158,90 @@ var _hoisted_23 = {
 var _hoisted_24 = {
   "class": "col-12 pb-3"
 };
-
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_25 = {
   "class": "form-label"
-}, "Тип проекта", -1
-/* HOISTED */
-);
-
-var _hoisted_26 = ["value"];
-var _hoisted_27 = {
+};
+var _hoisted_26 = {
+  "class": "form-group"
+};
+var _hoisted_27 = ["value"];
+var _hoisted_28 = {
   "class": "row"
 };
-var _hoisted_28 = {
+var _hoisted_29 = {
   "class": "col-12"
 };
 
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "form-label"
 }, "Официальный вебсайт", -1
 /* HOISTED */
 );
 
-var _hoisted_30 = {
-  "class": "row"
-};
 var _hoisted_31 = {
-  "class": "col-12"
+  "class": "row"
 };
 var _hoisted_32 = {
+  "class": "col-12"
+};
+var _hoisted_33 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Twitter");
+var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Twitter");
 
-var _hoisted_34 = {
-  "class": "row"
-};
 var _hoisted_35 = {
-  "class": "col-12"
+  "class": "row"
 };
 var _hoisted_36 = {
+  "class": "col-12"
+};
+var _hoisted_37 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Discord");
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Discord");
 
-var _hoisted_38 = {
-  "class": "row"
-};
 var _hoisted_39 = {
-  "class": "col-12"
+  "class": "row"
 };
 var _hoisted_40 = {
+  "class": "col-12"
+};
+var _hoisted_41 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("YouTube");
+var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("YouTube");
 
-var _hoisted_42 = {
-  "class": "row"
-};
 var _hoisted_43 = {
-  "class": "col-12"
+  "class": "row"
 };
 var _hoisted_44 = {
-  "class": "form-label d-flex"
-};
-
-var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telegram");
-
-var _hoisted_46 = {
-  "class": "row"
-};
-var _hoisted_47 = {
   "class": "col-12"
 };
-var _hoisted_48 = {
+var _hoisted_45 = {
   "class": "form-label d-flex"
 };
 
-var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Medium");
+var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telegram");
 
-var _hoisted_50 = {
+var _hoisted_47 = {
   "class": "row"
 };
+var _hoisted_48 = {
+  "class": "col-12"
+};
+var _hoisted_49 = {
+  "class": "form-label d-flex"
+};
+
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Medium");
+
 var _hoisted_51 = {
+  "class": "row"
+};
+var _hoisted_52 = {
   "class": "col-12 pt-3"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -1142,6 +1252,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_vsud_textarea = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("vsud-textarea");
 
   var _component_vsud_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("vsud-button");
+
+  var _component_vsud_select_group = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("vsud-select-group");
 
   var _component_twitter_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("twitter-icon");
 
@@ -1224,12 +1336,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_25, "Типы, относящиеся к проекту " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.selected), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_select_group, {
+    options: $setup.types.value,
+    modelValue: $data.selected,
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $data.selected = $event;
+    })
+  }, null, 8
+  /* PROPS */
+  , ["options", "modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
     name: "choices-type-button",
     id: "choices-type",
     placeholder: "Выберите тип проекта",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.product.type = $event;
     })
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.types.value, function (item) {
@@ -1238,12 +1360,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: item.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 9
     /* TEXT, PROPS */
-    , _hoisted_26);
+    , _hoisted_27);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.product.type]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [_hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.product.type]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "product-site-url",
     type: "text",
     placeholder: "https://product.website/",
@@ -1251,13 +1373,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isRequired: false,
     active: true,
     value: "",
-    onInputValue: _cache[5] || (_cache[5] = function (v) {
+    onInputValue: _cache[6] || (_cache[6] = function (v) {
       return _this.product.url = v;
     }),
     disabled: false
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_twitter_icon, {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_twitter_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_33]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_34]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "product-twitter",
     type: "text",
     placeholder: "https://twitter.com/xxxx",
@@ -1265,13 +1387,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isRequired: false,
     active: true,
     value: "",
-    onInputValue: _cache[6] || (_cache[6] = function (v) {
+    onInputValue: _cache[7] || (_cache[7] = function (v) {
       return _this.product.twitter = v;
     }),
     disabled: false
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_discord_icon, {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_discord_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_37]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_38]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "product-discord",
     type: "text",
     placeholder: "https://discord.com/user/xxxx",
@@ -1279,13 +1401,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isRequired: false,
     active: true,
     value: "",
-    onInputValue: _cache[7] || (_cache[7] = function (v) {
+    onInputValue: _cache[8] || (_cache[8] = function (v) {
       return _this.product.discord = v;
     }),
     disabled: false
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_youtube_icon, {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_youtube_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_41]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_42]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "product-youtube",
     type: "text",
     placeholder: "https://youtube.com/channel/xxxx",
@@ -1293,13 +1415,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isRequired: false,
     active: true,
     value: "",
-    onInputValue: _cache[8] || (_cache[8] = function (v) {
+    onInputValue: _cache[9] || (_cache[9] = function (v) {
       return _this.product.youtube = v;
     }),
     disabled: false
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_telegram_icon, {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_telegram_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_45]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_46]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "product-telegram",
     type: "text",
     placeholder: "https://t.me/xxxx",
@@ -1307,13 +1429,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isRequired: false,
     active: true,
     value: "",
-    onInputValue: _cache[9] || (_cache[9] = function (v) {
+    onInputValue: _cache[10] || (_cache[10] = function (v) {
       return _this.product.telegram = v;
     }),
     disabled: false
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_medium_icon, {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_medium_icon, {
     "class": "mt-1 mr-1"
-  }), _hoisted_49]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
+  }), _hoisted_50]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vsud_input, {
     id: "product-medium",
     type: "text",
     placeholder: "https://medium.com/@xxxx",
@@ -1321,11 +1443,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isRequired: false,
     active: true,
     value: "",
-    onInputValue: _cache[10] || (_cache[10] = function (v) {
+    onInputValue: _cache[11] || (_cache[11] = function (v) {
       return _this.product.medium = v;
     }),
     disabled: false
-  })])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_moderate_messages_table)])])]);
+  })])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_moderate_messages_table)])])]);
 }
 
 /***/ }),
@@ -1465,7 +1587,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-6891572b],\n.dropend .dropdown-menu[data-v-6891572b] {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/components/tables/ProductsTableModerator.vue"],"names":[],"mappings":";AA8WA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\n  <div class=\"mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4\">\n    <router-link :to=\"{ name: 'Add Product' }\">\n      <place-holder-horisontal-card\n        :title=\"{ text: 'Добавить проект', variant: 'h6' }\"\n      />\n    </router-link>\n  </div>\n\n  <div class=\"card mb-4\">\n    <div class=\"card-header pb-0\">\n      <h6>Криптопроекты</h6>\n    </div>\n    <div class=\"card-body px-0 pt-0 pb-2\">\n      <div class=\"row\" v-if=\"is_liveSearch\">\n        <div class=\"col-6\">\n          <label class=\"form-label pl-3\">Поиск проекта</label>\n          <div class=\"input-group pl-3\">\n            <input\n              id=\"liveSearchReferers\"\n              name=\"liveSearchReferers\"\n              class=\"form-control\"\n              type=\"text\"\n              placeholder=\"начните что-то писать...\"\n              v-model=\"searchTerm\"\n            />\n          </div>\n        </div>\n      </div>\n\n      <div class=\"table-responsive p-0\">\n        <table class=\"table align-items-center justify-content-center mb-0\">\n          <thead>\n            <tr>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                \"\n              >\n                Проект\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Рейтинг\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Пользовательский интерес\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Соцсети\n              </th>\n              <th></th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for=\"item in table.list\" :key=\"item\">\n              <td>\n                <div class=\"d-flex px-2\">\n                  <div>\n                    <img\n                      :src=\"item.logo_url\"\n                      class=\"avatar avatar-sm rounded-circle me-2\"\n                      alt=\"spotify\"\n                      v-if=\"item.logo_url\"\n                    />\n                  </div>\n                  <div class=\"my-auto d-flex\">\n                    <h6 class=\"mb-0 text-sm\">\n                      {{ item.name }}\n                      <a\n                        :href=\"item.website_url\"\n                        traget=\"_blank\"\n                        :title=\"item.website_name\"\n                        ><i class=\"fas fa-link ml-2\" v-if=\"item.website_url\"></i\n                      ></a>\n                    </h6>\n                  </div>\n                </div>\n              </td>\n              <td class=\"align-middle text-center\">\n                <div class=\"d-flex align-items-center justify-content-center\">\n                  <div v-if=\"item.rating\">\n                    <span class=\"me-2 text-xs font-weight-bold\"\n                      >{{ item.rating }}%</span\n                    >\n                    <vsud-progress-plus\n                      variant=\"gradient\"\n                      :percentage=\"item.rating\"\n                    />\n                  </div>\n                  <div v-else class=\"me-2 text-xs font-weight-bold\">\n                    Недостаточно данных\n                  </div>\n                </div>\n              </td>\n              <td class=\"align-middle text-center\">\n                <p class=\"text-sm font-weight-bold mb-0\">\n                  {{ item.num_tg_users }}\n                </p>\n              </td>\n              <td class=\"align-middle text-center\">\n                <div class=\"inline-flex\">\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.twitter\"\n                    v-if=\"item.twitter\"\n                  >\n                    <twitter-icon size=\"18px\"></twitter-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.discord\"\n                    v-if=\"item.discord\"\n                  >\n                    <discord-icon size=\"18px\" class=\"ml-2\"></discord-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.youtube\"\n                    v-if=\"item.youtube\"\n                  >\n                    <youtube-icon size=\"18px\" class=\"ml-2\"></youtube-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.telegram\"\n                    v-if=\"item.telegram\"\n                  >\n                    <telegram-icon size=\"18px\" class=\"ml-2\"></telegram-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.medium\"\n                    v-if=\"item.medium\"\n                  >\n                    <medium-icon size=\"18px\" class=\"ml-2\"></medium-icon>\n                  </a>\n                </div>\n              </td>\n              <td class=\"align-middle\">\n                <button\n                  class=\"btn btn-link text-secondary mb-0\"\n                  v-if=\"is_liveSearch\"\n                  data-bs-toggle=\"dropdown\"\n                  aria-expanded=\"true\"\n                  :id=\"'product-dropdown' + item.id\"\n                >\n                  <i class=\"fa fa-ellipsis-v text-xs\" aria-hidden=\"true\"></i>\n                </button>\n                <ul\n                  class=\"dropdown-menu px-2 py-3 ms-sm-n4 ms-n5\"\n                  :aria-labelledby=\"'product-dropdown' + item.id\"\n                  style=\"\"\n                >\n                  <li>\n                    <router-link\n                      class=\"dropdown-item border-radius-md\"\n                      :to=\"{\n                        name: 'Edit Product',\n                        params: { productId: item.id },\n                      }\"\n                      >Настроить</router-link\n                    >\n                  </li>\n                  <li>\n                    <router-link\n                      class=\"dropdown-item border-radius-md\"\n                      :to=\"{\n                        name: 'Edit Product Key',\n                        params: { productId: item.id },\n                      }\"\n                      >Изменить ключи</router-link\n                    >\n                  </li>\n                  <li>\n                    <a\n                      class=\"dropdown-item border-radius-md\"\n                      href=\"javascript:;\"\n                      @click=\"\n                        confirm(\n                          item.id,\n                          `Удалить ${item.name}?`,\n                          'Удаление проекта вместе с его статистикой, индексами и блоком timeline'\n                        )\n                      \"\n                      >Удалить</a\n                    >\n                  </li>\n                </ul>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</template>\n\n<script>\nimport VsudProgressPlus from \"@/components/VsudProgressPlus\";\nimport TwitterIcon from \"@/components/Icon/Twitter\";\nimport TelegramIcon from \"@/components/Icon/Telegram\";\nimport DiscordIcon from \"@/components/Icon/Discord\";\nimport MediumIcon from \"@/components/Icon/Medium\";\nimport YoutubeIcon from \"@/components/Icon/Youtube\";\nimport PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\n\nimport confirmModal from \"@/components/modal/confirmModal.js\";\n\nimport { reactive, ref, computed, watch } from \"vue\";\nimport { FontAwesomeIcon } from \"@fortawesome/vue-fontawesome\";\nimport { useLoading } from \"vue-loading-overlay\";\n\nexport default {\n  name: \"moderate-products-table\",\n  components: {\n    VsudProgressPlus,\n    TwitterIcon,\n    TelegramIcon,\n    DiscordIcon,\n    MediumIcon,\n    YoutubeIcon,\n    FontAwesomeIcon,\n    PlaceHolderHorisontalCard,\n    confirmModal,\n  },\n  props: {\n    is_liveSearch: {\n      type: Boolean,\n      default: true,\n    },\n    top: {\n      type: Number,\n      default: 0,\n    },\n  },\n  setup(props) {\n    const searchTerm = ref(\"\"); // Search text\n    // Fake data\n\n    const data = reactive({\n      rows: [],\n    });\n    const $loading = useLoading();\n    let loader;\n    const submit = () => {\n      loader = $loading.show({});\n    };\n    /**\n     * Get server data request\n     */\n    const myRequest = (keyword, top) => {\n      submit();\n      axios\n        .post(\"/api/get-products/\" + top, {\n          filter: keyword,\n        })\n        .then((r) => {\n          loader.hide();\n          console.log(r.data);\n          data.rows = r.data;\n          //this.$emit(\"accountsReload\");\n        })\n        .catch((err) => {\n          loader.hide();\n          console.log(\"Fetch error\", err.response);\n          const registerError =\n            \"Неизвестная ошибка при полученнии списка проектов\";\n          alert(registerError);\n        });\n    };\n\n    const table = reactive({\n      list: computed(() => {\n        return data.rows;\n      }),\n      totalRecordCount: computed(() => {\n        return data.rows.length;\n      }),\n    });\n    if (props.is_liveSearch) {\n      watch(\n        () => searchTerm.value,\n        (val) => {\n          myRequest(val, props.top);\n        }\n      );\n    }\n    // Get data on first rendering\n    myRequest(\"\", props.top);\n    //console.log(table);\n    return {\n      searchTerm,\n      table,\n      myRequest,\n    };\n  },\n  data() {\n    return {\n      confirmDelete: false,\n    };\n  },\n  methods: {\n    confirm(id, title, text) {\n      this.confirmDelete = confirmModal(id, title, text);\n    },\n    productsReload() {\n      this.myRequest(this.searchTerm, this.top);\n    },\n    deleteProduct(id) {\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\n        axios\n          .get(\"/api/delete-product/\" + id)\n          .then((r) => {\n            //this.$router.push({ name: \"Products\" });\n            //this.$router.go()\n            this.productsReload();\n          })\n          .catch((err) => {\n            console.log(err.response);\n            let registerError = \"Ошибка сохранения удаления проекта\";\n            alert(registerError);\n          });\n      });\n    },\n  },\n  watch: {\n    confirmDelete(newQuestion, oldQuestion) {\n      if (newQuestion) {\n        this.deleteProduct(newQuestion);\n      }\n    },\n  },\n};\n</script>\n<style scoped>\n.dropdown-menu,\n.dropend .dropdown-menu {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n</style>\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.dropdown-menu[data-v-6891572b],\n.dropend .dropdown-menu[data-v-6891572b] {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n", "",{"version":3,"sources":["webpack://./resources/js/views/components/tables/ProductsTableModerator.vue"],"names":[],"mappings":";AAgXA;;EAEE;qCACmC;EACnC,eAAe;AACjB","sourcesContent":["<template>\n  <div class=\"mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4\">\n    <router-link :to=\"{ name: 'Add Product' }\">\n      <place-holder-horisontal-card\n        :title=\"{ text: 'Добавить проект', variant: 'h6' }\"\n      />\n    </router-link>\n  </div>\n\n  <div class=\"card mb-4\">\n    <div class=\"card-header pb-0\">\n      <h6>Криптопроекты</h6>\n    </div>\n    <div class=\"card-body px-0 pt-0 pb-2\">\n      <div class=\"row\" v-if=\"is_liveSearch\">\n        <div class=\"col-6\">\n          <label class=\"form-label pl-3\">Поиск проекта</label>\n          <div class=\"input-group pl-3\">\n            <input\n              id=\"liveSearchReferers\"\n              name=\"liveSearchReferers\"\n              class=\"form-control\"\n              type=\"text\"\n              placeholder=\"начните что-то писать...\"\n              v-model=\"searchTerm\"\n            />\n          </div>\n        </div>\n      </div>\n\n      <div class=\"table-responsive p-0\">\n        <table class=\"table align-items-center justify-content-center mb-0\">\n          <thead>\n            <tr>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                \"\n              >\n                Проект\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Рейтинг\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Пользовательский интерес\n              </th>\n              <th\n                class=\"\n                  text-uppercase text-secondary text-xxs\n                  font-weight-bolder\n                  opacity-7\n                  ps-2\n                  text-center\n                \"\n              >\n                Соцсети\n              </th>\n              <th></th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for=\"item in table.list\" :key=\"item\">\n              <td>\n                <div class=\"d-flex px-2\">\n                  <div>\n                    <img\n                      :src=\"item.logo_url\"\n                      class=\"avatar avatar-sm rounded-circle me-2\"\n                      alt=\"spotify\"\n                      v-if=\"item.logo_url\"\n                    />\n                  </div>\n                  <div class=\"my-auto d-flex\">\n                    <h6 class=\"mb-0 text-sm\">\n                      {{ item.name }}\n                      <a\n                        :href=\"item.website_url\"\n                        traget=\"_blank\"\n                        :title=\"item.website_name\"\n                        ><i class=\"fas fa-link ml-2\" v-if=\"item.website_url\"></i\n                      ></a>\n                    </h6>\n                  </div>\n                </div>\n              </td>\n              <td class=\"align-middle text-center\">\n                <div class=\"d-flex align-items-center justify-content-center\">\n                  <div v-if=\"item.rating\">\n                    <span class=\"me-2 text-xs font-weight-bold\"\n                      >{{ item.rating }}%</span\n                    >\n                    <vsud-progress-plus\n                      variant=\"gradient\"\n                      :percentage=\"item.rating\"\n                    />\n                  </div>\n                  <div v-else class=\"me-2 text-xs font-weight-bold\">\n                    Недостаточно данных\n                  </div>\n                </div>\n              </td>\n              <td class=\"align-middle text-center\">\n                <p class=\"text-sm font-weight-bold mb-0\">\n                  {{ item.num_tg_users }}\n                </p>\n              </td>\n              <td class=\"align-middle text-center\">\n                <div class=\"inline-flex\">\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.twitter\"\n                    v-if=\"item.twitter\"\n                  >\n                    <twitter-icon size=\"18px\"></twitter-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.discord\"\n                    v-if=\"item.discord\"\n                  >\n                    <discord-icon size=\"18px\" class=\"ml-2\"></discord-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.youtube\"\n                    v-if=\"item.youtube\"\n                  >\n                    <youtube-icon size=\"18px\" class=\"ml-2\"></youtube-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.telegram\"\n                    v-if=\"item.telegram\"\n                  >\n                    <telegram-icon size=\"18px\" class=\"ml-2\"></telegram-icon>\n                  </a>\n                  <a\n                    class=\"text-xs font-weight-bold\"\n                    target=\"_blank\"\n                    :href=\"item.medium\"\n                    v-if=\"item.medium\"\n                  >\n                    <medium-icon size=\"18px\" class=\"ml-2\"></medium-icon>\n                  </a>\n                </div>\n              </td>\n              <td class=\"align-middle\">\n                <button\n                  class=\"btn btn-link text-secondary mb-0\"\n                  v-if=\"is_liveSearch\"\n                  data-bs-toggle=\"dropdown\"\n                  aria-expanded=\"true\"\n                  :id=\"'product-dropdown' + item.id\"\n                >\n                  <i class=\"fa fa-ellipsis-v text-xs\" aria-hidden=\"true\"></i>\n                </button>\n                <ul\n                  class=\"dropdown-menu px-2 py-3 ms-sm-n4 ms-n5\"\n                  :aria-labelledby=\"'product-dropdown' + item.id\"\n                  style=\"\"\n                >\n                  <li>\n                    <router-link\n                      class=\"dropdown-item border-radius-md\"\n                      :to=\"{\n                        name: 'Edit Product',\n                        params: { productId: item.id },\n                      }\"\n                      >Настроить</router-link\n                    >\n                  </li>\n                  <li>\n                    <router-link\n                      class=\"dropdown-item border-radius-md\"\n                      :to=\"{\n                        name: 'Edit Product Key',\n                        params: { productId: item.id },\n                      }\"\n                      >Изменить ключи</router-link\n                    >\n                  </li>\n                  <li>\n                    <a\n                      class=\"dropdown-item border-radius-md\"\n                      href=\"javascript:;\"\n                      @click=\"\n                        confirm(\n                          item.id,\n                          `Удалить ${item.name}?`,\n                          'Удаление проекта вместе с его статистикой, индексами и блоком timeline'\n                        )\n                      \"\n                      >Удалить</a\n                    >\n                  </li>\n                </ul>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</template>\n\n<script>\nimport VsudProgressPlus from \"@/components/VsudProgressPlus\";\nimport TwitterIcon from \"@/components/Icon/Twitter\";\nimport TelegramIcon from \"@/components/Icon/Telegram\";\nimport DiscordIcon from \"@/components/Icon/Discord\";\nimport MediumIcon from \"@/components/Icon/Medium\";\nimport YoutubeIcon from \"@/components/Icon/Youtube\";\nimport PlaceHolderHorisontalCard from \"@/Cards/PlaceHolderHorisontalCard.vue\";\n\nimport confirmModal from \"@/components/modal/confirmModal.js\";\n\nimport { reactive, ref, computed, watch } from \"vue\";\nimport { FontAwesomeIcon } from \"@fortawesome/vue-fontawesome\";\nimport { useLoading } from \"vue-loading-overlay\";\n\nexport default {\n  name: \"moderate-products-table\",\n  components: {\n    VsudProgressPlus,\n    TwitterIcon,\n    TelegramIcon,\n    DiscordIcon,\n    MediumIcon,\n    YoutubeIcon,\n    FontAwesomeIcon,\n    PlaceHolderHorisontalCard,\n    confirmModal,\n  },\n  props: {\n    is_liveSearch: {\n      type: Boolean,\n      default: true,\n    },\n    top: {\n      type: Number,\n      default: 0,\n    },\n  },\n  setup(props) {\n    const searchTerm = ref(\"\"); // Search text\n    // Fake data\n\n    const data = reactive({\n      rows: [],\n    });\n    const $loading = useLoading();\n    let loader;\n    const submit = () => {\n      loader = $loading.show({});\n    };\n    /**\n     * Get server data request\n     */\n    const myRequest = (keyword, top) => {\n      submit();\n      axios\n        .post(\"/api/get-products/\" + top, {\n          filter: keyword,\n        })\n        .then((r) => {\n          loader.hide();\n          //console.log(r.data);\n          data.rows = r.data;\n          //this.$emit(\"accountsReload\");\n        })\n        .catch((err) => {\n          loader.hide();\n          console.log(\"Fetch error\", err.response);\n          const registerError =\n            \"Неизвестная ошибка при полученнии списка проектов\";\n          alert(registerError);\n        });\n    };\n\n    const table = reactive({\n      list: computed(() => {\n        return data.rows;\n      }),\n      totalRecordCount: computed(() => {\n        return data.rows.length;\n      }),\n    });\n    if (props.is_liveSearch) {\n      watch(\n        () => searchTerm.value,\n        (val) => {\n          myRequest(val, props.top);\n        }\n      );\n    }\n    // Get data on first rendering\n    myRequest(\"\", props.top);\n    //console.log(table);\n    return {\n      searchTerm,\n      table,\n      myRequest,\n    };\n  },\n  data() {\n    return {\n      confirmDelete: false,\n    };\n  },\n  methods: {\n    confirm(id, title, text) {\n      this.confirmDelete = confirmModal(id, title, text);\n\n    },\n    productsReload() {\n      this.myRequest(this.searchTerm, this.top);\n    },\n    deleteProduct(id) {\n      axios.get(\"/sanctum/csrf-cookie\").then((response) => {\n        axios\n          .get(\"/api/delete-product/\" + id)\n          .then((r) => {\n            //this.$router.push({ name: \"Products\" });\n            //this.$router.go()\n            this.productsReload();\n          })\n          .catch((err) => {\n            console.log(err.response);\n            let registerError = \"Ошибка сохранения удаления проекта\";\n            alert(registerError);\n          });\n      });\n    },\n  },\n  watch: {\n    confirmDelete(newQuestion, oldQuestion) {\n      if (newQuestion) {\n         console.log('fff');\n        this.deleteProduct(newQuestion);\n      }\n    },\n  },\n};\n</script>\n<style scoped>\n.dropdown-menu,\n.dropend .dropdown-menu {\n  box-shadow: 0 8px 26px -4px rgb(20 20 20 / 15%),\n    0 8px 9px -5px rgb(20 20 20 / 6%);\n  cursor: pointer;\n}\n</style>\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5512,6 +5634,34 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 
 /***/ }),
 
+/***/ "./resources/js/components/VsudSelectGroup.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/VsudSelectGroup.vue ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _VsudSelectGroup_vue_vue_type_template_id_0fe9ee1c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c */ "./resources/js/components/VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c");
+/* harmony import */ var _VsudSelectGroup_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VsudSelectGroup.vue?vue&type=script&lang=js */ "./resources/js/components/VsudSelectGroup.vue?vue&type=script&lang=js");
+/* harmony import */ var d_projects_laravel_collective_money_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,d_projects_laravel_collective_money_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_VsudSelectGroup_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_VsudSelectGroup_vue_vue_type_template_id_0fe9ee1c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/VsudSelectGroup.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/components/VsudTextarea.vue":
 /*!**************************************************!*\
   !*** ./resources/js/components/VsudTextarea.vue ***!
@@ -5630,6 +5780,22 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/components/VsudSelectGroup.vue?vue&type=script&lang=js":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/VsudSelectGroup.vue?vue&type=script&lang=js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VsudSelectGroup_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VsudSelectGroup_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./VsudSelectGroup.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudSelectGroup.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/components/VsudTextarea.vue?vue&type=script&lang=js":
 /*!**************************************************************************!*\
   !*** ./resources/js/components/VsudTextarea.vue?vue&type=script&lang=js ***!
@@ -5691,6 +5857,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_AddProduct_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./AddProduct.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/views/products/AddProduct.vue?vue&type=script&lang=js");
  
+
+/***/ }),
+
+/***/ "./resources/js/components/VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VsudSelectGroup_vue_vue_type_template_id_0fe9ee1c__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VsudSelectGroup_vue_vue_type_template_id_0fe9ee1c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/VsudSelectGroup.vue?vue&type=template&id=0fe9ee1c");
+
 
 /***/ }),
 

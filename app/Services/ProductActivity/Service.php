@@ -43,6 +43,10 @@ class Service
       if ($data["max"]) {
          $collection = $collection->limit($data["max"]);
       }
-      return $collection->orderByDesc('close_at')->select('product_activities.id', 'name', 'close_at')->get();
+      return $collection->orderByDesc('close_at')->select('product_activities.id', 'product_activity_types.id as type_id', 'name', 'close_at', 'source_url as url', 'product_activities.description')->get();
+   }
+
+   public function deleteActivity($activity_id) {
+      return ProductActivity::firstWhere('id', $activity_id)->delete();
    }
 }

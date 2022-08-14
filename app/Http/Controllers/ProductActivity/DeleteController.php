@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\ProductActivity;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class DeleteController extends BaseController
 {
-    public function __invoke($product_id)
+    public function __invoke($activity_id)
     {
-       $this->service->detachTgMessageProduct($product_id);
-       $this->serviceIndex->eraseIndex($product_id);
-       $this->serviceBlock->deleteBlocksByProductId($product_id);
-       $this->serviceMetric->deleteMetricsByProductId($product_id);
-       $this->service->deleteProduct($product_id);
+       $this->service->deleteActivity($activity_id);
     }
 }
