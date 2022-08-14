@@ -144,9 +144,8 @@
     </div>
   </div>
   <div class="py-4 container-fluid">
-    <div class="mt-2 row">
+<!--    <div class="mt-2 row">
       <div class="col-lg-6">
-        <!-- line chart -->
         <div class="card z-index-2">
           <gradient2-line-chart
             id="chart-line-WT"
@@ -161,7 +160,6 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <!-- line chart -->
         <div class="card z-index-2">
           <gradient1-line-chart
             id="chart-line-rating"
@@ -178,7 +176,6 @@
     </div>
     <div class="mt-2 row">
       <div class="col-lg-12">
-        <!-- line chart -->
         <div class="card z-index-2">
           <gradient2-line-chart
             id="chart-line-cost"
@@ -192,7 +189,7 @@
           />
         </div>
       </div>
-    </div>
+    </div>-->
     <div class="mt-2 row">
       <div class="col-lg-7 mt-3 mt-lg-3">
         <!--<profile-info-card
@@ -224,6 +221,11 @@
             tooltip: 'Edit Profile',
           }"
         />-->
+                                      <product-activities-table
+                      v-if="product.id"
+                        :productId="product.id"
+                      />
+
         <div class="card h-100">
           <div class="p-3 pb-0 card-header">
             <div class="row">
@@ -306,9 +308,11 @@
             </ul>
           </div>
         </div>
+
       </div>
 
       <div class="col-lg-5 mt-3 mt-lg-3">
+
         <div class="card bg-gradient-dark">
           <div class="card-header bg-transparent pb-0">
             <h6 class="text-white">Стадии развития проекта</h6>
@@ -447,6 +451,8 @@ import Gradient1LineChart from "@/Charts/Gradient1LineChart.vue";
 import Gradient2LineChart from "@/Charts/Gradient2LineChart.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+import ProductActivitiesTable from "@/views/components/tables/ProductActivitiesTable";
+
 const { getProductData } = Product();
 //const { getDayWTChartData } = Chart();
 /*const init = async (props) => {
@@ -488,6 +494,7 @@ export default {
     Gradient2LineChart,
     getProductBlocks,
     FontAwesomeIcon,
+    ProductActivitiesTable,
   },
   data() {
     return {
