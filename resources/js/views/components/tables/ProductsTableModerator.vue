@@ -50,6 +50,18 @@
                   text-center
                 "
               >
+                Акивности
+              </th>
+
+              <th
+                class="
+                  text-uppercase text-secondary text-xxs
+                  font-weight-bolder
+                  opacity-7
+                  ps-2
+                  text-center
+                "
+              >
                 Рейтинг
               </th>
               <th
@@ -102,6 +114,24 @@
                   </div>
                 </div>
               </td>
+              <td class="align-middle text-center">
+                <div class="inline-flex">
+                  <div
+                    v-for="badge in item.badges"
+                    :key="badge.id"
+                    class="pr-1"
+                  >
+                    <vsud-badge
+                      :color="badge.color"
+                      variant="gradient"
+                      size="sm"
+                    >
+                      {{ badge.badge_name }}
+                    </vsud-badge>
+                  </div>
+                </div>
+              </td>
+
               <td class="align-middle text-center">
                 <div class="d-flex align-items-center justify-content-center">
                   <div v-if="item.rating">
@@ -228,6 +258,7 @@
 
 <script>
 import VsudProgressPlus from "@/components/VsudProgressPlus";
+import VsudBadge from "@/components/VsudBadge";
 import TwitterIcon from "@/components/Icon/Twitter";
 import TelegramIcon from "@/components/Icon/Telegram";
 import DiscordIcon from "@/components/Icon/Discord";
@@ -253,6 +284,7 @@ export default {
     FontAwesomeIcon,
     PlaceHolderHorisontalCard,
     confirmModal,
+    VsudBadge,
   },
   props: {
     is_liveSearch: {
