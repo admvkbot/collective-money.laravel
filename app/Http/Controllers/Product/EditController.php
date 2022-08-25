@@ -18,7 +18,7 @@ class EditController extends BaseController
             ->update([
                'name' => $data['name'],
                'uri' => $this->service->getUriByName($data['name']),
-               'product_type_id' => $data['type'],
+               /*'product_type_id' => $data['type'],*/
                'website_url' => $data['url'],
                'discord' => $data['discord'],
                'twitter' => $data['twitter'],
@@ -27,7 +27,7 @@ class EditController extends BaseController
                'telegram' => $data['telegram'],
                'description' => $data['description'],
             ]);
-
+         $this->service->insertProductTypes($data);
          return response()->json($out);
       }
       return response()->json([]);

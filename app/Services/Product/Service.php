@@ -15,6 +15,16 @@ class Service
          ->update(['logo_url' => $path]);
    }
 
+   public function insertProductTypes($data)
+   {
+      $types = $data["type"];
+      $product_id = $data['product_id'];
+      $this->detachProductsProductTypes($product_id);
+      foreach ($types as $item) {
+         DB::table('products_product_types')->insert(['product_id' => $product_id, 'product_type_id' => $item]);
+      }      
+   }
+
    /*public function storeLogo($path, $resource): void
    {
       Storage::disk('public')->put($path, $resource);
@@ -29,6 +39,12 @@ class Service
    {
       $product = Product::find($product_id);
       $product->tg_messages()->detach();
+   }
+
+   public function detachProductsProductTypes($product_id)
+   {
+      $product = Product::find($product_id);
+      $product->product_types()->detach();
    }
 
    public function getProductByString($filter)

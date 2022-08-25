@@ -11,10 +11,9 @@ class ProductModeratorController extends Controller
 {
    public function __invoke($id)
    {
-      $product = Product::where('id', $id)
-         ->first();
-      //$product = Product::find(1);
-         //dd($product);
+      //$product_types = Product::find($id)->product_types;
+      //return response()->json($product_types);
+      $product = Product::find($id);
          //dd($product->tg_messages()->attach(array(296676, 296668))->toSql());
          //dd($product->tg_messages()->detach());
       return response()->json($product);

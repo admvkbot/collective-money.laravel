@@ -97,9 +97,32 @@ export default function (options = {}, callbacks = {}) {
       return activity
    }
 
+   const getProductTypesData = (product_id) => {
+      const types = ref([])
+      const connectgetProductTypesData = () => {
+         axios
+            .get(`/api/product-types/${product_id}`)
+            .then((r) => {
+               types.value = r.data;
+               //console.log('type1: ', type.value)
+            })
+            .catch((err) => {
+               console.log(err);
+               const registerError = "Ошибка получения типов продукта";
+               alert(registerError);
+               //router.push({ name: "Products" })
+            })
+      }
+      connectgetProductTypesData()
+      //setTimeout(()=>{console.log('type2: ', type.value)}, 3000);
+      return types
+
+   }
+
    return {
       getProductData,
       getProductActivityTypes,
       getProductActivities,
+      getProductTypesData,
    }
 }

@@ -8,10 +8,13 @@
           </div>
           <div class="card-body pt-0">
             <div class="row">
-              <div class="col-6">
+              <div class="col-7">
                 <div class="row">
                   <div class="col-3">
-                    <img :src="product.value.logo_url" class="m-2" />
+                    <img
+                      :src="product.value.logo_url"
+                      class="m-2"
+                    />
                   </div>
                   <div class="col-9">
                     <form
@@ -20,7 +23,11 @@
                       id="dropzone"
                     >
                       <div class="fallback">
-                        <input name="file" type="file" multiple />
+                        <input
+                          name="file"
+                          type="file"
+                          multiple
+                        />
                       </div>
                     </form>
                   </div>
@@ -44,34 +51,54 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
+                    <div class="form-group">
+                      <label>Дополнительная информация</label>
+                      <editor
+                        v-if="product"
+                        api-key="no-api-key"
+                        :key="product.value.id"
+                        :init="{
+                           plugins: 'preview searchreplace autolink directionality code visualblocks visualchars image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+                           menubar: 'edit view insert format tools table help',
+                           toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | preview  | image media template link anchor codesample',
+                           image_advtab: true,
+                           height: 600,
+                           image_caption: true,
+                           quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                           noneditable_class: 'mceNonEditable',
+                           toolbar_mode: 'sliding',
+                           contextmenu: 'link image table',
+                           /*skin: useDarkMode ? 'oxide-dark' : 'oxide',
+                           content_css: useDarkMode ? 'dark' : 'default',*/
+                           content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+                           }"
+                        v-model="product.value.description"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!--                <div class="row">
+                  <div class="col-12">
                     <vsud-textarea
                       id="product-description"
                       placeholder="Любой текст"
                       :value="product.value.description"
                       @textarea-value="(v) => (product.value.description = v)"
                       rows="7"
-                      >Комментарий к проекту</vsud-textarea
-                    >
+                    >Дополнительная информация</vsud-textarea>
                   </div>
-                </div>
+                </div>-->
                 <div class="row">
                   <div class="col-12 pb-3">
-                    <label class="form-label">Тип проекта</label>
-                    <select
-                      class="form-control"
-                      name="choices-type-button"
-                      id="choices-type"
-                      placeholder="Выберите тип проекта"
-                      v-model="product.value.product_type_id"
-                    >
-                      <option
-                        v-for="item in types.value"
-                        :value="item.id"
-                        :key="item.id"
-                      >
-                        {{ item.name }}
-                      </option>
-                    </select>
+                    <label class="form-label">Типы, относящиеся к проекту</label>
+                    <div class="form-group pt-3">
+                      <vsud-select-group
+                        :options="types.value"
+                        :selectedItems="productTypes.value"
+                        v-model="productTypes.value"
+                        v-if="types && productTypes"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div class="row">
@@ -92,9 +119,9 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <label class="form-label d-flex"
-                      ><twitter-icon class="mt-1 mr-1" />Twitter</label
-                    >
+                    <label class="form-label d-flex">
+                      <twitter-icon class="mt-1 mr-1" />Twitter
+                    </label>
                     <vsud-input
                       id="product-twitter"
                       type="text"
@@ -110,9 +137,9 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <label class="form-label d-flex"
-                      ><discord-icon class="mt-1 mr-1" />Discord</label
-                    >
+                    <label class="form-label d-flex">
+                      <discord-icon class="mt-1 mr-1" />Discord
+                    </label>
                     <vsud-input
                       id="product-discord"
                       type="text"
@@ -128,9 +155,9 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <label class="form-label d-flex"
-                      ><youtube-icon class="mt-1 mr-1" />YouTube</label
-                    >
+                    <label class="form-label d-flex">
+                      <youtube-icon class="mt-1 mr-1" />YouTube
+                    </label>
                     <vsud-input
                       id="product-youtube"
                       type="text"
@@ -146,9 +173,9 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <label class="form-label d-flex"
-                      ><telegram-icon class="mt-1 mr-1" />Telegram</label
-                    >
+                    <label class="form-label d-flex">
+                      <telegram-icon class="mt-1 mr-1" />Telegram
+                    </label>
                     <vsud-input
                       id="product-telegram"
                       type="text"
@@ -164,9 +191,9 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <label class="form-label d-flex"
-                      ><medium-icon class="mt-1 mr-1" />Medium</label
-                    >
+                    <label class="form-label d-flex">
+                      <medium-icon class="mt-1 mr-1" />Medium
+                    </label>
                     <vsud-input
                       id="product-medium"
                       type="text"
@@ -189,7 +216,7 @@
                       color="active"
                       full-width
                       @click="$router.go(-1)"
-                      >Назад
+                    >Назад
                     </vsud-button>
                     <vsud-button
                       class="my-4 mb-2 ml-2"
@@ -197,28 +224,27 @@
                       color="success"
                       full-width
                       @click.prevent="sendData"
-                      >Сохранить
+                    >Сохранить
                     </vsud-button>
                   </div>
                 </div>
               </div>
               <!-- -->
-              <div class="col-lg-6 mt-4 mt-lg-0">
- 
-                      <product-activities-table-moderator
-                        :productId="productId"
-                      />
+              <div class="col-5 mt-4 mt-lg-0">
+
+                <product-activities-table-moderator :productId="productId" />
 
                 <div class="card bg-gradient-dark">
                   <div class="card-header bg-transparent pb-0">
                     <div class="mb-4 col-xl-12 col-md-6 mb-xl-0 pb-4">
-                      <a href="javascript:;" @click="showAddBlockModal">
-                        <place-holder-horisontal-card
-                          :title="{
+                      <a
+                        href="javascript:;"
+                        @click="showAddBlockModal"
+                      >
+                        <place-holder-horisontal-card :title="{
                             text: 'Добавить блок описания',
                             variant: 'h6',
-                          }"
-                        />
+                          }" />
                       </a>
                     </div>
 
@@ -238,18 +264,14 @@
                           :key="block.id"
                         >
                           <span class="timeline-step bg-dark">
-                            <i
-                              :class="
+                            <i :class="
                                 getBlockIcon(block.stage) +
                                 ' text-' +
                                 getBlockColor(block.stage)
-                              "
-                            ></i>
+                              "></i>
                           </span>
                           <div class="timeline-content">
-                            <h6
-                              class="text-white text-sm font-weight-bold mb-0"
-                            >
+                            <h6 class="text-white text-sm font-weight-bold mb-0">
                               {{ block.name }}
                             </h6>
                             <div class="float-right">
@@ -284,8 +306,7 @@
                                         block.buttons
                                       )
                                     "
-                                    >Изменить</a
-                                  >
+                                  >Изменить</a>
                                 </li>
                                 <li>
                                   <a
@@ -298,8 +319,7 @@
                                         'Удаление этапа развития проекта'
                                       )
                                     "
-                                    >Удалить</a
-                                  >
+                                  >Удалить</a>
                                 </li>
                               </ul>
                             </div>
@@ -317,8 +337,7 @@
                                 blockTypes[block.stage - 1].color
                               "
                               v-if="block.button1"
-                              >{{ block.button1 }}</span
-                            >
+                            >{{ block.button1 }}</span>
                             <span
                               class="badge badge-sm ml-1"
                               :class="
@@ -326,8 +345,7 @@
                                 blockTypes[block.stage - 1].color
                               "
                               v-if="block.button2"
-                              >{{ block.button2 }}</span
-                            >
+                            >{{ block.button2 }}</span>
                             <span
                               class="badge badge-sm ml-1"
                               :class="
@@ -335,8 +353,7 @@
                                 blockTypes[block.stage - 1].color
                               "
                               v-if="block.button3"
-                              >{{ block.button3 }}</span
-                            >
+                            >{{ block.button3 }}</span>
                             <span
                               class="badge badge-sm ml-1"
                               :class="
@@ -344,8 +361,7 @@
                                 blockTypes[block.stage - 1].color
                               "
                               v-if="block.button4"
-                              >{{ block.button4 }}</span
-                            >
+                            >{{ block.button4 }}</span>
                             <span
                               class="badge badge-sm ml-1"
                               :class="
@@ -353,13 +369,15 @@
                                 blockTypes[block.stage - 1].color
                               "
                               v-if="block.button5"
-                              >{{ block.button5 }}</span
-                            >
+                            >{{ block.button5 }}</span>
                           </div>
                         </div>
                       </div>
                       <!-- far fa-baby-carriage -->
-                      <div v-else class="timeline-block mb-3">
+                      <div
+                        v-else
+                        class="timeline-block mb-3"
+                      >
                         <span class="timeline-step bg-dark">
                           <i class="fas fa-question text-secondary"></i>
                         </span>
@@ -367,15 +385,13 @@
                           <h6 class="text-white text-sm font-weight-bold mb-0">
                             Стадии проекта не описаны
                           </h6>
-                          <p
-                            class="
+                          <p class="
                               text-secondary
                               font-weight-bold
                               text-xs
                               mt-1
                               mb-0
-                            "
-                          ></p>
+                            "></p>
                           <p class="text-secondary text-sm mt-3 mb-2">
                             Отсутствует описание стадий развития проекта.
                           </p>
@@ -429,12 +445,16 @@ import PlaceHolderHorisontalCard from "@/Cards/PlaceHolderHorisontalCard.vue";
 import AddProductBlockModal from "@/components/modal/AddProductBlockModal.vue";
 import ProductActivitiesTableModerator from "@/views/components/tables/ProductActivitiesTableModerator";
 
+import Product from "@/composables/Product.js";
+const { getProductTypesData } = Product();
+
 import TwitterIcon from "@/components/Icon/Twitter";
 import TelegramIcon from "@/components/Icon/Telegram";
 import DiscordIcon from "@/components/Icon/Discord";
 import MediumIcon from "@/components/Icon/Medium";
 import YoutubeIcon from "@/components/Icon/Youtube";
 
+import VsudSelectGroup from "@/components/VsudSelectGroup.vue";
 
 import { Dropzone } from "dropzone";
 
@@ -443,19 +463,22 @@ import { Modal } from "bootstrap";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 
+import Editor from "@tinymce/tinymce-vue";
+
 export default {
   setup() {
     const route = useRoute();
-    const productId = parseInt(route.params.productId);   
+    const productId = parseInt(route.params.productId);
     const types = ref([]);
     types.value = getProductTypes();
     const product = ref([]);
     product.value = getProductData(productId);
+    const productTypes = ref([]);
+    productTypes.value = getProductTypesData(productId);
     const blocks = ref([]);
     blocks.value = getProductBlocks(productId);
 
-
-    return { productId, types, product, blocks };
+    return { productId, types, product, blocks, productTypes };
   },
 
   components: {
@@ -475,12 +498,14 @@ export default {
     PlaceHolderHorisontalCard,
     AddProductBlockModal,
     ProductActivitiesTableModerator,
+    editor: Editor,
+    VsudSelectGroup,
   },
   mounted() {
     this.addModal = new Modal(
       document.getElementById("addProductBlockModalMessage")
     );
-    
+
     //window.token = localStorage.getItem("x_xsrf_token");
     this.pathLogo = this.product.value.logo_url;
     const token = this.getCookie("XSRF-TOKEN");
@@ -534,8 +559,7 @@ export default {
   data() {
     return {
       openModalStatus: false,
-      
-      
+
       addModal: null,
       blockTypes: globalBlockTypes,
       confirmBlockDelete: false,
@@ -584,7 +608,8 @@ export default {
       axios
         .post("/api/edit-product/" + this.productId, {
           name: this.product.value.name,
-          type: this.product.value.product_type_id,
+          /*type: this.product.value.product_type_id,*/
+          type: this.productTypes.value,
           url: this.product.value.website_url,
           twitter: this.product.value.twitter,
           discord: this.product.value.discord,
@@ -594,6 +619,7 @@ export default {
           description: this.product.value.description,
         })
         .then((r) => {
+         //productTypes.value
           this.$router.push({ name: "ProductsModerator" });
           //this.$router.go()
           //this.$emit("socialsReload");
@@ -672,7 +698,6 @@ export default {
     getActions() {
       //this.actions = getAllActions();
     },
-
   },
   computed: {
     tokenC() {
