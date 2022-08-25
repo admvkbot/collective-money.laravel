@@ -23,7 +23,7 @@
         <div class="col-auto my-auto">
           <div class="h-100">
             <h5 class="mb-1">{{ product.name }}</h5>
-            <p class="mb-0 text-sm font-weight-bold">{{ product.type }}</p>
+            <p class="mb-0 text-sm font-weight-bold">{{ product.website_url }}</p>
           </div>
         </div>
         <!--<div
@@ -144,7 +144,7 @@
     </div>
   </div>
   <div class="py-4 container-fluid">
-<!--    <div class="mt-2 row">
+    <!--    <div class="mt-2 row">
       <div class="col-lg-6">
         <div class="card z-index-2">
           <gradient2-line-chart
@@ -191,7 +191,7 @@
       </div>
     </div>-->
     <div class="mt-2 row">
-      <div class="col-lg-7 mt-3 mt-lg-3">
+      <div class="col-lg-8 mt-3 mt-lg-3">
         <!--<profile-info-card
           :info="{
             nickname: 'Олег',
@@ -221,12 +221,12 @@
             tooltip: 'Edit Profile',
           }"
         />-->
-                                      <product-activities-table
-                      v-if="product.id"
-                        :productId="product.id"
-                      />
+        <product-activities-table
+          v-if="product.id"
+          :productId="product.id"
+        />
 
-        <div class="card h-100">
+        <div class="card">
           <div class="p-3 pb-0 card-header">
             <div class="row">
               <div class="col-md-12 d-flex align-items-center">
@@ -253,17 +253,13 @@
             <ul class="list-group">
               <li
                 class="pt-0 text-sm border-0 list-group-item ps-0"
-                v-if="product.description"
-              >
-                <font-awesome-icon :icon="faHandPointRight" /> &nbsp;
-                {{ product.description }}
-              </li>
-              <li
-                class="pt-0 text-sm border-0 list-group-item ps-0"
                 v-if="product.website_url"
               >
                 <strong class="text-dark">Официальный сайт:</strong> &nbsp;
-                <a target="_blank" :href="product.website_url">
+                <a
+                  target="_blank"
+                  :href="product.website_url"
+                >
                   {{ product.website_url }}
                 </a>
               </li>
@@ -309,9 +305,29 @@
           </div>
         </div>
 
+        <div class="card mt-5" v-if="product && product.description">
+          <div class="p-3 pb-0 card-header">
+            <div class="row">
+              <div class="col-md-12 d-flex align-items-center">
+                <h6 class="mb-0">Расширенная информация</h6>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 card-body">
+              <div
+                class="pt-0 text-sm border-0 list-group-item ps-0"
+                v-if="product.description"
+              >
+
+                <div v-html="product.description"></div>
+              </div>
+          </div>
+        </div>
+
+
       </div>
 
-      <div class="col-lg-5 mt-3 mt-lg-3">
+      <div class="col-lg-4 mt-3 mt-lg-3">
 
         <div class="card bg-gradient-dark">
           <div class="card-header bg-transparent pb-0">
@@ -329,13 +345,11 @@
                   :key="block.id"
                 >
                   <span class="timeline-step bg-dark">
-                    <i
-                      :class="
+                    <i :class="
                         getBlockIcon(block.stage) +
                         ' text-' +
                         getBlockColor(block.stage)
-                      "
-                    ></i>
+                      "></i>
                   </span>
                   <div class="timeline-content">
                     <h6 class="text-white text-sm font-weight-bold mb-0">
@@ -354,45 +368,43 @@
                         'bg-gradient-' + blockTypes[block.stage - 1].color
                       "
                       v-if="block.button1"
-                      >{{ block.button1 }}</span
-                    >
+                    >{{ block.button1 }}</span>
                     <span
                       class="badge badge-sm ml-1"
                       :class="
                         'bg-gradient-' + blockTypes[block.stage - 1].color
                       "
                       v-if="block.button2"
-                      >{{ block.button2 }}</span
-                    >
+                    >{{ block.button2 }}</span>
                     <span
                       class="badge badge-sm ml-1"
                       :class="
                         'bg-gradient-' + blockTypes[block.stage - 1].color
                       "
                       v-if="block.button3"
-                      >{{ block.button3 }}</span
-                    >
+                    >{{ block.button3 }}</span>
                     <span
                       class="badge badge-sm ml-1"
                       :class="
                         'bg-gradient-' + blockTypes[block.stage - 1].color
                       "
                       v-if="block.button4"
-                      >{{ block.button4 }}</span
-                    >
+                    >{{ block.button4 }}</span>
                     <span
                       class="badge badge-sm ml-1"
                       :class="
                         'bg-gradient-' + blockTypes[block.stage - 1].color
                       "
                       v-if="block.button5"
-                      >{{ block.button5 }}</span
-                    >
+                    >{{ block.button5 }}</span>
                   </div>
                 </div>
               </div>
               <!-- far fa-baby-carriage -->
-              <div v-else class="timeline-block mb-3">
+              <div
+                v-else
+                class="timeline-block mb-3"
+              >
                 <span class="timeline-step bg-dark">
                   <i class="fas fa-question text-secondary"></i>
                 </span>
@@ -400,9 +412,7 @@
                   <h6 class="text-white text-sm font-weight-bold mb-0">
                     Стадии проекта не описаны
                   </h6>
-                  <p
-                    class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                  ></p>
+                  <p class="text-secondary font-weight-bold text-xs mt-1 mb-0"></p>
                   <p class="text-secondary text-sm mt-3 mb-2">
                     Отсутствует описание стадий развития проекта.
                   </p>

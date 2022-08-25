@@ -1054,6 +1054,13 @@
     "lodash.isplainobject" "^4.0.6"
     "lodash.merge" "^4.6.2"
 
+"@tinymce/tinymce-vue@^5.0.0":
+  "integrity" "sha512-1HRCNa2eGdztOKShYAiHIry50LTU6YJG//qSP9AJElrXhb3BIBN0Bef6E56nZObVgwCgSmI4cnX35VU9D49aow=="
+  "resolved" "https://registry.npmjs.org/@tinymce/tinymce-vue/-/tinymce-vue-5.0.0.tgz"
+  "version" "5.0.0"
+  dependencies:
+    "tinymce" "^6.0.0 || ^5.5.1"
+
 "@trysound/sax@0.2.0":
   "integrity" "sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA=="
   "resolved" "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
@@ -6807,6 +6814,11 @@
   "version" "2.0.12"
   dependencies:
     "setimmediate" "^1.0.4"
+
+"tinymce@^6.0.0 || ^5.5.1":
+  "integrity" "sha512-tl4KbEKdPzyPTatJkblN2AqzRj9jaRGyATnwaSnsLFGKb4AI6B+4e0Gc8dUDXuqAjgSnHokhzamrQJLbSn4CmQ=="
+  "resolved" "https://registry.npmjs.org/tinymce/-/tinymce-6.1.2.tgz"
+  "version" "6.1.2"
 
 "to-arraybuffer@^1.0.0":
   "integrity" "sha512-okFlQcoGTi4LQBG/PgSYblw9VOyptsz2KJZqc6qtgGdes8VktzUQkj4BI2blit072iS8VODNcMA+tvnS9dnuMA=="

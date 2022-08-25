@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
    // Products
    Route::post('/get-products/{id}', 'Product\IndexController');
    Route::get('/product-moderator/{id}', 'Product\ProductModeratorController');
+   Route::get('/product-types/{id}', 'Product\ProductTypesController');
    Route::post('/edit-product/{product_id}', 'Product\EditController');
    Route::get('/delete-product/{product_id}', 'Product\DeleteController');
    Route::post('/add-product', 'Product\CreateController');

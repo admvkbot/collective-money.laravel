@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('uri')->unique();
-            $table->integer('product_type_id')->nullable();
+            //$table->integer('product_type_id')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('rating')->default(0);
             $table->tinyInteger('rating_past')->default(0);

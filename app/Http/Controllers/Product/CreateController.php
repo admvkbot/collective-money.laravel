@@ -22,7 +22,7 @@ class CreateController extends BaseController
          $out = Product::firstOrCreate([
             'name' => $data['name'],
             'uri' => $this->service->getUriByName($data['name']),
-            'product_type_id' => $data['type'],
+            /*'product_type_id' => $data['type'],*/
             'website_url' => $data['url'],
             'discord' => $data['discord'],
             'twitter' => $data['twitter'],
@@ -32,7 +32,8 @@ class CreateController extends BaseController
             'description' => $data['description'],
          ]);
          $data['product_id'] = $out->id;
-         $out = $this->serviceIndex->insertIndex($data);         
+         $out = $this->serviceIndex->insertIndex($data);
+         $this->service->insertProductTypes($data);         
          return response()->json($out);
       }
       return response()->json('[]');
